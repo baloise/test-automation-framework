@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.baloise.testing.framework</groupId>
+	<artifactId>taf</artifactId>
+	<version>0.0.2-SNAPSHOT</version>
+
+	<packaging>pom</packaging>
+
+	<name>Test Automation Framework</name>
+
+	<scm>
+		<connection>scm:git:https://github.com/baloise/test-automation-framework.git</connection>
+	</scm>
+
+	<dependencies>
+	</dependencies>
+
+	<modules>
+		<module>taf-base</module>
+		<module>taf-browser</module>
+		<module>taf-common</module>
+		<module>taf-robot</module>
+		<module>taf-swing-base</module>
+		<module>taf-swing-client</module>
+		<module>taf-swing-server</module>
+	</modules>
+
+</project>

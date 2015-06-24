@@ -1,0 +1,129 @@
+<frame height="957" x="27" name="frame0" width="1667" tid="0"
+	title="Parsys" y="35">
+	<JRootPane>
+		<JPanel></JPanel>
+		<JLayeredPane>
+			<JPanel>
+				<Desktop>
+					<internalframe height="238" x="591" width="466" tid="6"
+						title="Anmeldung" y="350">
+						<JRootPane>
+							<InternalLockPane></InternalLockPane>
+							<JLayeredPane>
+								<NullViewPart>
+									<LoginPanel>
+										<LoginGui>
+											<label height="204" x="0" width="126" tid="13" text=""
+												y="0"></label>
+											<label height="16" x="214" width="72" tid="14" text="Passwort"
+												y="48"></label>
+											<JPanel>
+												<button height="23" x="0" width="100" tid="16" text="Anmelden"
+													y="0"></button>
+												<button height="23" x="106" width="100" tid="17"
+													text="Abbrechen" y="0"></button>
+											</JPanel>
+											<label height="21" x="184" width="102" tid="18"
+												text="Benutzername" y="20"></label>
+											<input height="21" x="292" width="200" tid="19"
+												leftlabel="Benutzername" y="20"></input>
+											<input height="21" x="292" width="200" tid="20"
+												leftlabel="Passwort" y="46"></input>
+											<JSeparator></JSeparator>
+											<JScrollPane>
+												<JViewport>
+													<JTextArea></JTextArea>
+												</JViewport>
+												<ScrollBar>
+													<button height="2" x="0" width="21" tid="26" text=""
+														y="3"></button>
+													<button height="2" x="0" width="21" tid="27" text=""
+														y="0"></button>
+												</ScrollBar>
+											</JScrollPane>
+										</LoginGui>
+									</LoginPanel>
+								</NullViewPart>
+							</JLayeredPane>
+						</JRootPane>
+						<WindowsInternalFrameTitlePane>
+							<label height="17" x="6" width="17" tid="29" y="7"></label>
+							<button height="22" x="425" width="36" tid="30" text="" y="6"></button>
+						</WindowsInternalFrameTitlePane>
+					</internalframe>
+					<InternalLockPane></InternalLockPane>
+					<InternalLockPane></InternalLockPane>
+					<JPanel>
+						<JPanel>
+							<JAFToolbar>
+								<button height="25" x="1" width="25" tid="36" text="" y="1"></button>
+								<button height="25" x="26" width="25" tid="37" text="" y="1"></button>
+								<button height="25" x="51" width="25" tid="38" text="" y="1"></button>
+								<JSeparator></JSeparator>
+								<button height="25" x="81" width="25" tid="40" text="" y="1"></button>
+								<button height="25" x="106" width="25" tid="41" text=""
+									y="1"></button>
+								<button height="25" x="131" width="25" tid="42" text=""
+									y="1"></button>
+							</JAFToolbar>
+							<JPanel>
+								<JAFMainMenu>
+									<menuitem height="24" x="0" width="45" tid="45" text="Datei"
+										y="0">
+									</menuitem>
+									<menuitem height="24" x="45" width="81" tid="46"
+										text="Bearbeiten" y="0">
+									</menuitem>
+									<menuitem height="24" x="126" width="47" tid="47"
+										text="Extras" y="0">
+									</menuitem>
+									<menuitem height="24" x="173" width="55" tid="48"
+										text="Fenster" y="0">
+									</menuitem>
+									<menuitem height="24" x="228" width="41" tid="49"
+										text="Hilfe" y="0">
+									</menuitem>
+								</JAFMainMenu>
+							</JPanel>
+						</JPanel>
+						<JPanel>
+							<ViewSelector>
+								<JScrollPane>
+									<JViewport>
+										<Desktop>
+											<InternalLockPane></InternalLockPane>
+											<InternalLockPane></InternalLockPane>
+											<CardContainer>
+												<JPanel></JPanel>
+											</CardContainer>
+										</Desktop>
+									</JViewport>
+								</JScrollPane>
+							</ViewSelector>
+						</JPanel>
+						<JPanel>
+							<JAFStatusbar>
+								<JSeparator></JSeparator>
+								<label height="16" x="0" width="50" tid="62" text="b017163"
+									y="5"></label>
+								<JSeparator></JSeparator>
+								<label height="16" x="61" width="806" tid="64" text="" y="5"></label>
+								<JPanel>
+									<JSeparator></JSeparator>
+								</JPanel>
+								<JSeparator></JSeparator>
+								<JPanel>
+									<label height="16" x="0" width="100" tid="69" text="Test"
+										y="0"></label>
+								</JPanel>
+								<JSeparator></JSeparator>
+								<JAFProgress>
+								</JAFProgress>
+							</JAFStatusbar>
+						</JPanel>
+					</JPanel>
+				</Desktop>
+			</JPanel>
+		</JLayeredPane>
+	</JRootPane>
+</frame>
