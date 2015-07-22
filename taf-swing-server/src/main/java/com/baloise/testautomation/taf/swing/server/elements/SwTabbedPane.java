@@ -8,12 +8,19 @@
  */
 package com.baloise.testautomation.taf.swing.server.elements;
 
+import java.awt.Component;
+
 import javax.swing.JTabbedPane;
+
+import org.assertj.swing.fixture.JTabbedPaneFixture;
+
+import com.baloise.testautomation.taf.common.utils.TafProperties;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
 
 /**
  * 
  */
-public class SwTabbedPane extends ASwElement {
+public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component> {
 
   public SwTabbedPane(long tid, JTabbedPane component) {
     super(tid, component);
@@ -33,7 +40,17 @@ public class SwTabbedPane extends ASwElement {
 
   @Override
   public String getType() {
-    return "tabbedpane";
+    return ISwTabbedPane.type;
+  }
+
+  @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    throw new NotSupportedException("no commands implemented");
+  }
+
+  @Override
+  public JTabbedPaneFixture getFixture() {
+    return new JTabbedPaneFixture(getRobot(), getComponent());
   }
 
 }

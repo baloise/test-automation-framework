@@ -11,16 +11,16 @@ package com.baloise.testautomation.taf.swing.server.elements;
 import java.awt.Component;
 import java.awt.Frame;
 
+import org.assertj.swing.fixture.FrameFixture;
+
+import com.baloise.testautomation.taf.common.utils.TafProperties;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwFrame;
+
 /**
  * 
  */
-public class SwFrame extends ASwElement {
+public class SwFrame extends ASwElement implements ISwFrame<Component> {
 
-  /**
-   * @param tagName
-   * @param tid
-   * @param component
-   */
   public SwFrame(long tid, Component component) {
     super(tid, component);
   }
@@ -37,7 +37,17 @@ public class SwFrame extends ASwElement {
 
   @Override
   public String getType() {
-    return "frame";
+    return ISwFrame.type;
+  }
+
+  @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    return new TafProperties();
+  }
+
+  @Override
+  public FrameFixture getFixture() {
+    return new FrameFixture(getRobot(), getComponent());
   }
 
 }

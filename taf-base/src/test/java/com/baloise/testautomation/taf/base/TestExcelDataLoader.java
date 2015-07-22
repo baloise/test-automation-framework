@@ -6,7 +6,7 @@
  @
  ===========================================================================
  */
-package com.baloise.testautomation.taf;
+package com.baloise.testautomation.taf.base;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

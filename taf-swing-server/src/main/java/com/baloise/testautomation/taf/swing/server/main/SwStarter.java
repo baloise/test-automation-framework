@@ -12,24 +12,32 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
-import javax.swing.event.SwingPropertyChangeSupport;
-
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
-import com.baloise.testautomation.taf.common.interfaces.ISwApplication.Command;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.*;
 
 /**
  * 
  */
 public class SwStarter {
 
+  private static void error(String s, Exception e) {
+    System.out.println("[ERROR] " + s);
+    e.printStackTrace();
+  }
+
   private SwApplication swApplication = new SwApplication();
 
+  private boolean pollingActive = false;
+  private boolean watch = false;
+  private boolean spy = false;
+  private String spyFileName = null;
+
   public SwStarter() {
-    info("try to start instrumentation");
+    info("will try to start instrumentation");
     try {
       // Server.createTcpServer().start();
       H2DB.init(getDbName());
@@ -53,12 +61,14 @@ public class SwStarter {
       error("error starting instrumentation", e);
     }
 
-    Thread watcher = new Thread() {
-      public void run() {
-        watch();
-      }
-    };
-    watcher.start();
+    if (watch) {
+      Thread watcher = new Thread() {
+        public void run() {
+          watch();
+        }
+      };
+      watcher.start();
+    }
 
     if (swApplication.id != 0) {
       info("Start polling");
@@ -71,16 +81,100 @@ public class SwStarter {
     }
   }
 
+  private void execStartInstrumentation(SwCommand command) {
+    TafProperties resultProps = new TafProperties();
+    try {
+      info("starting instrumentation");
+      command.setToWorking();
+      TafProperties props = SwCommandProperties.getForId(command.id);
+      String c = props.getString(paramCommand);
+      if (ISwApplication.Command.startinstrumentation.toString().equalsIgnoreCase(c)) {
+        swApplication.id = props.getLong(paramId).intValue();
+        spy = props.getBoolean(paramSpy);
+        watch = props.getBoolean(paramWatch);
+        spyFileName = props.getString(paramPath);
+        props = new TafProperties();
+        resultProps.putObject(paramStatus, "started");
+        info("started with id = " + swApplication.id);
+      }
+    }
+    catch (Exception e) {
+      resultProps.putObject(paramStatus, "error");
+      resultProps.putObject(paramMessage, e.getMessage());
+    }
+    finally {
+      setCommandProperties(0, resultProps);
+      command.setToDone();
+    }
+  }
+
+  // @Override
+  public String getDbName() {
+    return "c:/db/test";
+  }
+
+  private Long getLong(String s) {
+    try {
+      return Long.parseLong(s);
+    }
+    catch (Exception e) {}
+    return null;
+  }
+
+  private SwCommand getNextCommand() {
+    try {
+      List<SwCommand> commands = SwCommand.getReadyCommandsForId(swApplication.id);
+      return commands.get(0);
+    }
+    catch (Exception e) {}
+    return null;
+  }
+
+  // @Override
+  public ISwApplication<?> getSwApplication() {
+    return swApplication;
+  }
+
   private void info(String s) {
     System.out.println(s);
   }
 
-  private static void error(String s, Exception e) {
-    System.out.println("[ERROR] " + s);
-    e.printStackTrace();
+  public void poll() {
+    while (true) {
+      pollingActive = true;
+      try {
+        if (spy) {
+          swApplication.storeHierarchy(spyFileName);
+        }
+        Thread.sleep(500);
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
+      try {
+        SwCommand nextCommand = getNextCommand();
+        if (nextCommand != null) {
+          nextCommand.setToWorking();
+          TafProperties props = SwCommandProperties.getTafPropertiesForId(swApplication.id);
+          info("Executing command: " + nextCommand.id);
+          info("Incoming properties: " + props);
+          props = swApplication.execCommand(props);
+          setCommandProperties(swApplication.id, props);
+          nextCommand.setToDone();
+          info("Outgoing properties: " + props);
+          info("Finished command: " + nextCommand.id);
+        }
+      }
+      catch (Exception e) {
+        error("error executing command", e);
+      }
+    }
   }
 
-  private boolean pollingActive = false;
+  private void setCommandProperties(int id, TafProperties props) {
+    SwCommandProperties.deleteCommandPropertiesForId(id);
+    SwCommandProperties.insertForId(id, props);
+  }
 
   public void watch() {
     while (true) {
@@ -95,79 +189,5 @@ public class SwStarter {
         // TODO: handle exception
       }
     }
-  }
-
-  public void poll() {
-    while (true) {
-      pollingActive = true;
-      try {
-        SwCommand nextCommand = getNextCommand();
-        if (nextCommand != null) {
-          info("Executing command");
-          TafProperties props = SwCommandProperties.getTafPropertiesForId(swApplication.id);
-          props = swApplication.execCommand(props.getString("type"), props.getString("command"), props);
-          setCommandProperties(swApplication.id, props);
-        }
-      }
-      catch (Exception e) {
-        error("error executing command", e);
-      }
-    }
-  }
-
-  private Long getLong(String s) {
-    try {
-      return Long.parseLong(s);
-    }
-    catch (Exception e) {}
-    return null;
-  }
-
-  // @Override
-  public String getDbName() {
-    return "c:/db/test";
-  }
-
-  // @Override
-  public ISwApplication getSwApplication() {
-    return swApplication;
-  }
-
-  private void execStartInstrumentation(SwCommand command) {
-    TafProperties resultProps = new TafProperties();
-    String status = "status";
-    try {
-      info("starting instrumentation");
-      command.setToWorking();
-      TafProperties props = SwCommandProperties.getForId(command.id);
-      String c = props.getString("command");
-      if (ISwApplication.Command.startinstrumentation.toString().equalsIgnoreCase(c)) {
-        swApplication.id = props.getLong("id").intValue();
-        props = new TafProperties();
-        resultProps.putObject(status, "started");
-        info("started with id = " + swApplication.id);
-      }
-    } catch (Exception e) {
-      resultProps.putObject(status, "error");
-      resultProps.putObject("message", e.getMessage());
-    }
-    finally {
-      setCommandProperties(0, resultProps);
-      command.setToDone();
-    }
-  }
-
-  private void setCommandProperties(int id, TafProperties props) {
-    SwCommandProperties.deleteCommandPropertiesForId(id);
-    SwCommandProperties.insertForId(id, props);
-  }
-
-  private SwCommand getNextCommand() {
-    try {
-      List<SwCommand> commands = SwCommand.getReadyCommandsForId(swApplication.id);
-      return commands.get(0);
-    }
-    catch (Exception e) {}
-    return null;
   }
 }

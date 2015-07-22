@@ -19,7 +19,7 @@ public interface ISwButton<R> extends ISwElement<R> {
     click
   }
 
-  public final String type = "button";
+  public static String type = "button";
   
   public void click();
 

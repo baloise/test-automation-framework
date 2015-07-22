@@ -34,14 +34,14 @@ public class SwInputProxy extends ASwElementProxy implements ISwInput<Long> {
   @Override
   public void enterText(String text) {
     TafProperties props = new TafProperties();
-    props.putObject("text", text);
+    props.putObject(paramText, text);
     executeCommand(Command.entertext.toString(), props);
   }
 
   @Override
   public String getText() {
     TafProperties props = executeCommand(Command.gettext.toString());
-    return props.getString("text");
+    return props.getString(paramText);
   }
 
 }

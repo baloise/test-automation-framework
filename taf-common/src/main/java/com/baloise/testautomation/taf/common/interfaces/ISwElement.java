@@ -20,9 +20,9 @@ public interface ISwElement<R> {
   
   public R getReference();
   public String getType();
-  public void setApplication(ISwApplication application);
+  public void setApplication(ISwApplication<?> application);
   public void setReference(R reference);
   public TafProperties getProperties();
   public void setProperties(TafProperties props);
-  
+
 }

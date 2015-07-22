@@ -23,6 +23,7 @@ import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
@@ -34,7 +35,7 @@ import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
 public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
   Long id = 0l;
-  
+
   private int timeoutInSeconds = 50;
 
   public SwApplicationProxy(Long id) {
@@ -44,7 +45,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   public Long getReference() {
     return id;
   }
-  
+
   public String getType() {
     return ISwApplication.type;
   }
@@ -53,16 +54,40 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   public void startJNLPInstrumentation(String url) {
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
-    props.putObject("id", getReference());
+    props.putObject(paramId, getReference());
+    props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
+    props.putObject(paramType, ISwApplication.type.toString());
     startJNLP(url);
-    startCommandAndWait(0, ISwApplication.type, Command.startinstrumentation.toString(), props);
+    startCommandAndWait(0, props);
     props = SwCommandProperties.getTafPropertiesForId(0);
-    if (!"started".equalsIgnoreCase(props.getString("status"))) {
+    if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
       Assert.fail("application is not instrumented: " + getReference());
     }
     deleteFor(0);
   }
 
+  @Override
+  public void startJNLPInstrumentationWithSpy(String url, String filename) {
+    deleteFor(getReference().intValue());
+    TafProperties props = new TafProperties();
+    props.putObject(paramId, getReference());
+    props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
+    props.putObject(paramType, ISwApplication.type.toString());
+    if (filename != null) {
+      if (!filename.isEmpty()) {
+        props.putObject(paramSpy, true);
+        props.putObject(paramPath, filename);
+      }
+    }
+    startJNLP(url);
+    startCommandAndWait(0, props);
+    props = SwCommandProperties.getTafPropertiesForId(0);
+    if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
+      Assert.fail("application is not instrumented: " + getReference());
+    }
+    deleteFor(0);
+  }
+  
   @Override
   public ISwElement<Long> find(Annotation annotation) {
     return find(null, annotation);
@@ -117,33 +142,35 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   @Override
   public ISwElement<Long> findElementByXpath(Long root, String xpath) {
     TafProperties props = new TafProperties();
-    props.putObject("xpath", xpath);
-    props.putObject("root", root);
-    props = execCommand(ISwApplication.type, Command.findelementbyxpath.toString(), props);
-    ISwElement<Long> element = createElement(props.getString("type"));
+    props.putObject(paramXPath, xpath);
+    props.putObject(paramRoot, root);
+    props.putObject(paramCommand, Command.findelementbyxpath.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props = execCommand(props);
+    ISwElement<Long> element = createElement(props.getString(paramType));
     if (element != null) {
-      element.setReference(props.getLong("id"));
+      element.setReference(props.getLong(paramId));
     }
     return element;
   }
 
-  /** 
-   * {@inheritDoc}
-   */
   @Override
   public List<ISwElement<Long>> findElementsByXpath(Long root, String xpath) {
     Vector<ISwElement<Long>> result = new Vector<>();
     TafProperties props = new TafProperties();
-    props.putObject("xpath", xpath);
-    props.putObject("root", root);
-    props = execCommand(ISwApplication.type, Command.findelementsbyxpath.toString(), props);
+    props.putObject(paramXPath, xpath);
+    props.putObject(paramRoot, root);
+    props.putObject(paramCommand, Command.findelementsbyxpath.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props = execCommand(props);
     for (String key : props.keySet()) {
       ISwElement<Long> element = createElement(props.getString(key));
       if (element != null) {
         try {
           element.setReference(new Long(Long.parseLong(key)));
           result.add(element);
-        } catch (Exception e ) {}
+        }
+        catch (Exception e) {}
       }
     }
     return result;
@@ -152,26 +179,25 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   public Hashtable<String, Class<?>> supportedElements() {
     Hashtable<String, Class<?>> supportedElements = new Hashtable<>();
     supportedElements.put(ISwInput.type.toLowerCase(), SwInputProxy.class);
+    supportedElements.put(ISwButton.type.toLowerCase(), SwButtonProxy.class);
     return supportedElements;
   }
 
   @SuppressWarnings("unchecked")
   public ISwElement<Long> createElement(String type) {
     Class<?> c = supportedElements().get(type.toLowerCase());
-    if (c == null) {
-      // TODO --> Richtigen Typ instantiieren
-      return null;
-    }
-    ISwElement<Long> element = null; 
+    Assert.assertNotNull("type not supported: " + type, c);
+    ISwElement<Long> element = null;
     try {
       element = (ISwElement<Long>)c.newInstance();
+      element.setApplication(this);
     }
     catch (Exception e) {}
     return element;
   }
 
   public TafProperties startJNLP(String url) {
-    //prepareStartInstrumentation();
+    // prepareStartInstrumentation();
     Process p = null;
     try {
       p = Runtime.getRuntime().exec("cmd /C \"javaws " + url + "\"");
@@ -180,13 +206,13 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     catch (Exception e) {
       e.printStackTrace();
     }
-    //waitUntilInstrumentationStarted();
+    // waitUntilInstrumentationStarted();
     return new TafProperties();
   }
 
   @Override
-  public TafProperties execCommand(String type, String command, TafProperties props) {
-    startCommandAndWait(getReference().intValue(), type, command, props);
+  public TafProperties execCommand(TafProperties props) {
+    startCommandAndWait(getReference().intValue(), props);
     return SwCommandProperties.getTafPropertiesForId(getReference().intValue());
   }
 
@@ -195,29 +221,35 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     SwCommand.deleteCommandsForId(id);
   }
 
-  private void startCommandAndWait(int id, String type, String command, TafProperties props) {
-    startCommand(id, type, command, props);
-    waitUntilDone(id, ISwApplication.Command.execute.toString());
+  private void startCommandAndWait(int id, TafProperties props) {
+    startCommand(id, props);
+    waitUntilDone(id);
   }
-  
-  private void startCommand(int id, String t, String command, TafProperties props) {
+
+  private void startCommand(int id, TafProperties props) {
     deleteFor(id);
-    props.putObject("type", t);
-    props.putObject("command", command);
-    SwCommand c = new SwCommand(id, Command.execute.toString());
+    SwCommand c = new SwCommand(id);
     c.insert();
     SwCommandProperties.insertForId(id, props);
     c.setToReady();
   }
 
-  public void waitUntilDone(int id, String type) {
+  public void waitUntilDone(int id) {
     long time = System.currentTimeMillis();
-    while (!SwCommand.isAllDone(id, type)) {
+    while (!SwCommand.isAllDone(id)) {
       if (System.currentTimeMillis() > time + 1000 * timeoutInSeconds) {
         throw new SwTimeout();
       }
     }
   }
 
-  
+  @Override
+  public void storeHierarchy(String path) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramCommand, Command.storehierarchy.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props.putObject(paramPath, path);
+    execCommand(props);
+  }
+
 }

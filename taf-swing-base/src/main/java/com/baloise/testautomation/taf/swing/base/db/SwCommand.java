@@ -19,15 +19,14 @@ import java.util.Vector;
  */
 public class SwCommand extends H2Table {
 
-  public SwCommand(int id, String command) {
-    this(id, command, Status.preparing.ordinal());
+  public SwCommand(int id) {
+    this(id, Status.preparing.ordinal());
   }
 
-  public SwCommand(int id, String command, int status) {
+  public SwCommand(int id, int status) {
     // TODO 
     super();
     this.id = id;
-    this.command = command;
     this.status = status;
   }
 
@@ -39,7 +38,7 @@ public class SwCommand extends H2Table {
     preparing, ready, working, done
   }
 
-  public String command = "";
+//  public String command = "";
   public int status = 0;
   public int id = 0;
 
@@ -66,36 +65,36 @@ public class SwCommand extends H2Table {
     return getForId(id, Status.done).size() > 0;
   }
 
-  public static boolean isAllDone(int id, String type) {
-    return getForId(id, type, Status.done).size() > 0;
-  }
+//  public static boolean isAllDone(int id, String type) {
+//    return getForId(id, type, Status.done).size() > 0;
+//  }
 
-  private static List<SwCommand> getForId(int id, String type, Status status) {
-    Vector<SwCommand> result = new Vector<SwCommand>();
-    ResultSet rs = null;
-    PreparedStatement ps = null;
-    try {
-      ps = conn().prepareStatement(
-          "select command, status from commands where id = " + id + " and status = " + status.ordinal()
-              + " and command = '" + type + "'");
-      rs = ps.executeQuery();
-      // System.out.println(ps);
-      if (rs != null) {
-        while (rs.next()) {
-          SwCommand command = new SwCommand(id, rs.getString(1), rs.getInt(2));
-          result.add(command);
-        }
-      }
-    }
-    catch (SQLException e) {
-      error("error loading commands", e);
-      e.printStackTrace();
-    }
-    finally {
-      closePreparedStatement(ps);
-    }
-    return result;
-  }
+//  private static List<SwCommand> getForId(int id, String type, Status status) {
+//    Vector<SwCommand> result = new Vector<SwCommand>();
+//    ResultSet rs = null;
+//    PreparedStatement ps = null;
+//    try {
+//      ps = conn().prepareStatement(
+//          "select status from commands where id = " + id + " and status = " + status.ordinal()
+//              + " and command = '" + type + "'");
+//      rs = ps.executeQuery();
+//      // System.out.println(ps);
+//      if (rs != null) {
+//        while (rs.next()) {
+//          SwCommand command = new SwCommand(id, rs.getInt(1));
+//          result.add(command);
+//        }
+//      }
+//    }
+//    catch (SQLException e) {
+//      error("error loading commands", e);
+//      e.printStackTrace();
+//    }
+//    finally {
+//      closePreparedStatement(ps);
+//    }
+//    return result;
+//  }
 
   private static List<SwCommand> getForId(int id, Status status) {
     Vector<SwCommand> result = new Vector<SwCommand>();
@@ -103,12 +102,12 @@ public class SwCommand extends H2Table {
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(
-          "select command, status from commands where id = " + id + " and status = " + status.ordinal());
+          "select status from commands where id = " + id + " and status = " + status.ordinal());
       rs = ps.executeQuery();
       // System.out.println(ps);
       if (rs != null) {
         while (rs.next()) {
-          SwCommand command = new SwCommand(id, rs.getString(1), rs.getInt(2));
+          SwCommand command = new SwCommand(id, rs.getInt(1));
           result.add(command);
         }
       }
@@ -133,8 +132,7 @@ public class SwCommand extends H2Table {
 //  }
 
   private void updateFromTo(Status from, Status to) {
-    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = " + id + " AND status = " + from.ordinal()
-        + " AND command = '" + command + "'";
+    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = " + id + " AND status = " + from.ordinal();
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(updateSQL);
@@ -165,13 +163,12 @@ public class SwCommand extends H2Table {
    * 
    */
   public void insert() {
-    String insertSQL = "INSERT INTO COMMANDS " + "(id, command, status) " + "VALUES (?, ?, ?)";
+    String insertSQL = "INSERT INTO COMMANDS " + "(id, status) " + "VALUES (?, ?)";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(insertSQL);
       ps.setInt(1, id);
-      ps.setString(2, command);
-      ps.setInt(3, status);
+      ps.setInt(2, status);
       ps.execute();
     }
     catch (SQLException e) {

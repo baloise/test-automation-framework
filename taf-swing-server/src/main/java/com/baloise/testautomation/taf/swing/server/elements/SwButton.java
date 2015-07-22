@@ -1,15 +1,32 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
+import java.awt.Component;
+
 import javax.swing.JButton;
 
 import org.assertj.swing.fixture.JButtonFixture;
 
+import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
 
-public class SwButton extends ASwElement {
+public class SwButton extends ASwElement implements ISwButton<Component> {
 
   public SwButton(long tid, JButton c) {
     super(tid, c);
+  }
+
+  @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    Command c = getCommand(Command.class, props.getString(paramCommand));
+    switch (c) {
+      case click:
+        props.clear();
+        click();
+        break;
+      default:
+        throw new NotSupportedException("command not implemented: " + c);
+    }
+    return props;
   }
 
   public void click() {
@@ -17,13 +34,13 @@ public class SwButton extends ASwElement {
   }
 
   @Override
-  public JButton getComponent() {
-    return (JButton)component;
+  public void fillProperties() {
+    addProperty("text", getComponent().getText());
   }
 
   @Override
-  public void fillProperties() {
-    addProperty("text", getComponent().getText());
+  public JButton getComponent() {
+    return (JButton)component;
   }
 
   @Override
