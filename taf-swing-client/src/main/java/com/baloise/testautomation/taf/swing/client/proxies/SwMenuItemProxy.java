@@ -8,12 +8,12 @@
  */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 
 /**
  * 
  */
-public class SwButtonProxy extends ASwElementProxy implements ISwButton<Long> {
+public class SwMenuItemProxy extends ASwElementProxy implements ISwMenuItem<Long> {
 
   @Override
   public void click() {
@@ -22,7 +22,7 @@ public class SwButtonProxy extends ASwElementProxy implements ISwButton<Long> {
 
   @Override
   public String getType() {
-    return ISwButton.type;
+    return ISwMenuItem.type;
   }
 
 }

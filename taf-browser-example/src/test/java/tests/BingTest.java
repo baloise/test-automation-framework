@@ -22,9 +22,12 @@ import components.web.bing.Bing;
  * 
  */
 public class BingTest {
-  
-  private Bing bing;
-  
+
+  @AfterClass
+  public static void done() {
+    TBEFinders.ResetFinders();
+  }
+
   @BeforeClass
   public static void init() {
     WebDriver driver = TBEFinders.getFirefox(30);
@@ -32,30 +35,27 @@ public class BingTest {
     driver.get("http://www.bing.com");
   }
 
+  private Bing bing;
+
   private void doBingTest(String id) {
     TafId.SetGlobalMandant("prod");
     bing = new Bing();
     bing.doSearch(id);
   }
-  
+
   @Test
   public void searchGoogle() {
     doBingTest("google");
   }
-  
-  @Test
-  public void searchSwiss() {
-    doBingTest("swiss");
-  }
-  
+
   @Test
   public void searchStarbucks() {
     doBingTest("starbucks");
   }
-  
-  @AfterClass
-  public static void done() {
-    TBEFinders.ResetFinders();
+
+  @Test
+  public void searchSwiss() {
+    doBingTest("swiss");
   }
-  
+
 }

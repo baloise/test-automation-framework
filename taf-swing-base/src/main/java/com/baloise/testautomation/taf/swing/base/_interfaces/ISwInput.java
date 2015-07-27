@@ -15,17 +15,17 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
  */
 public interface ISwInput<R> extends ISwElement<R> {
 
-  public final String paramText = "text";
-  
   public enum Command {
     click, clear, entertext, gettext
   }
 
+  public final String paramText = "text";
+
   public final String type = "input";
-  
-  public void click();
 
   public void clear();
+
+  public void click();
 
   public void enterText(String text);
 

@@ -6,29 +6,22 @@
  @
  ===========================================================================
  */
-package com.baloise.testautomation.taf.browser.elements;
-
-import static org.junit.Assert.assertTrue;
-
-import org.openqa.selenium.WebElement;
+package com.baloise.testautomation.taf.swing.client.elements;
 
 import com.baloise.testautomation.taf.base._base.AElement;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 
 /**
  * 
  */
-public class BrLink extends AElement {
+public class SwMenuItem extends AElement {
 
   @Override
   public void click() {
     find().click();
   }
 
-  // @Override
-  public WebElement find() {
-    WebElement link = (WebElement)brFind();
-    assertTrue("", "a".equalsIgnoreCase(link.getTagName()));
-    return link;
+  public ISwMenuItem<?> find() {
+    return (ISwMenuItem<?>)swFind(ISwMenuItem.type);
   }
-
 }

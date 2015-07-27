@@ -15,12 +15,12 @@ import javax.swing.JCheckBox;
 import org.assertj.swing.fixture.JCheckBoxFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckbox;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
 
 /**
  * 
  */
-public class SwCheckBox extends ASwElement implements ISwCheckbox<Component> {
+public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
 
   /**
    * @param tagName
@@ -42,6 +42,10 @@ public class SwCheckBox extends ASwElement implements ISwCheckbox<Component> {
       case uncheck:
         props.clear();
         uncheck();
+        break;
+      case ischecked:
+        props.clear();
+        props.putObject(paramState, isChecked());
         break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
@@ -71,7 +75,17 @@ public class SwCheckBox extends ASwElement implements ISwCheckbox<Component> {
 
   @Override
   public String getType() {
-    return ISwCheckbox.type;
+    return ISwCheckBox.type;
+  }
+
+  @Override
+  public boolean isChecked() {
+    try {
+      getFixture().requireSelected();
+      return true;
+    }
+    catch (Exception e) {}
+    return false;
   }
 
   @Override

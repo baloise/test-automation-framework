@@ -21,15 +21,16 @@ public class H2DB {
   public static Connection conn() {
     return conn;
   }
-  
+
   public static void init(String dbname) {
     try {
       try {
         if (conn != null) {
           conn.close();
         }
-      } catch (Exception e1) {
-      } finally {
+      }
+      catch (Exception e1) {}
+      finally {
         conn = null;
       }
       Class.forName("org.h2.Driver");
@@ -41,6 +42,5 @@ public class H2DB {
       return;
     }
   }
-  
 
 }

@@ -1,11 +1,7 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.util.logging.Logger;
 
 import org.assertj.swing.fixture.AbstractComponentFixture;
 
@@ -66,34 +62,34 @@ public abstract class ASwElement implements ISwElement<Component> {
 
   public abstract TafProperties basicExecCommand(TafProperties props);
 
-//  protected void click(Component c, int mask) {
-//    if (c != null) {
-//      if (c.getBounds().isEmpty()) {
-//        System.out.println("Can't click --> has no bounds!");
-//        return;
-//      }
-//      waitUntilReady();
-//      Point upperLeft = c.getLocationOnScreen();
-//      Rectangle bounds = new Rectangle(upperLeft.x, upperLeft.y, c.getWidth(), c.getHeight());
-//      Point p = new Point(new Double(bounds.getCenterX()).intValue(), new Double(bounds.getCenterY()).intValue());
-//      click(p, mask);
-//    }
-//  }
-//
-//  protected void click(Point p, int mask) {
-//    while (Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent() != null) {};
-//    try {
-//      System.out.println("Click auf " + p);
-//      Robot robot = new Robot();
-//      robot.mouseMove(p.x, p.y);
-//      robot.mousePress(mask);
-//      robot.delay(100);
-//      robot.mouseRelease(mask);
-//    }
-//    catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//  }
+  // protected void click(Component c, int mask) {
+  // if (c != null) {
+  // if (c.getBounds().isEmpty()) {
+  // System.out.println("Can't click --> has no bounds!");
+  // return;
+  // }
+  // waitUntilReady();
+  // Point upperLeft = c.getLocationOnScreen();
+  // Rectangle bounds = new Rectangle(upperLeft.x, upperLeft.y, c.getWidth(), c.getHeight());
+  // Point p = new Point(new Double(bounds.getCenterX()).intValue(), new Double(bounds.getCenterY()).intValue());
+  // click(p, mask);
+  // }
+  // }
+  //
+  // protected void click(Point p, int mask) {
+  // while (Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent() != null) {};
+  // try {
+  // System.out.println("Click auf " + p);
+  // Robot robot = new Robot();
+  // robot.mouseMove(p.x, p.y);
+  // robot.mousePress(mask);
+  // robot.delay(100);
+  // robot.mouseRelease(mask);
+  // }
+  // catch (Exception e) {
+  // e.printStackTrace();
+  // }
+  // }
 
   public TafProperties execCommand(TafProperties props) {
     System.out.println("ASwElement --> execCommand");
@@ -192,24 +188,24 @@ public abstract class ASwElement implements ISwElement<Component> {
     return "tagName=" + getType() + " " + component.toString();
   }
 
-//  public void waitUntilReady() {
-//    while (Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent() != null) {}
-//    ;
-//    long time = System.currentTimeMillis();
-//    boolean isReady = false;
-//    while (!isReady) {
-//      try {
-//        isReady = getComponent().isShowing() && getComponent().isEnabled() && getComponent().isFocusable();
-//        if (!isReady) {
-//          System.out.println("Wait --> element not yet enabled");
-//        }
-//      }
-//      catch (Exception e) {}
-//      if (System.currentTimeMillis() > time + 1000 * 10) {
-//        // TODO Throw an exception --> Component is NOT ready for user input
-//        break;
-//      }
-//    }
-//  }
+  // public void waitUntilReady() {
+  // while (Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent() != null) {}
+  // ;
+  // long time = System.currentTimeMillis();
+  // boolean isReady = false;
+  // while (!isReady) {
+  // try {
+  // isReady = getComponent().isShowing() && getComponent().isEnabled() && getComponent().isFocusable();
+  // if (!isReady) {
+  // System.out.println("Wait --> element not yet enabled");
+  // }
+  // }
+  // catch (Exception e) {}
+  // if (System.currentTimeMillis() > time + 1000 * 10) {
+  // // TODO Throw an exception --> Component is NOT ready for user input
+  // break;
+  // }
+  // }
+  // }
 
 }

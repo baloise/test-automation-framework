@@ -26,7 +26,7 @@ public abstract class ATBEComponent extends ABase {
     }
     assumeTrue("Umgebung passt nicht --> Testfall wird übersprungen", canRun);
   }
-  
+
   public void clickText(String text) {
     getBrowserFinder().getDriver().findElement(By.linkText(text)).click();
   }
@@ -34,12 +34,13 @@ public abstract class ATBEComponent extends ABase {
   public void clickText(String text, int index) {
     try {
       getBrowserFinder().getDriver().findElements(By.linkText(text)).get(index).click();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       fail("Element mit index = " + index + " nicht gefunden/geklickt");
     }
   }
 
-//  @Override
+  // @Override
   public WebElement find() {
     return getBrowserFinder().find(by);
   }

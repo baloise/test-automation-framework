@@ -27,6 +27,11 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
   }
 
   @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    throw new NotSupportedException("no commands implemented");
+  }
+
+  @Override
   public void fillProperties() {
     addProperty("selectedIndex", getComponent().getSelectedIndex());
     addProperty("tabCount", getComponent().getTabCount());
@@ -39,18 +44,13 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
   }
 
   @Override
-  public String getType() {
-    return ISwTabbedPane.type;
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    throw new NotSupportedException("no commands implemented");
-  }
-
-  @Override
   public JTabbedPaneFixture getFixture() {
     return new JTabbedPaneFixture(getRobot(), getComponent());
+  }
+
+  @Override
+  public String getType() {
+    return ISwTabbedPane.type;
   }
 
 }

@@ -17,14 +17,6 @@ import java.sql.SQLException;
  */
 public class H2Table {
 
-  protected static Connection conn() {
-    return H2DB.conn();
-  }
-
-  protected static void error(String s, Exception e) {
-    System.out.println("[ERROR] " + s);
-  }
-
   protected static void closePreparedStatement(PreparedStatement ps) {
     if (ps != null) {
       try {
@@ -36,7 +28,12 @@ public class H2Table {
     }
   }
 
+  protected static Connection conn() {
+    return H2DB.conn();
+  }
 
-
+  protected static void error(String s, Exception e) {
+    System.out.println("[ERROR] " + s);
+  }
 
 }

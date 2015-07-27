@@ -30,6 +30,11 @@ public class SwTableColumn extends ASwElement implements ISwTableColumn<Componen
   }
 
   @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    throw new NotSupportedException("no commands implemented");
+  }
+
+  @Override
   public void fillProperties() {}
 
   @Override
@@ -38,18 +43,13 @@ public class SwTableColumn extends ASwElement implements ISwTableColumn<Componen
   }
 
   @Override
-  public String getType() {
-    return ISwTableColumn.type;
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    throw new NotSupportedException("no commands implemented");
-  }
-
-  @Override
   public JTableHeaderFixture getFixture() {
     return new JTableHeaderFixture(getRobot(), getComponent().getTableHeader());
+  }
+
+  @Override
+  public String getType() {
+    return ISwTableColumn.type;
   }
 
 }

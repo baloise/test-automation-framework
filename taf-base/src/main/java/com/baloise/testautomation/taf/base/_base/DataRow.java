@@ -24,7 +24,7 @@ public class DataRow implements IDataRow {
 
   @Override
   public IType get(String columnName) {
-    return data.get(columnName.toLowerCase());
+    return data.get(columnName.toLowerCase().trim());
   }
 
   @Override
@@ -39,7 +39,7 @@ public class DataRow implements IDataRow {
 
   @Override
   public void set(String columnName, IType data) {
-    this.data.put(columnName.toLowerCase(), data);
+    this.data.put(columnName.toLowerCase().trim(), data);
   }
 
   @Override

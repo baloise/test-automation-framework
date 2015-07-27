@@ -13,17 +13,20 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 /**
  * 
  */
-public interface ISwCheckbox<R> extends ISwElement<R> {
+public interface ISwCheckBox<R> extends ISwElement<R> {
 
   public enum Command {
-    check, uncheck
+    check, uncheck, ischecked
   }
 
-  public final String type = "checkbox";
-  
-  public void check();
-  
-  public void uncheck();
+  public static String paramState = "state";
 
+  public final String type = "checkbox";
+
+  public void check();
+
+  public boolean isChecked();
+
+  public void uncheck();
 
 }

@@ -8,9 +8,9 @@
  */
 package com.baloise.testautomation.taf.base._base;
 
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.lang.annotation.Annotation;
 
@@ -37,10 +37,10 @@ public abstract class AElement implements IElement {
     return we;
   }
 
-//  public Region roFind() {
-//    // TODO
-//    return null;
-//  }
+  // public Region roFind() {
+  // // TODO
+  // return null;
+  // }
 
   @Override
   public void setBy(Annotation by) {
@@ -71,7 +71,7 @@ public abstract class AElement implements IElement {
     // TODO --> Hier wurde noch der Finder auf das Element weitergegeben. Muss das auch für element
     // gemacht werden?
     // new SwingElement(component.getSwingFinder(), l)
-    
+
     try {
       ISwElement<?> swElement = (ISwElement<?>)element;
       assertEquals("wrong type", type.toLowerCase(), swElement.getType().toLowerCase());
@@ -79,7 +79,7 @@ public abstract class AElement implements IElement {
     catch (Exception e) {
       fail("swFind --> wrong class: should be instance of ISwElement, but is " + element.getClass());
     }
-    
+
     return element;
   }
 

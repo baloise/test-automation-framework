@@ -591,8 +591,7 @@ public abstract class ABase implements IComponent {
   public void validate() {
     Field[] fields = getClass().getDeclaredFields();
     for (Field f : fields) {
-      if (f.isAnnotationPresent(Check.class) || f.isAnnotationPresent(Fill.class)
-          || f.isAnnotationPresent(Data.class)) {
+      if (f.isAnnotationPresent(Check.class) || f.isAnnotationPresent(Fill.class) || f.isAnnotationPresent(Data.class)) {
         if (!Modifier.isPublic(f.getModifiers())) {
           fail("Fill, Check or Data-annotated field must be declared as public: " + f.getName() + " --> " + getClass());
         }

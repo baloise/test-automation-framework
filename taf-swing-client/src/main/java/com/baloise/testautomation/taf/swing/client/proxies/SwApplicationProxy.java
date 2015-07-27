@@ -24,7 +24,10 @@ import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
 import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
@@ -42,65 +45,6 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     this.id = id;
   }
 
-  public Long getReference() {
-    return id;
-  }
-
-  public String getType() {
-    return ISwApplication.type;
-  }
-
-  @Override
-  public void startJNLPInstrumentation(String url) {
-    deleteFor(getReference().intValue());
-    TafProperties props = new TafProperties();
-    props.putObject(paramId, getReference());
-    props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
-    props.putObject(paramType, ISwApplication.type.toString());
-    startJNLP(url);
-    startCommandAndWait(0, props);
-    props = SwCommandProperties.getTafPropertiesForId(0);
-    if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
-      Assert.fail("application is not instrumented: " + getReference());
-    }
-    deleteFor(0);
-  }
-
-  @Override
-  public void startJNLPInstrumentationWithSpy(String url, String filename) {
-    deleteFor(getReference().intValue());
-    TafProperties props = new TafProperties();
-    props.putObject(paramId, getReference());
-    props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
-    props.putObject(paramType, ISwApplication.type.toString());
-    if (filename != null) {
-      if (!filename.isEmpty()) {
-        props.putObject(paramSpy, true);
-        props.putObject(paramPath, filename);
-      }
-    }
-    startJNLP(url);
-    startCommandAndWait(0, props);
-    props = SwCommandProperties.getTafPropertiesForId(0);
-    if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
-      Assert.fail("application is not instrumented: " + getReference());
-    }
-    deleteFor(0);
-  }
-  
-  @Override
-  public ISwElement<Long> find(Annotation annotation) {
-    return find(null, annotation);
-  }
-
-  @Override
-  public ISwElement<Long> find(ISwElement<Long> root, Annotation annotation) {
-    if (root == null) {
-      return basicFind(null, annotation);
-    }
-    return basicFind((Long)root.getReference(), annotation);
-  }
-
   public ISwElement<Long> basicFind(Long root, Annotation annotation) {
     if (annotation instanceof ByLeftLabel) {
       return findByLeftLabel(root, (ByLeftLabel)annotation);
@@ -113,6 +57,43 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     }
     fail("annotation not yet supported: " + annotation.annotationType());
     return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public ISwElement<Long> createElement(String type) {
+    Class<?> c = supportedElements().get(type.toLowerCase());
+    Assert.assertNotNull("type not supported: " + type, c);
+    ISwElement<Long> element = null;
+    try {
+      element = (ISwElement<Long>)c.newInstance();
+      element.setApplication(this);
+    }
+    catch (Exception e) {}
+    return element;
+  }
+
+  private void deleteFor(int id) {
+    SwCommandProperties.deleteCommandPropertiesForId(id);
+    SwCommand.deleteCommandsForId(id);
+  }
+
+  @Override
+  public TafProperties execCommand(TafProperties props) {
+    startCommandAndWait(getReference().intValue(), props);
+    return SwCommandProperties.getTafPropertiesForId(getReference().intValue());
+  }
+
+  @Override
+  public ISwElement<Long> find(Annotation annotation) {
+    return find(null, annotation);
+  }
+
+  @Override
+  public ISwElement<Long> find(ISwElement<Long> root, Annotation annotation) {
+    if (root == null) {
+      return basicFind(null, annotation);
+    }
+    return basicFind((Long)root.getReference(), annotation);
   }
 
   public ISwElement<Long> findByLeftLabel(Long root, ByLeftLabel annotation) {
@@ -147,11 +128,13 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramCommand, Command.findelementbyxpath.toString());
     props.putObject(paramType, ISwApplication.type);
     props = execCommand(props);
-    ISwElement<Long> element = createElement(props.getString(paramType));
-    if (element != null) {
-      element.setReference(props.getLong(paramId));
+    for (String key : props.keySet()) {
+      ISwElement<Long> element = getElement(props, key);
+      if (element != null) {
+        return element;
+      }
     }
-    return element;
+    return null;
   }
 
   @Override
@@ -164,36 +147,45 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramType, ISwApplication.type);
     props = execCommand(props);
     for (String key : props.keySet()) {
-      ISwElement<Long> element = createElement(props.getString(key));
+      ISwElement<Long> element = getElement(props, key);
       if (element != null) {
-        try {
-          element.setReference(new Long(Long.parseLong(key)));
-          result.add(element);
-        }
-        catch (Exception e) {}
+        result.add(element);
       }
     }
     return result;
   }
 
-  public Hashtable<String, Class<?>> supportedElements() {
-    Hashtable<String, Class<?>> supportedElements = new Hashtable<>();
-    supportedElements.put(ISwInput.type.toLowerCase(), SwInputProxy.class);
-    supportedElements.put(ISwButton.type.toLowerCase(), SwButtonProxy.class);
-    return supportedElements;
+  private ISwElement<Long> getElement(TafProperties props, String key) {
+    ISwElement<Long> element = createElement(props.getString(key));
+    if (element != null) {
+      try {
+        element.setReference(new Long(Long.parseLong(key)));
+        return element;
+      }
+      catch (Exception e) {}
+    }
+    return null;
   }
 
-  @SuppressWarnings("unchecked")
-  public ISwElement<Long> createElement(String type) {
-    Class<?> c = supportedElements().get(type.toLowerCase());
-    Assert.assertNotNull("type not supported: " + type, c);
-    ISwElement<Long> element = null;
-    try {
-      element = (ISwElement<Long>)c.newInstance();
-      element.setApplication(this);
-    }
-    catch (Exception e) {}
-    return element;
+  public Long getReference() {
+    return id;
+  }
+
+  public String getType() {
+    return ISwApplication.type;
+  }
+
+  private void startCommand(int id, TafProperties props) {
+    deleteFor(id);
+    SwCommand c = new SwCommand(id);
+    c.insert();
+    SwCommandProperties.insertForId(id, props);
+    c.setToReady();
+  }
+
+  private void startCommandAndWait(int id, TafProperties props) {
+    startCommand(id, props);
+    waitUntilDone(id);
   }
 
   public TafProperties startJNLP(String url) {
@@ -211,36 +203,37 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   }
 
   @Override
-  public TafProperties execCommand(TafProperties props) {
-    startCommandAndWait(getReference().intValue(), props);
-    return SwCommandProperties.getTafPropertiesForId(getReference().intValue());
-  }
-
-  private void deleteFor(int id) {
-    SwCommandProperties.deleteCommandPropertiesForId(id);
-    SwCommand.deleteCommandsForId(id);
-  }
-
-  private void startCommandAndWait(int id, TafProperties props) {
-    startCommand(id, props);
-    waitUntilDone(id);
-  }
-
-  private void startCommand(int id, TafProperties props) {
-    deleteFor(id);
-    SwCommand c = new SwCommand(id);
-    c.insert();
-    SwCommandProperties.insertForId(id, props);
-    c.setToReady();
-  }
-
-  public void waitUntilDone(int id) {
-    long time = System.currentTimeMillis();
-    while (!SwCommand.isAllDone(id)) {
-      if (System.currentTimeMillis() > time + 1000 * timeoutInSeconds) {
-        throw new SwTimeout();
-      }
+  public void startJNLPInstrumentation(String url) {
+    deleteFor(getReference().intValue());
+    TafProperties props = new TafProperties();
+    props.putObject(paramId, getReference());
+    props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
+    props.putObject(paramType, ISwApplication.type.toString());
+    startJNLP(url);
+    startCommandAndWait(0, props);
+    props = SwCommandProperties.getTafPropertiesForId(0);
+    if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
+      Assert.fail("application is not instrumented: " + getReference());
     }
+    deleteFor(0);
+  }
+
+  @Override
+  public void startJNLPInstrumentationWithSpy(String url, String filename) {
+    deleteFor(getReference().intValue());
+    TafProperties props = new TafProperties();
+    props.putObject(paramId, getReference());
+    props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
+    props.putObject(paramType, ISwApplication.type.toString());
+    props.putObject(paramSpy, true);
+    props.putObject(paramPath, filename);
+    startJNLP(url);
+    startCommandAndWait(0, props);
+    props = SwCommandProperties.getTafPropertiesForId(0);
+    if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
+      Assert.fail("application is not instrumented: " + getReference());
+    }
+    deleteFor(0);
   }
 
   @Override
@@ -250,6 +243,25 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramType, ISwApplication.type);
     props.putObject(paramPath, path);
     execCommand(props);
+  }
+
+  public Hashtable<String, Class<?>> supportedElements() {
+    Hashtable<String, Class<?>> supportedElements = new Hashtable<>();
+    supportedElements.put(ISwInput.type.toLowerCase(), SwInputProxy.class);
+    supportedElements.put(ISwButton.type.toLowerCase(), SwButtonProxy.class);
+    supportedElements.put(ISwComboBox.type.toLowerCase(), SwComboBoxProxy.class);
+    supportedElements.put(ISwTable.type.toLowerCase(), SwTableProxy.class);
+    supportedElements.put(ISwMenuItem.type.toLowerCase(), SwMenuItemProxy.class);
+    return supportedElements;
+  }
+
+  public void waitUntilDone(int id) {
+    long time = System.currentTimeMillis();
+    while (!SwCommand.isAllDone(id)) {
+      if (System.currentTimeMillis() > time + 1000 * timeoutInSeconds) {
+        throw new SwTimeout();
+      }
+    }
   }
 
 }

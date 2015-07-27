@@ -19,31 +19,8 @@ import java.util.Vector;
  */
 public class SwCommand extends H2Table {
 
-  public SwCommand(int id) {
-    this(id, Status.preparing.ordinal());
-  }
-
-  public SwCommand(int id, int status) {
-    // TODO 
-    super();
-    this.id = id;
-    this.status = status;
-  }
-
-//  public enum Command {
-//    notsupported, startinstrumentation, execute
-//  }
-
   public enum Status {
     preparing, ready, working, done
-  }
-
-//  public String command = "";
-  public int status = 0;
-  public int id = 0;
-
-  public static List<SwCommand> getReadyCommandsForId(int id) {
-    return getForId(id, Status.ready);
   }
 
   public static void deleteCommandsForId(int id) {
@@ -61,48 +38,17 @@ public class SwCommand extends H2Table {
     }
   }
 
-  public static boolean isAllDone(int id) {
-    return getForId(id, Status.done).size() > 0;
-  }
-
-//  public static boolean isAllDone(int id, String type) {
-//    return getForId(id, type, Status.done).size() > 0;
-//  }
-
-//  private static List<SwCommand> getForId(int id, String type, Status status) {
-//    Vector<SwCommand> result = new Vector<SwCommand>();
-//    ResultSet rs = null;
-//    PreparedStatement ps = null;
-//    try {
-//      ps = conn().prepareStatement(
-//          "select status from commands where id = " + id + " and status = " + status.ordinal()
-//              + " and command = '" + type + "'");
-//      rs = ps.executeQuery();
-//      // System.out.println(ps);
-//      if (rs != null) {
-//        while (rs.next()) {
-//          SwCommand command = new SwCommand(id, rs.getInt(1));
-//          result.add(command);
-//        }
-//      }
-//    }
-//    catch (SQLException e) {
-//      error("error loading commands", e);
-//      e.printStackTrace();
-//    }
-//    finally {
-//      closePreparedStatement(ps);
-//    }
-//    return result;
-//  }
+  // public enum Command {
+  // notsupported, startinstrumentation, execute
+  // }
 
   private static List<SwCommand> getForId(int id, Status status) {
     Vector<SwCommand> result = new Vector<SwCommand>();
     ResultSet rs = null;
     PreparedStatement ps = null;
     try {
-      ps = conn().prepareStatement(
-          "select status from commands where id = " + id + " and status = " + status.ordinal());
+      ps = conn()
+          .prepareStatement("select status from commands where id = " + id + " and status = " + status.ordinal());
       rs = ps.executeQuery();
       // System.out.println(ps);
       if (rs != null) {
@@ -122,42 +68,68 @@ public class SwCommand extends H2Table {
     return result;
   }
 
-//  public Command asCommand() {
-//    try {
-//      return Command.valueOf(command.toLowerCase());
-//    }
-//    catch (Exception e) {
-//      return null;
-//    }
-//  }
-
-  private void updateFromTo(Status from, Status to) {
-    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = " + id + " AND status = " + from.ordinal();
-    PreparedStatement ps = null;
-    try {
-      ps = conn().prepareStatement(updateSQL);
-      ps.setInt(1, to.ordinal());
-      ps.execute();
-    }
-    catch (SQLException e) {
-      error("error updating status", e);
-    }
-    finally {
-      closePreparedStatement(ps);
-    }
+  public static List<SwCommand> getReadyCommandsForId(int id) {
+    return getForId(id, Status.ready);
+  }
+  public static boolean isAllDone(int id) {
+    return getForId(id, Status.done).size() > 0;
   }
 
-  public void setToWorking() {
-    updateFromTo(Status.ready, Status.working);
+  // public String command = "";
+  public int status = 0;
+
+  public int id = 0;
+
+  public SwCommand(int id) {
+    this(id, Status.preparing.ordinal());
   }
 
-  public void setToReady() {
-    updateFromTo(Status.preparing, Status.ready);
+  // public static boolean isAllDone(int id, String type) {
+  // return getForId(id, type, Status.done).size() > 0;
+  // }
+
+  // private static List<SwCommand> getForId(int id, String type, Status status) {
+  // Vector<SwCommand> result = new Vector<SwCommand>();
+  // ResultSet rs = null;
+  // PreparedStatement ps = null;
+  // try {
+  // ps = conn().prepareStatement(
+  // "select status from commands where id = " + id + " and status = " + status.ordinal()
+  // + " and command = '" + type + "'");
+  // rs = ps.executeQuery();
+  // // System.out.println(ps);
+  // if (rs != null) {
+  // while (rs.next()) {
+  // SwCommand command = new SwCommand(id, rs.getInt(1));
+  // result.add(command);
+  // }
+  // }
+  // }
+  // catch (SQLException e) {
+  // error("error loading commands", e);
+  // e.printStackTrace();
+  // }
+  // finally {
+  // closePreparedStatement(ps);
+  // }
+  // return result;
+  // }
+
+  public SwCommand(int id, int status) {
+    // TODO
+    super();
+    this.id = id;
+    this.status = status;
   }
 
-  public void setToDone() {
-    updateFromTo(Status.working, Status.done);
-  }
+  // public Command asCommand() {
+  // try {
+  // return Command.valueOf(command.toLowerCase());
+  // }
+  // catch (Exception e) {
+  // return null;
+  // }
+  // }
 
   /**
    * 
@@ -173,6 +145,34 @@ public class SwCommand extends H2Table {
     }
     catch (SQLException e) {
       error("error inserting command", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+
+  public void setToDone() {
+    updateFromTo(Status.working, Status.done);
+  }
+
+  public void setToReady() {
+    updateFromTo(Status.preparing, Status.ready);
+  }
+
+  public void setToWorking() {
+    updateFromTo(Status.ready, Status.working);
+  }
+
+  private void updateFromTo(Status from, Status to) {
+    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = " + id + " AND status = " + from.ordinal();
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement(updateSQL);
+      ps.setInt(1, to.ordinal());
+      ps.execute();
+    }
+    catch (SQLException e) {
+      error("error updating status", e);
     }
     finally {
       closePreparedStatement(ps);

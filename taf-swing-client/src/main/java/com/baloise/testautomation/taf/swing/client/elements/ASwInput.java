@@ -10,8 +10,6 @@ package com.baloise.testautomation.taf.swing.client.elements;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Assert;
-
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 
@@ -45,7 +43,7 @@ public abstract class ASwInput extends AInput {
     }
   }
 
-//  @Override
+  // @Override
   public ISwInput<?> find() {
     return (ISwInput<?>)swFind(ISwInput.type);
   }

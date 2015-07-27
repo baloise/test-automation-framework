@@ -26,6 +26,11 @@ public class SwFrame extends ASwElement implements ISwFrame<Component> {
   }
 
   @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    return new TafProperties();
+  }
+
+  @Override
   public void fillProperties() {
     addProperty("title", getComponent().getTitle());
   }
@@ -36,18 +41,13 @@ public class SwFrame extends ASwElement implements ISwFrame<Component> {
   }
 
   @Override
-  public String getType() {
-    return ISwFrame.type;
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    return new TafProperties();
-  }
-
-  @Override
   public FrameFixture getFixture() {
     return new FrameFixture(getRobot(), getComponent());
+  }
+
+  @Override
+  public String getType() {
+    return ISwFrame.type;
   }
 
 }

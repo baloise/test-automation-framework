@@ -9,8 +9,6 @@
 package components.web.bing;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.Test;
-
 import base.ATBEComponent;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
@@ -18,7 +16,6 @@ import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.DataProvider;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.DataProviderType;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Fill;
-import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.browser.elements.BrButton;
 import com.baloise.testautomation.taf.browser.elements.BrStringInput;

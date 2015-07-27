@@ -12,10 +12,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.Hashtable;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -53,6 +54,7 @@ import com.baloise.testautomation.taf.swing.server.elements.ASwElement;
 import com.baloise.testautomation.taf.swing.server.elements.SwButton;
 import com.baloise.testautomation.taf.swing.server.elements.SwCell;
 import com.baloise.testautomation.taf.swing.server.elements.SwCheckBox;
+import com.baloise.testautomation.taf.swing.server.elements.SwComboBox;
 import com.baloise.testautomation.taf.swing.server.elements.SwFrame;
 import com.baloise.testautomation.taf.swing.server.elements.SwInput;
 import com.baloise.testautomation.taf.swing.server.elements.SwInternalFrame;
@@ -77,6 +79,8 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private int timeoutInSeconds = 60;
 
+  StringBuilder xml = null;
+
   public void allCellsToXML(StringBuilder xml, JTable table) {
     for (int c = 0; c < table.getColumnCount(); c++) {
       xml.append("<header tid = \"" + counter + "\" col = \"" + c + "\" value = \""
@@ -95,7 +99,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   public String allComponentsToXML(Component c) {
-    StringBuilder xml = new StringBuilder();
+    xml = new StringBuilder();
     components = new Hashtable<Long, ISwElement<Component>>();
     counter = 0;
     allComponentsToXML(xml, c);
@@ -389,6 +393,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     // if (c instanceof JMenu) {
     // return "menu";
     // }
+    if (c instanceof JComboBox) {
+      return new SwComboBox(tid, (JComboBox)c);
+    }
     if (c instanceof JMenuItem) {
       return new SwMenuItem(tid, (JMenuItem)c);
     }
@@ -434,19 +441,30 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   @Override
   public void startJNLPInstrumentationWithSpy(String url, String filename) {}
 
-  private String toFullXML() {
-    setRoot();
-    return allComponentsToXML(root);
-  }
-
-  private String toMappedXML() {
-    return toFullXML();
-  }
-
-  @Override
-  public void storeHierarchy(String path) {
-    String xml = toFullXML();
-    storeFormatted(xml, path);
+  public String storeFormatted(Document xml, String path) throws Exception {
+    TransformerFactory tf = TransformerFactory.newInstance();
+    tf.setAttribute("indent-number", 2);
+    Transformer t = tf.newTransformer();
+    t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+    t.setOutputProperty(OutputKeys.INDENT, "yes");
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8");
+    t.transform(new DOMSource(xml), new StreamResult(osw));
+    String xmlAsString = out.toString().trim();
+    if (!xmlAsString.isEmpty()) {
+      if (path == null) {
+        System.out.println(xmlAsString);
+      }
+      else {
+        try {
+          FileWriter fw = new FileWriter(path);
+          fw.write(xmlAsString);
+          fw.close();
+        }
+        catch (Exception e) {}
+      }
+    }
+    return xmlAsString;
   }
 
   public String storeFormatted(String xml, String path) {
@@ -466,28 +484,25 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     return "";
   }
 
-  public String storeFormatted(Document xml, String path) throws Exception {
-    Transformer tf = TransformerFactory.newInstance().newTransformer();
-    tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-    tf.setOutputProperty(OutputKeys.INDENT, "yes");
-    tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-    Writer out = new StringWriter();
-    tf.transform(new DOMSource(xml), new StreamResult(out));
-    String xmlAsString = out.toString().trim();
-    if (!xmlAsString.isEmpty()) {
-      if (path == null) {
-        System.out.println(xmlAsString);
-      }
-      else {
-        try {
-          FileWriter fw = new FileWriter(path);
-          fw.write(xmlAsString);
-          fw.close();
-        }
-        catch (Exception e) {}
-      }
+  @Override
+  public void storeHierarchy(String path) {
+    String xml = toFullXML();
+    storeFormatted(xml, path);
+  }
+
+  public void storeLastHierarchy(String path) {
+    if (xml != null) {
+      storeFormatted(xml.toString(), path);
     }
-    return xmlAsString;
+  }
+
+  private String toFullXML() {
+    setRoot();
+    return allComponentsToXML(root);
+  }
+
+  private String toMappedXML() {
+    return toFullXML();
   }
 
 }

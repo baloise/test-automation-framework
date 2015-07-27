@@ -8,6 +8,14 @@
  */
 package com.baloise.testautomation.taf.swing.server.main;
 
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramCommand;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramId;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramMessage;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramPath;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramSpy;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramStatus;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramWatch;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
@@ -17,7 +25,6 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
-import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.*;
 
 /**
  * 
@@ -144,7 +151,7 @@ public class SwStarter {
       pollingActive = true;
       try {
         if (spy) {
-          swApplication.storeHierarchy(spyFileName);
+          swApplication.storeLastHierarchy(spyFileName);
         }
         Thread.sleep(500);
       }

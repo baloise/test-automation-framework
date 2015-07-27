@@ -10,61 +10,48 @@ package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
 
-import javax.swing.JTextField;
+import javax.swing.JComboBox;
 
-import org.assertj.swing.fixture.JTextComponentFixture;
+import org.assertj.swing.fixture.JComboBoxFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 import com.baloise.testautomation.taf.swing.server.utils.LabelFinder;
 
 /**
  * 
  */
-public class SwInput extends ASwElement implements ISwInput<Component> {
+public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
 
-  public SwInput(long tid, JTextField c) {
-    super(tid, c);
+  public SwComboBox(long tid, JComboBox component) {
+    super(tid, component);
   }
 
   @Override
   public TafProperties basicExecCommand(TafProperties props) {
-    System.out.println("SwInput --> basicExecCommand");
     Command c = getCommand(Command.class, props.getString(paramCommand));
-    System.out.println(c);
     switch (c) {
       case click:
         props.clear();
         click();
         break;
-      case clear:
-        props.clear();
-        clear();
-        break;
-      case entertext:
-        enterText(props.getString(paramText));
+      case selectitem:
+        selectItem(props.getString(paramText));
         props.clear();
         break;
-      case gettext:
+      case getselecteditem:
         props.clear();
-        props.putObject(paramText, getText());
+        props.putObject(paramText, getSelectedItem());
         break;
       default:
-        throw new IllegalArgumentException("command valid but not implemented yet: " + c);
+        throw new NotSupportedException("command not implemented: " + c);
     }
     return props;
   }
 
-  public void clear() {
-    getFixture().deleteText();
-  }
-
+  @Override
   public void click() {
     getFixture().click();
-  }
-
-  public void enterText(String text) {
-    getFixture().enterText(text);
   }
 
   @Override
@@ -76,22 +63,33 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
   }
 
   @Override
-  public JTextField getComponent() {
-    return (JTextField)component;
+  public JComboBox getComponent() {
+    return (JComboBox)component;
   }
 
   @Override
-  public JTextComponentFixture getFixture() {
-    return new JTextComponentFixture(getRobot(), getComponent());
+  public JComboBoxFixture getFixture() {
+    return new JComboBoxFixture(getRobot(), getComponent());
   }
 
-  public String getText() {
-    return getComponent().getText();
+  @Override
+  public String getSelectedItem() {
+    return getFixture().selectedItem();
   }
 
   @Override
   public String getType() {
-    return ISwInput.type;
+    return ISwComboBox.type;
+  }
+
+  @Override
+  public void selectIndex(int index) {
+    getFixture().selectItem(index);
+  }
+
+  @Override
+  public void selectItem(String item) {
+    getFixture().selectItem(item);
   }
 
 }

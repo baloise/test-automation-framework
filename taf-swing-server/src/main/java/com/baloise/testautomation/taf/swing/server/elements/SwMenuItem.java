@@ -12,7 +12,6 @@ import java.awt.Component;
 
 import javax.swing.JMenuItem;
 
-import org.assertj.swing.fixture.AbstractComponentFixture;
 import org.assertj.swing.fixture.JMenuItemFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -32,12 +31,24 @@ public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
     super(tid, component);
   }
 
+  @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    Command c = getCommand(Command.class, props.getString(paramCommand));
+    switch (c) {
+      case click:
+        props.clear();
+        click();
+        break;
+      default:
+        throw new IllegalArgumentException("command not implemented: " + c);
+    }
+    return props;
+  }
+
   public void clear() {}
 
   public void click() {
-    JMenuItemFixture mif = new JMenuItemFixture(getRobot(), getComponent());
-    System.out.println("Try to click on: " + mif.toString());
-    mif.click();
+    getFixture().click();
   }
 
   @Override
@@ -51,18 +62,13 @@ public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
   }
 
   @Override
-  public String getType() {
-    return ISwMenuItem.type;
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    return new TafProperties();
-  }
-
-  @Override
   public JMenuItemFixture getFixture() {
     return new JMenuItemFixture(getRobot(), getComponent());
+  }
+
+  @Override
+  public String getType() {
+    return ISwMenuItem.type;
   }
 
 }

@@ -12,7 +12,6 @@ import java.awt.Component;
 
 import javax.swing.JInternalFrame;
 
-import org.assertj.swing.fixture.AbstractComponentFixture;
 import org.assertj.swing.fixture.JInternalFrameFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -33,6 +32,11 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
   }
 
   @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    return new TafProperties();
+  }
+
+  @Override
   public void fillProperties() {
     addProperty("title", getComponent().getTitle());
   }
@@ -46,18 +50,13 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
   }
 
   @Override
-  public String getType() {
-    return "internalframe";
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    return new TafProperties();
-  }
-
-  @Override
   public JInternalFrameFixture getFixture() {
     return new JInternalFrameFixture(getRobot(), getComponent());
+  }
+
+  @Override
+  public String getType() {
+    return "internalframe";
   }
 
 }

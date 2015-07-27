@@ -27,43 +27,6 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
     super(tid, c);
   }
 
-  @Override
-  public void fillProperties() {}
-
-  @Override
-  public JTable getComponent() {
-    return (JTable)component;
-  }
-
-  @Override
-  public String getType() {
-    return ISwTable.type;
-  }
-
-  @Override
-  public void clickCell(int row, int col) {
-    TableCell cell = TableCell.row(row).column(col);
-    getFixture().cell(cell).click();
-  }
-
-  @Override
-  public void clickCell(String text) {
-    getFixture().cell(text).click();
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    Command c = getCommand(Command.class, props.getString(paramCommand));
-    switch (c) {
-      case clickcell:
-        basicClickCell(props);
-        break;
-      default:
-        throw new IllegalArgumentException("command not implemented: " + c);
-    }
-    return props;
-  }
-
   public void basicClickCell(TafProperties props) {
     if (props.getString(paramText) != null) {
       clickCell(props.getString(paramText));
@@ -78,9 +41,127 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
     throw new NotSupportedException("clickCell contains unknown parameters");
   }
 
+  public void basicDoubleClickCell(TafProperties props) {
+    if (props.getString(paramText) != null) {
+      doubleClickCell(props.getString(paramText));
+      props.clear();
+      return;
+    }
+    if (props.getLong(paramRow) >= 0) {
+      doubleClickCell(props.getLong(paramRow).intValue(), props.getLong(paramCol).intValue());
+      props.clear();
+      return;
+    }
+    throw new NotSupportedException("doubleClickCell contains unknown parameters");
+  }
+
+  @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    Command c = getCommand(Command.class, props.getString(paramCommand));
+    switch (c) {
+      case clickcell:
+        basicClickCell(props);
+        break;
+      case rightclickcell:
+        basicRightClickCell(props);
+        break;
+      case doubleclickcell:
+        basicDoubleClickCell(props);
+        break;
+      case getcelltext:
+        String text = getCellText(props.getLong(paramRow).intValue(), props.getLong(paramCol).intValue());
+        props.clear();
+        props.putObject(paramText, text);
+        break;
+      default:
+        throw new IllegalArgumentException("command not implemented: " + c);
+    }
+    return props;
+  }
+
+  public void basicRightClickCell(TafProperties props) {
+    if (props.getString(paramText) != null) {
+      rightClickCell(props.getString(paramText));
+      props.clear();
+      return;
+    }
+    if (props.getLong(paramRow) >= 0) {
+      rightClickCell(props.getLong(paramRow).intValue(), props.getLong(paramCol).intValue());
+      props.clear();
+      return;
+    }
+    throw new NotSupportedException("rightClickCell contains unknown parameters");
+  }
+
+  @Override
+  public void clickCell(int row, int col) {
+    TableCell cell = TableCell.row(row).column(col);
+    getFixture().cell(cell).click();
+  }
+
+  @Override
+  public void clickCell(String text) {
+    getFixture().cell(text).click();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void doubleClickCell(int row, int col) {
+    TableCell cell = TableCell.row(row).column(col);
+    getFixture().cell(cell).doubleClick();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void doubleClickCell(String text) {
+    getFixture().cell(text).doubleClick();
+  }
+
+  @Override
+  public void fillProperties() {}
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getCellText(int row, int col) {
+    return null;
+  }
+
+  @Override
+  public JTable getComponent() {
+    return (JTable)component;
+  }
+
   @Override
   public JTableFixture getFixture() {
     return new JTableFixture(getRobot(), getComponent());
+  }
+
+  @Override
+  public String getType() {
+    return ISwTable.type;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void rightClickCell(int row, int col) {
+    TableCell cell = TableCell.row(row).column(col);
+    getFixture().cell(cell).rightClick();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void rightClickCell(String text) {
+    getFixture().cell(text).rightClick();
   }
 
 }

@@ -20,18 +20,8 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 public abstract class ASwElementProxy implements ISwElement<Long> {
 
   protected ISwApplication<?> application = null;
-  
-  protected Long tid = null;
-  
-  @Override
-  public Long getReference() {
-    return tid;
-  }
 
-  @Override
-  public void setApplication(ISwApplication<?> application) {
-    this.application = application;
-  }
+  protected Long tid = null;
 
   protected TafProperties executeCommand(String command) {
     return executeCommand(command, new TafProperties());
@@ -51,11 +41,6 @@ public abstract class ASwElementProxy implements ISwElement<Long> {
     Assert.fail("client is not set --> use ASwWElementElement.setApplication(yourApplication)");
     return null;
   }
-  
-  @Override
-  public void setReference(Long tid) {
-    this.tid = tid;
-  }
 
   @Override
   public TafProperties getProperties() {
@@ -64,7 +49,22 @@ public abstract class ASwElementProxy implements ISwElement<Long> {
   }
 
   @Override
+  public Long getReference() {
+    return tid;
+  }
+
+  @Override
+  public void setApplication(ISwApplication<?> application) {
+    this.application = application;
+  }
+
+  @Override
   public void setProperties(TafProperties props) {
-    //TODO
+    // TODO
+  }
+
+  @Override
+  public void setReference(Long tid) {
+    this.tid = tid;
   }
 }

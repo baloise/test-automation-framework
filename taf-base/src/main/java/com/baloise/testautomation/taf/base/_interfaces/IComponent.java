@@ -2,7 +2,6 @@ package com.baloise.testautomation.taf.base._interfaces;
 
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
-import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 
 public interface IComponent extends IFill, ICheck, IElement {
 

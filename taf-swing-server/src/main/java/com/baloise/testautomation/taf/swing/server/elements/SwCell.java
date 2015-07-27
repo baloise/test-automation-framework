@@ -27,13 +27,18 @@ public class SwCell extends ASwElement {
     this.column = column;
   }
 
-//  public void click() {
-//    Rectangle cellRect = getComponent().getCellRect(row, column, true);
-//    cellRect.x = getComponent().getLocationOnScreen().x + cellRect.x;
-//    cellRect.y = getComponent().getLocationOnScreen().y + cellRect.y;
-//    Point p = new Point(new Double(cellRect.getCenterX()).intValue(), new Double(cellRect.getCenterY()).intValue());
-//    click(p, InputEvent.BUTTON1_DOWN_MASK);
-//  }
+  // public void click() {
+  // Rectangle cellRect = getComponent().getCellRect(row, column, true);
+  // cellRect.x = getComponent().getLocationOnScreen().x + cellRect.x;
+  // cellRect.y = getComponent().getLocationOnScreen().y + cellRect.y;
+  // Point p = new Point(new Double(cellRect.getCenterX()).intValue(), new Double(cellRect.getCenterY()).intValue());
+  // click(p, InputEvent.BUTTON1_DOWN_MASK);
+  // }
+
+  @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    return new TafProperties();
+  }
 
   @Override
   public void fillProperties() {}
@@ -44,18 +49,13 @@ public class SwCell extends ASwElement {
   }
 
   @Override
-  public String getType() {
-    return "cell";
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    return new TafProperties();
-  }
-
-  @Override
   public JTableFixture getFixture() {
     return new JTableFixture(getRobot(), getComponent());
+  }
+
+  @Override
+  public String getType() {
+    return "cell";
   }
 
 }

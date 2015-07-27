@@ -13,14 +13,22 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 /**
  * 
  */
-public interface ISwButton<R> extends ISwElement<R> {
+public interface ISwComboBox<R> extends ISwElement<R> {
 
   public enum Command {
-    click
+    click, selectitem, selectindex, getselecteditem
   }
 
-  public static String type = "button";
+  public static String paramText = "text";
+
+  public final String type = "combobox";
 
   public void click();
+
+  public String getSelectedItem();
+
+  public void selectIndex(int index);
+
+  public void selectItem(String item);
 
 }

@@ -17,18 +17,13 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 public class SwInputProxy extends ASwElementProxy implements ISwInput<Long> {
 
   @Override
-  public String getType() {
-    return ISwInput.type;
+  public void clear() {
+    executeCommand(Command.clear.toString());
   }
 
   @Override
   public void click() {
     executeCommand(Command.click.toString());
-  }
-
-  @Override
-  public void clear() {
-    executeCommand(Command.clear.toString());
   }
 
   @Override
@@ -42,6 +37,11 @@ public class SwInputProxy extends ASwElementProxy implements ISwInput<Long> {
   public String getText() {
     TafProperties props = executeCommand(Command.gettext.toString());
     return props.getString(paramText);
+  }
+
+  @Override
+  public String getType() {
+    return ISwInput.type;
   }
 
 }

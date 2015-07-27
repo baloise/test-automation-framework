@@ -36,6 +36,7 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
   @Override
   public void fillProperties() {
     addProperty("text", getComponent().getText());
+    addProperty("tooltip", getComponent().getToolTipText());
   }
 
   @Override

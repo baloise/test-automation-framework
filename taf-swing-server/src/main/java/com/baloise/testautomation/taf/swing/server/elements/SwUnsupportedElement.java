@@ -13,11 +13,21 @@ public class SwUnsupportedElement extends ASwElement {
   }
 
   @Override
+  public TafProperties basicExecCommand(TafProperties props) {
+    throw new IllegalArgumentException("unsupported element");
+  }
+
+  @Override
   public void fillProperties() {}
 
   @Override
   public Component getComponent() {
     return component;
+  }
+
+  @Override
+  public AbstractComponentFixture getFixture() {
+    return null;
   }
 
   @Override
@@ -27,16 +37,6 @@ public class SwUnsupportedElement extends ASwElement {
       return "unsupportedelement-nullcomponent";
     }
     return "unsupportedelement-" + getComponent().getClass().getSimpleName();
-  }
-
-  @Override
-  public TafProperties basicExecCommand(TafProperties props) {
-    throw new IllegalArgumentException("unsupported element");
-  }
-
-  @Override
-  public AbstractComponentFixture getFixture() {
-    return null;
   }
 
 }
