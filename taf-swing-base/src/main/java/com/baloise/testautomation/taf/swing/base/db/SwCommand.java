@@ -23,6 +23,21 @@ public class SwCommand extends H2Table {
     preparing, ready, working, done
   }
 
+  public static void createTable() {
+    String sql = "CREATE TABLE COMMANDS (" + "id int, status int" + ");";
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement(sql);
+      ps.execute();
+    }
+    catch (SQLException e) {
+      error("error creating table 'commands'", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+
   public static void deleteCommandsForId(int id) {
     String deleteSQL = "DELETE FROM COMMANDS WHERE id = " + id;
     PreparedStatement ps = null;
@@ -71,6 +86,7 @@ public class SwCommand extends H2Table {
   public static List<SwCommand> getReadyCommandsForId(int id) {
     return getForId(id, Status.ready);
   }
+
   public static boolean isAllDone(int id) {
     return getForId(id, Status.done).size() > 0;
   }

@@ -46,8 +46,8 @@ public class SwStarter {
   public SwStarter() {
     info("will try to start instrumentation");
     try {
-      // Server.createTcpServer().start();
-      H2DB.init(getDbName());
+      // H2DB.start();
+      H2DB.initConnection();
       SwCommand nextCommand = getNextCommand();
       if (nextCommand != null) {
         execStartInstrumentation(nextCommand);

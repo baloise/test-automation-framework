@@ -18,6 +18,7 @@ public interface ISwTable<R> extends ISwElement<R> {
   public enum Command {
     clickcell, doubleclickcell, rightclickcell, getcelltext
   }
+
   public final String paramText = "text";
   public final String paramRow = "row";
 

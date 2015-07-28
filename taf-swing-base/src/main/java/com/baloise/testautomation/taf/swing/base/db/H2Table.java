@@ -32,8 +32,12 @@ public class H2Table {
     return H2DB.conn();
   }
 
-  protected static void error(String s, Exception e) {
+  protected static void error(String s) {
     System.out.println("[ERROR] " + s);
+  }
+
+  protected static void error(String s, Exception e) {
+    System.out.println("[ERROR] " + s + " " + e.getMessage());
   }
 
 }

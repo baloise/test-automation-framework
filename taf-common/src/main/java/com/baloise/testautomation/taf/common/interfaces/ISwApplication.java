@@ -22,6 +22,7 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public enum Command {
     startinstrumentation, findelementbyxpath, findelementsbyxpath, storehierarchy
   }
+
   public final String paramCommand = "command";
   public final String paramId = "id";
   public final String paramType = "type";

@@ -21,6 +21,21 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
  */
 public class SwCommandProperties extends H2Table {
 
+  public static void createTable() {
+    String sql = "CREATE TABLE COMMAND_PROPERTIES (" + "c_id int, key varchar(255), value varchar(2000)" + ");";
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement(sql);
+      ps.execute();
+    }
+    catch (SQLException e) {
+      error("error creating table 'commands'", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+
   public static void deleteCommandPropertiesForId(int id) {
     String deleteSQL = "DELETE FROM COMMAND_PROPERTIES WHERE c_id = " + id;
     PreparedStatement ps = null;
@@ -35,11 +50,12 @@ public class SwCommandProperties extends H2Table {
       closePreparedStatement(ps);
     }
   }
+
   public static TafProperties getForId(int id) {
     Vector<SwCommandProperties> result = new Vector<SwCommandProperties>();
     ResultSet rs = null;
     if (conn() == null) {
-      System.out.println("H2 database is NOT connected");
+      error("H2 database is NOT connected");
       return new TafProperties();
     }
     PreparedStatement ps = null;
@@ -68,6 +84,7 @@ public class SwCommandProperties extends H2Table {
     }
     return props;
   }
+
   public static TafProperties getTafPropertiesForId(int id) {
     Vector<SwCommandProperties> result = new Vector<SwCommandProperties>();
     ResultSet rs = null;

@@ -28,6 +28,7 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
+import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
 import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
@@ -220,6 +221,14 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
   @Override
   public void startJNLPInstrumentationWithSpy(String url, String filename) {
+    try {
+      H2DB.startServer();
+      H2DB.initConnection();
+      H2DB.createTables();
+    }
+    catch (Exception e) {
+    }
+
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
