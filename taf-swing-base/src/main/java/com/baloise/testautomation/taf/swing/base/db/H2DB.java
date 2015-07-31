@@ -57,6 +57,16 @@ public class H2DB {
     }
   }
 
+  public static void init() {
+    try {
+      startServer();
+      initConnection();
+      createTables();
+    }
+    catch (Exception e) {
+    }
+  }
+
   public static void startServer() {
     try {
       if (server != null) {
