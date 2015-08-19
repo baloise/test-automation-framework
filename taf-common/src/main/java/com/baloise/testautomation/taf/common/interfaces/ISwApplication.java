@@ -20,7 +20,7 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public enum Command {
-    startinstrumentation, findelementbyxpath, findelementsbyxpath, storehierarchy
+    startinstrumentation, findelementbyxpath, findelementsbyxpath, sendkeys, storehierarchy
   }
 
   public final String paramCommand = "command";
@@ -35,6 +35,8 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public final String paramRoot = "root";
 
+  public final String paramKeys = "keys";
+
   public final String valueStarted = "started";
 
   public final String type = "application";
@@ -45,6 +47,8 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public List<ISwElement> findElementsByXpath(Long root, String xpath);
 
+  public void sendKeys(String keys);
+  
   public void startJNLPInstrumentation(String url);
 
   public void startJNLPInstrumentationWithSpy(String url, String filename);

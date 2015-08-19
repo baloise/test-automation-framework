@@ -177,6 +177,15 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     return ISwApplication.type;
   }
 
+  @Override
+  public void sendKeys(String keys) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramKeys, keys);
+    props.putObject(paramCommand, Command.sendkeys.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props = execCommand(props);
+  }
+
   private void startCommand(int id, TafProperties props) {
     deleteFor(id);
     SwCommand c = new SwCommand(id);

@@ -60,6 +60,7 @@ import com.baloise.testautomation.taf.swing.server.elements.SwInput;
 import com.baloise.testautomation.taf.swing.server.elements.SwInternalFrame;
 import com.baloise.testautomation.taf.swing.server.elements.SwLabel;
 import com.baloise.testautomation.taf.swing.server.elements.SwMenuItem;
+import com.baloise.testautomation.taf.swing.server.elements.SwRobotFactory;
 import com.baloise.testautomation.taf.swing.server.elements.SwTabbedPane;
 import com.baloise.testautomation.taf.swing.server.elements.SwTable;
 import com.baloise.testautomation.taf.swing.server.elements.SwTableColumn;
@@ -207,6 +208,13 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         for (ISwElement<Component> element : elements) {
           result.putObject(new Long(((ASwElement)element).getTID()).toString(), element.getType());
         }
+        return result;
+      }
+      catch (Exception e) {}
+    }
+    if (Command.sendkeys.toString().equalsIgnoreCase(command)) {
+      try {
+        sendKeys(props.getString(paramKeys));
         return result;
       }
       catch (Exception e) {}
@@ -503,6 +511,16 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private String toMappedXML() {
     return toFullXML();
+  }
+
+  @Override
+  public void sendKeys(String keys) {
+    System.out.println("sendKeys: " + keys);
+    if (keys.equalsIgnoreCase("{enter}")) {
+      SwRobotFactory.getRobot().pressAndReleaseKeys(java.awt.Event.ENTER);
+      return;
+    }
+    SwRobotFactory.getRobot().enterText(keys);
   }
 
 }
