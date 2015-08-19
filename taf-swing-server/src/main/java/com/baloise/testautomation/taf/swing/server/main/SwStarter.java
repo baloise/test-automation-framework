@@ -20,11 +20,14 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
+import org.h2.jdbc.JdbcSQLException;
+
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
+import com.baloise.testautomation.taf.swing.base.db.SwError;
 
 /**
  * 
@@ -133,7 +136,16 @@ public class SwStarter {
       List<SwCommand> commands = SwCommand.getReadyCommandsForId(swApplication.id);
       return commands.get(0);
     }
-    catch (Exception e) {}
+    catch (SwError swe) {
+      info("getting commands failed --> init database to be ready when next attempt is made");
+      try {
+        H2DB.initConnection();
+      } catch (Exception e) {
+      }
+    }
+    catch (Exception e) {
+      error("unexpected exception", e);
+    }
     return null;
   }
 
@@ -147,34 +159,40 @@ public class SwStarter {
   }
 
   public void poll() {
-    while (true) {
-      pollingActive = true;
-      try {
-        if (spy) {
-          swApplication.storeLastHierarchy(spyFileName);
+    try {
+      while (true) {
+        pollingActive = true;
+        info("polling " + System.currentTimeMillis());
+        try {
+          if (spy) {
+            swApplication.storeLastHierarchy(spyFileName);
+          }
+          Thread.sleep(50);
         }
-        Thread.sleep(500);
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
-      try {
-        SwCommand nextCommand = getNextCommand();
-        if (nextCommand != null) {
-          nextCommand.setToWorking();
-          TafProperties props = SwCommandProperties.getTafPropertiesForId(swApplication.id);
-          info("Executing command: " + nextCommand.id);
-          info("Incoming properties: " + props);
-          props = swApplication.execCommand(props);
-          setCommandProperties(swApplication.id, props);
-          nextCommand.setToDone();
-          info("Outgoing properties: " + props);
-          info("Finished command: " + nextCommand.id);
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+        try {
+          SwCommand nextCommand = getNextCommand();
+          if (nextCommand != null) {
+            nextCommand.setToWorking();
+            TafProperties props = SwCommandProperties.getTafPropertiesForId(swApplication.id);
+            info("Executing command: " + nextCommand.id);
+            info("Incoming properties: " + props);
+            props = swApplication.execCommand(props);
+            setCommandProperties(swApplication.id, props);
+            nextCommand.setToDone();
+            info("Outgoing properties: " + props);
+            info("Finished command: " + nextCommand.id);
+          }
+        }
+        catch (Exception e) {
+          error("error executing command", e);
         }
       }
-      catch (Exception e) {
-        error("error executing command", e);
-      }
+    }
+    finally {
+      SwCommand.setAllToDone(swApplication.id);
     }
   }
 

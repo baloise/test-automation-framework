@@ -76,6 +76,7 @@ public class SwCommand extends H2Table {
     catch (SQLException e) {
       error("error loading commands", e);
       e.printStackTrace();
+      throw new SwError(e);
     }
     finally {
       closePreparedStatement(ps);
@@ -88,7 +89,26 @@ public class SwCommand extends H2Table {
   }
 
   public static boolean isAllDone(int id) {
-    return getForId(id, Status.done).size() > 0;
+    try {
+      return getForId(id, Status.done).size() > 0;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public static void setAllToDone(int id) {
+    String updateSQL = "UPDATE COMMANDS SET status = " + Status.done.ordinal() +  " WHERE id = " + id;
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement(updateSQL);
+      ps.execute();
+    }
+    catch (SQLException e) {
+      error("error setting all to done status", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
   }
 
   // public String command = "";

@@ -29,6 +29,10 @@ public class H2Table {
   }
 
   protected static Connection conn() {
+    Connection c = H2DB.conn();
+    if (c == null) {
+      H2DB.initConnection();
+    }
     return H2DB.conn();
   }
 
