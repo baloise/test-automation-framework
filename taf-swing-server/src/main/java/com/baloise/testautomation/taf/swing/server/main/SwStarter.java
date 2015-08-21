@@ -19,7 +19,9 @@ import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.pa
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Locale;
 
+import org.assertj.swing.keystroke.KeyStrokeMap;
 import org.h2.jdbc.JdbcSQLException;
 
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
@@ -82,6 +84,7 @@ public class SwStarter {
 
     if (swApplication.id != 0) {
       info("Start polling");
+      KeyStrokeMap.reloadFromSystemSettings();
       Thread thread = new Thread() {
         public void run() {
           poll();
@@ -96,7 +99,7 @@ public class SwStarter {
     try {
       info("starting instrumentation");
       command.setToWorking();
-      TafProperties props = SwCommandProperties.getForId(command.id);
+      TafProperties props = SwCommandProperties.getTafPropertiesForId(command.id);
       String c = props.getString(paramCommand);
       if (ISwApplication.Command.startinstrumentation.toString().equalsIgnoreCase(c)) {
         swApplication.id = props.getLong(paramId).intValue();

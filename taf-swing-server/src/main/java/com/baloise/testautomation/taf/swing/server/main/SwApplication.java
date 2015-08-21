@@ -60,11 +60,11 @@ import com.baloise.testautomation.taf.swing.server.elements.SwInput;
 import com.baloise.testautomation.taf.swing.server.elements.SwInternalFrame;
 import com.baloise.testautomation.taf.swing.server.elements.SwLabel;
 import com.baloise.testautomation.taf.swing.server.elements.SwMenuItem;
-import com.baloise.testautomation.taf.swing.server.elements.SwRobotFactory;
 import com.baloise.testautomation.taf.swing.server.elements.SwTabbedPane;
 import com.baloise.testautomation.taf.swing.server.elements.SwTable;
 import com.baloise.testautomation.taf.swing.server.elements.SwTableColumn;
 import com.baloise.testautomation.taf.swing.server.elements.SwUnsupportedElement;
+import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 /**
  * 

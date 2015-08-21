@@ -8,6 +8,7 @@ import org.assertj.swing.fixture.AbstractComponentFixture;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
+import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 public abstract class ASwElement implements ISwElement<Component> {
 

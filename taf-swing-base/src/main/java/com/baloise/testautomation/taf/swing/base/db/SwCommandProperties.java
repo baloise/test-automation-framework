@@ -51,40 +51,6 @@ public class SwCommandProperties extends H2Table {
     }
   }
 
-  public static TafProperties getForId(int id) {
-    Vector<SwCommandProperties> result = new Vector<SwCommandProperties>();
-    ResultSet rs = null;
-    if (conn() == null) {
-      error("H2 database is NOT connected");
-      return new TafProperties();
-    }
-    PreparedStatement ps = null;
-    try {
-      ps = conn().prepareStatement("select key, value from command_properties where c_id = " + id);
-      rs = ps.executeQuery();
-      if (rs != null) {
-        while (rs.next()) {
-          SwCommandProperties command = new SwCommandProperties(id, rs.getString(1), rs.getString(2));
-          result.add(command);
-        }
-      }
-    }
-    catch (SQLException e) {
-      e.printStackTrace();
-      error("error loading command properties", e);
-    }
-    finally {
-      closePreparedStatement(ps);
-    }
-    TafProperties props = new TafProperties();
-    System.out.println("properties will be filled");
-    for (SwCommandProperties cp : result) {
-      System.out.println("key = " + cp.key + " value = " + cp.value);
-      props.putObject(cp.key, cp.value);
-    }
-    return props;
-  }
-
   public static TafProperties getTafPropertiesForId(int id) {
     Vector<SwCommandProperties> result = new Vector<SwCommandProperties>();
     ResultSet rs = null;
