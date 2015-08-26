@@ -68,5 +68,5 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
   public void selectByTitle(String title) {
     getFixture().selectTab(title);
   }
-  
+
 }

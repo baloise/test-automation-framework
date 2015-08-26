@@ -217,7 +217,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   @Override
   public void startJNLPInstrumentation(String url) {
     H2DB.init();
-    
+
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
@@ -235,7 +235,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   @Override
   public void startJNLPInstrumentationWithSpy(String url, String filename) {
     H2DB.init();
-    
+
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());

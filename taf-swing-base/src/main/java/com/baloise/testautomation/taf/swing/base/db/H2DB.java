@@ -35,6 +35,15 @@ public class H2DB {
     SwCommandProperties.createTable();
   }
 
+  public static void init() {
+    try {
+      startServer();
+      initConnection();
+      createTables();
+    }
+    catch (Exception e) {}
+  }
+
   public static void initConnection() {
     try {
       try {
@@ -54,16 +63,6 @@ public class H2DB {
       System.out.println("error initialising database");
       e2.printStackTrace();
       return;
-    }
-  }
-
-  public static void init() {
-    try {
-      startServer();
-      initConnection();
-      createTables();
-    }
-    catch (Exception e) {
     }
   }
 

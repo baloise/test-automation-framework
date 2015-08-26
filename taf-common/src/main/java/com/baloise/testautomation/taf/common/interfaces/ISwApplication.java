@@ -48,7 +48,7 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public List<ISwElement> findElementsByXpath(Long root, String xpath);
 
   public void sendKeys(String keys);
-  
+
   public void startJNLPInstrumentation(String url);
 
   public void startJNLPInstrumentationWithSpy(String url, String filename);

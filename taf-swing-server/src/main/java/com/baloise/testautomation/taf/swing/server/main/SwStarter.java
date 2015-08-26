@@ -19,10 +19,8 @@ import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.pa
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.Locale;
 
 import org.assertj.swing.keystroke.KeyStrokeMap;
-import org.h2.jdbc.JdbcSQLException;
 
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -143,8 +141,8 @@ public class SwStarter {
       info("getting commands failed --> init database to be ready when next attempt is made");
       try {
         H2DB.initConnection();
-      } catch (Exception e) {
       }
+      catch (Exception e) {}
     }
     catch (Exception e) {
       error("unexpected exception", e);

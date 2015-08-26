@@ -43,10 +43,19 @@ public class SwLabel extends ASwElement implements ISwLabel<Component> {
         props.clear();
         rightClick();
         break;
+      case click:
+        props.clear();
+        click();
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
     return props;
+  }
+
+  @Override
+  public void click() {
+    getFixture().click();
   }
 
   @Override

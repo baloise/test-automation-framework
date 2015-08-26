@@ -17,8 +17,14 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
 public class SwLabelProxy extends ASwElementProxy implements ISwLabel<Long> {
 
   @Override
-  public void rightClick() {
-    executeCommand(Command.rightclick.toString());
+  public void click() {
+    executeCommand(Command.click.toString());
+  }
+
+  @Override
+  public String getText() {
+    TafProperties props = executeCommand(Command.gettext.toString());
+    return props.getString(paramText);
   }
 
   @Override
@@ -27,9 +33,8 @@ public class SwLabelProxy extends ASwElementProxy implements ISwLabel<Long> {
   }
 
   @Override
-  public String getText() {
-    TafProperties props = executeCommand(Command.gettext.toString());
-    return props.getString(paramText);
+  public void rightClick() {
+    executeCommand(Command.rightclick.toString());
   }
 
 }

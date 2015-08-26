@@ -91,13 +91,14 @@ public class SwCommand extends H2Table {
   public static boolean isAllDone(int id) {
     try {
       return getForId(id, Status.done).size() > 0;
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       return false;
     }
   }
 
   public static void setAllToDone(int id) {
-    String updateSQL = "UPDATE COMMANDS SET status = " + Status.done.ordinal() +  " WHERE id = " + id;
+    String updateSQL = "UPDATE COMMANDS SET status = " + Status.done.ordinal() + " WHERE id = " + id;
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(updateSQL);

@@ -438,6 +438,16 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     return se;
   }
 
+  @Override
+  public void sendKeys(String keys) {
+    System.out.println("sendKeys: " + keys);
+    if (keys.equalsIgnoreCase("{enter}")) {
+      SwRobotFactory.getRobot().pressAndReleaseKeys(java.awt.Event.ENTER);
+      return;
+    }
+    SwRobotFactory.getRobot().enterText(keys);
+  }
+
   public void setRoot() {
     Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
     root = SwingUtilities.getRoot(c);
@@ -511,16 +521,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private String toMappedXML() {
     return toFullXML();
-  }
-
-  @Override
-  public void sendKeys(String keys) {
-    System.out.println("sendKeys: " + keys);
-    if (keys.equalsIgnoreCase("{enter}")) {
-      SwRobotFactory.getRobot().pressAndReleaseKeys(java.awt.Event.ENTER);
-      return;
-    }
-    SwRobotFactory.getRobot().enterText(keys);
   }
 
 }

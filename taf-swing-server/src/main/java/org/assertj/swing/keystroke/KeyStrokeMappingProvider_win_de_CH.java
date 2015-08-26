@@ -64,20 +64,13 @@ import org.assertj.swing.dependency.jsr305.Nonnull;
  * 
  */
 public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvider {
-  /**
-   * @return the mapping between characters and {@code KeyStroke}s for locale {@code Locale.GERMAN}.
-   */
-  @Override
-  public @Nonnull Collection<KeyStrokeMapping> keyStrokeMappings() {
-    return SingletonHolder.instance;
-  }
-
   // Thread-safe, lazy-loading singleton.
   private static class SingletonHolder {
     static List<KeyStrokeMapping> instance = createMappings();
   }
 
-  private static @Nonnull List<KeyStrokeMapping> createMappings() {
+  private static @Nonnull
+  List<KeyStrokeMapping> createMappings() {
     // Alle NICHT gemappten KeyStrokes werden durch den Robot mittels KeyDown-KeyUp
     // ebenfalls geschrieben & dies mit den korrekten Zeichen.
     // Ich vermute, dass via untenstehendes Mapping lediglich die Eingbe effizienter
@@ -88,32 +81,32 @@ public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvi
     mappings.add(mapping('=', VK_0, SHIFT_MASK));
     mappings.add(mapping('1', VK_1, NO_MASK));
     mappings.add(mapping('+', VK_1, SHIFT_MASK));
-//    mappings.add(mapping('¦', VK_1, ALT_GRAPH_MASK));
+    // mappings.add(mapping('¦', VK_1, ALT_GRAPH_MASK));
     mappings.add(mapping('2', VK_2, NO_MASK));
     mappings.add(mapping('"', VK_2, SHIFT_MASK));
-//    mappings.add(mapping('@', VK_2, ALT_GRAPH_MASK));
+    // mappings.add(mapping('@', VK_2, ALT_GRAPH_MASK));
     mappings.add(mapping('3', VK_3, NO_MASK));
     mappings.add(mapping('*', VK_3, SHIFT_MASK));
-//    mappings.add(mapping('#', VK_3, ALT_GRAPH_MASK));
+    // mappings.add(mapping('#', VK_3, ALT_GRAPH_MASK));
     mappings.add(mapping('4', VK_4, NO_MASK));
     mappings.add(mapping('ç', VK_4, SHIFT_MASK));
     mappings.add(mapping('5', VK_5, NO_MASK));
     mappings.add(mapping('%', VK_5, SHIFT_MASK));
     mappings.add(mapping('6', VK_6, NO_MASK));
     mappings.add(mapping('&', VK_6, SHIFT_MASK));
-//    mappings.add(mapping('¬', VK_6, ALT_GRAPH_MASK));
+    // mappings.add(mapping('¬', VK_6, ALT_GRAPH_MASK));
     mappings.add(mapping('7', VK_7, NO_MASK));
     mappings.add(mapping('/', VK_7, SHIFT_MASK));
-//    mappings.add(mapping('|', VK_7, ALT_GRAPH_MASK));
+    // mappings.add(mapping('|', VK_7, ALT_GRAPH_MASK));
     mappings.add(mapping('8', VK_8, NO_MASK));
     mappings.add(mapping('(', VK_8, SHIFT_MASK));
-//    mappings.add(mapping('¢', VK_8, ALT_GRAPH_MASK));
+    // mappings.add(mapping('¢', VK_8, ALT_GRAPH_MASK));
     mappings.add(mapping('9', VK_9, NO_MASK));
     mappings.add(mapping(')', VK_9, SHIFT_MASK));
     mappings.add(mapping('\'', VK_QUOTE, NO_MASK));
     mappings.add(mapping('?', VK_QUOTE, SHIFT_MASK));
-//    mappings.add(mapping('~', VK_QUOTE, ALT_GRAPH_MASK));
-    
+    // mappings.add(mapping('~', VK_QUOTE, ALT_GRAPH_MASK));
+
     mappings.add(mapping('a', VK_A, NO_MASK));
     mappings.add(mapping('A', VK_A, SHIFT_MASK));
     mappings.add(mapping('b', VK_B, NO_MASK));
@@ -171,7 +164,7 @@ public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvi
     mappings.add(mapping('£', VK_DOLLAR, SHIFT_MASK));
     mappings.add(mapping('<', VK_LESS, NO_MASK));
     mappings.add(mapping('>', VK_LESS, SHIFT_MASK));
-//    mappings.add(mapping('\\', VK_LESS, ALT_GRAPH_MASK));
+    // mappings.add(mapping('\\', VK_LESS, ALT_GRAPH_MASK));
     mappings.add(mapping(',', VK_COMMA, NO_MASK));
     mappings.add(mapping(';', VK_COMMA, SHIFT_MASK));
     mappings.add(mapping('.', VK_PERIOD, NO_MASK));
@@ -180,6 +173,15 @@ public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvi
     mappings.add(mapping('_', VK_MINUS, SHIFT_MASK));
 
     return mappings;
+  }
+
+  /**
+   * @return the mapping between characters and {@code KeyStroke}s for locale {@code Locale.GERMAN}.
+   */
+  @Override
+  public @Nonnull
+  Collection<KeyStrokeMapping> keyStrokeMappings() {
+    return SingletonHolder.instance;
   }
 
 }

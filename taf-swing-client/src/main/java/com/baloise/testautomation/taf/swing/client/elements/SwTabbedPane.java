@@ -18,14 +18,14 @@ import com.baloise.testautomation.taf.swing.base.db.SwError;
 public class SwTabbedPane extends AElement {
 
   @Override
-  public void click() { 
+  public void click() {
     throw new SwError("click is not supported on tabbed pane");
   }
-  
+
   public void clickTab(String title) {
     find().selectByTitle(title);
   }
-  
+
   public ISwTabbedPane<?> find() {
     return (ISwTabbedPane<?>)swFind(ISwTabbedPane.type);
   }
