@@ -32,7 +32,12 @@ public abstract class ABrInput extends AInput {
           if (timeout > 0) {
             long time = System.currentTimeMillis();
             while (System.currentTimeMillis() < time + timeout) {
+              // If element is an input field, then value is needed
               String tempText = find().getAttribute("value");
+              // maybe it's just another element (e.g. a <div>) --> try simple getText()
+              if (tempText == null) {
+                tempText = find().getText();
+              }
               if (checkValue.asString().equals(tempText)) {
                 text = tempText;
                 break;
@@ -41,10 +46,15 @@ public abstract class ABrInput extends AInput {
           }
         }
         catch (Exception e) {}
+        // find for non-timeout-case --> if it's an input --> value is needed
         if (text == null) {
           text = find().getAttribute("value");
         }
-        assertEquals("value does NOT match: " + name, checkValue.asString(), text);
+        // not found? Maybe it's another element --> try simple getText()
+        if (text == null) {
+          text = find().getText();
+        }
+        assertEquals("value does NOT match for element '" + name + "': ", checkValue.asString(), text);
       }
     }
   }
