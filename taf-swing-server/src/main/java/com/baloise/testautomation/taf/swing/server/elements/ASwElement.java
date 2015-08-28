@@ -153,7 +153,8 @@ public abstract class ASwElement implements ISwElement<Component> {
   public String getPropertiesAsString() {
     String attributes = "";
     for (Object key : getProperties().keySet()) {
-      attributes = attributes + " " + key.toString() + "=\"" + properties.getObject(key.toString()) + "\"";
+      attributes = attributes + " " + key.toString() + "=\""
+          + asValidAttribute(properties.getObject(key.toString()).toString()) + "\"";
     }
     return attributes;
   }

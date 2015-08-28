@@ -169,7 +169,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   // private int level = 0;
 
   private String asValidAttribute(String s) {
-    return s.replace("&", "&amp;");
+    return s.replace("&", "&amp;").replace("\"", "&quot;");
   }
 
   private void debugRoot() {
