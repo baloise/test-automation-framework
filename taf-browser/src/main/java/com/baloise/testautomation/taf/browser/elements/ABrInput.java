@@ -54,9 +54,13 @@ public abstract class ABrInput extends AInput {
         if (text == null) {
           text = find().getText();
         }
-        assertEquals("value does NOT match for element '" + name + "': ", checkValue.asString(), text);
+        check(checkValue.asString(), text);
       }
     }
+  }
+
+  protected void check(String expected, String actual) {
+    assertEquals("value does NOT match for element '" + name + "': ", expected, actual);
   }
 
   @Override
