@@ -23,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
@@ -66,59 +67,7 @@ public abstract class ABase implements IComponent {
     initFields();
   }
 
-  @Override
-  public boolean canCheck() {
-    if (checkId == null) {
-      return false;
-    }
-    return !checkId.isSkip();
-  }
-
-  @Override
-  public boolean canFill() {
-    if (fillId == null) {
-      return false;
-    }
-    return !fillId.isSkip();
-  }
-
-  @Override
-  public void check() {
-    Field[] fields = getCheckFields();
-    for (Field f : fields) {
-      try {
-        Method m = getCheckMethod(f);
-        if (m != null) {
-          m.invoke(this);
-        }
-        else {
-          Object o;
-          o = f.get(this);
-          if (o instanceof ICheck) {
-            ((ICheck)o).check();
-          }
-          else {
-            fail("field cannot be checked (beacause ICheck is not implemented): " + f.getName());
-          }
-        }
-      }
-      catch (InvocationTargetException e1) {
-        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
-      }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  @Override
-  public void click() {}
-
-  @Override
-  public void fill() {
+  public void basicFill() {
     Field[] fields = getFillFields();
     for (Field f : fields) {
       try {
@@ -149,6 +98,66 @@ public abstract class ABase implements IComponent {
         e.printStackTrace();
       }
     }
+  }
+  
+  public void basicCheck() {
+    Field[] fields = getCheckFields();
+    for (Field f : fields) {
+      try {
+        Method m = getCheckMethod(f);
+        if (m != null) {
+          m.invoke(this);
+        }
+        else {
+          Object o;
+          o = f.get(this);
+          if (o instanceof ICheck) {
+            ((ICheck)o).check();
+          }
+          else {
+            fail("field cannot be checked (beacause ICheck is not implemented): " + f.getName());
+          }
+        }
+      }
+      catch (InvocationTargetException e1) {
+        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
+      }
+      catch (IllegalArgumentException e) {
+        e.printStackTrace();
+      }
+      catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+  
+  @Override
+  public boolean canCheck() {
+    if (checkId == null) {
+      return false;
+    }
+    return !checkId.isSkip();
+  }
+
+  @Override
+  public boolean canFill() {
+    if (fillId == null) {
+      return false;
+    }
+    return !fillId.isSkip();
+  }
+
+  @Override
+  public void check() {
+    basicCheck();
+  }
+
+  @Override
+  public void click() {}
+
+  @Override
+  public void fill() {
+    basicFill();
   }
 
   @Override
@@ -260,6 +269,7 @@ public abstract class ABase implements IComponent {
     bys.add(ByName.class);
     bys.add(ByXpath.class);
     bys.add(ByCssSelector.class);
+    bys.add(ByCustom.class);
     bys.add(ByLeftLabel.class);
     return bys;
   }

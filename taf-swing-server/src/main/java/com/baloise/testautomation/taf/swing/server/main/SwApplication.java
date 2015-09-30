@@ -454,10 +454,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   @Override
-  public void startJNLPInstrumentation(String url) {}
+  public void startInstrumentation(String url) {}
 
   @Override
-  public void startJNLPInstrumentationWithSpy(String url, String filename) {}
+  public void startInstrumentationWithSpy(String url, String filename) {}
 
   public String storeFormatted(Document xml, String path) throws Exception {
     TransformerFactory tf = TransformerFactory.newInstance();

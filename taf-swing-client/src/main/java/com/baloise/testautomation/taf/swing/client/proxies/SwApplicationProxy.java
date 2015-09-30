@@ -200,22 +200,19 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     waitUntilDone(id);
   }
 
-  public TafProperties startJNLP(String url) {
-    // prepareStartInstrumentation();
+  public void start(String commandline) {
     Process p = null;
     try {
-      p = Runtime.getRuntime().exec("cmd /C \"javaws " + url + "\"");
+      p = Runtime.getRuntime().exec(commandline);
       p.waitFor();
     }
     catch (Exception e) {
       e.printStackTrace();
     }
-    // waitUntilInstrumentationStarted();
-    return new TafProperties();
   }
 
   @Override
-  public void startJNLPInstrumentation(String url) {
+  public void startInstrumentation(String commandline) {
     H2DB.init();
 
     deleteFor(getReference().intValue());
@@ -223,8 +220,10 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramId, getReference());
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramType, ISwApplication.type.toString());
-    startJNLP(url);
-    startCommandAndWait(0, props);
+    startCommand(0, props);
+    start(commandline);
+    waitUntilDone(0);
+    //startCommandAndWait(0, props);
     props = SwCommandProperties.getTafPropertiesForId(0);
     if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
       Assert.fail("application is not instrumented: " + getReference());
@@ -233,7 +232,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   }
 
   @Override
-  public void startJNLPInstrumentationWithSpy(String url, String filename) {
+  public void startInstrumentationWithSpy(String commandline, String filename) {
     H2DB.init();
 
     deleteFor(getReference().intValue());
@@ -243,8 +242,10 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramType, ISwApplication.type.toString());
     props.putObject(paramSpy, true);
     props.putObject(paramPath, filename);
-    startJNLP(url);
-    startCommandAndWait(0, props);
+    startCommand(0, props);
+    start(commandline);
+    waitUntilDone(0);
+    //startCommandAndWait(0, props);
     props = SwCommandProperties.getTafPropertiesForId(0);
     if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
       Assert.fail("application is not instrumented: " + getReference());

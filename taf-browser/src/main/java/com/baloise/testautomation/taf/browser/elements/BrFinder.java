@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
@@ -46,6 +47,9 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     if (annotation instanceof ByCssSelector) {
       return findByCssSelector(root, (ByCssSelector)annotation);
     }
+    if (annotation instanceof ByCustom) {
+      return findByCustom(root, (ByCustom)annotation);
+    }
     if (annotation instanceof ByXpath) {
       return findByXpath(root, (ByXpath)annotation);
     }
@@ -53,6 +57,10 @@ public class BrFinder implements IBrowserFinder<WebElement> {
       return findByName(root, (ByName)annotation);
     }
     fail("annotation not yet supported: " + annotation.annotationType());
+    return null;
+  }
+
+  public WebElement findByCustom(WebElement root, ByCustom annotation) {
     return null;
   }
 

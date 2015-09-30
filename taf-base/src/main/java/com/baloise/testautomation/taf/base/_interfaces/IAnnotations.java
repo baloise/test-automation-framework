@@ -28,6 +28,14 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  public @interface ByCustom {
+    public int index() default 0;
+
+    public String value();
+  }
+
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target({ElementType.TYPE, ElementType.FIELD})
   public @interface ById {
     public int index() default 0;
 

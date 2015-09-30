@@ -16,6 +16,7 @@ import java.lang.annotation.Annotation;
 
 import com.baloise.testautomation.taf.base._interfaces.IComponent;
 import com.baloise.testautomation.taf.base._interfaces.IElement;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 
 /**
@@ -32,11 +33,21 @@ public abstract class AElement implements IElement {
     assertNotNull(
         "component may not be null --> check, if the used annotion is supported (ABase --> getSupportedBys() --> "
             + name, component);
-    Object we = component.getBrowserFinder().find(by);
+    Object we = null;
+    if (by instanceof ByCustom) {
+      we = brFindByCustom();
+    }
+    if (we == null) {
+      we = component.getBrowserFinder().find(by);
+    }
     assertNotNull("webelement NOT found: " + name, we);
     return we;
   }
 
+  public Object brFindByCustom() {
+    return null;
+  }
+  
   // public Region roFind() {
   // // TODO
   // return null;

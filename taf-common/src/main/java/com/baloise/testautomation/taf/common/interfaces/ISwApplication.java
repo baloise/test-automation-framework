@@ -49,9 +49,9 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public void sendKeys(String keys);
 
-  public void startJNLPInstrumentation(String url);
+  public void startInstrumentation(String url);
 
-  public void startJNLPInstrumentationWithSpy(String url, String filename);
+  public void startInstrumentationWithSpy(String url, String filename);
 
   public void storeHierarchy(String path);
 
