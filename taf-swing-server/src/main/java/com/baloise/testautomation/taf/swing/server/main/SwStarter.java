@@ -15,10 +15,12 @@ import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.pa
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramSpy;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramStatus;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramWatch;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramJavaClassPath;
 
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Properties;
 
 import org.assertj.swing.keystroke.KeyStrokeMap;
 
@@ -48,8 +50,13 @@ public class SwStarter {
 
   public SwStarter() {
     info("will try to start instrumentation");
+    Properties props = System.getProperties();
+    info("listing jvm properties");
+    for (Object p : props.keySet()) {
+      info(p + " = " + System.getProperty((String)p));
+    }
     try {
-      // H2DB.start();
+      //H2DB.init();
       H2DB.initConnection();
       SwCommand nextCommand = getNextCommand();
       if (nextCommand != null) {
@@ -89,6 +96,8 @@ public class SwStarter {
         }
       };
       thread.start();
+    } else {
+      info("Application seems to NOT need instrumentation --> application will run without instrumentation");
     }
   }
 
@@ -96,27 +105,33 @@ public class SwStarter {
     TafProperties resultProps = new TafProperties();
     try {
       info("starting instrumentation");
-      command.setToWorking();
       TafProperties props = SwCommandProperties.getTafPropertiesForId(command.id);
       String c = props.getString(paramCommand);
       if (ISwApplication.Command.startinstrumentation.toString().equalsIgnoreCase(c)) {
-        swApplication.id = props.getLong(paramId).intValue();
-        spy = props.getBoolean(paramSpy);
-        watch = props.getBoolean(paramWatch);
-        spyFileName = props.getString(paramPath);
-        props = new TafProperties();
-        resultProps.putObject(paramStatus, "started");
-        info("started with id = " + swApplication.id);
+        String classPathContains = props.getString(paramJavaClassPath);
+        info("looking for jvm java.class.path property containing '" + classPathContains + "'");
+        boolean found = System.getProperty("java.class.path").toLowerCase().contains(classPathContains.toLowerCase());
+        if (found) {
+          swApplication.id = props.getLong(paramId).intValue();
+          spy = props.getBoolean(paramSpy);
+          watch = props.getBoolean(paramWatch);
+          spyFileName = props.getString(paramPath);
+          command.setToWorking();
+          props = new TafProperties();
+          resultProps.putObject(paramStatus, "started");
+          info("started with id = " + swApplication.id);
+          setCommandProperties(0, resultProps);
+          command.setToDone();
+        }
       }
     }
     catch (Exception e) {
       resultProps.putObject(paramStatus, "error");
       resultProps.putObject(paramMessage, e.getMessage());
-    }
-    finally {
       setCommandProperties(0, resultProps);
       command.setToDone();
     }
+    finally {}
   }
 
   // @Override

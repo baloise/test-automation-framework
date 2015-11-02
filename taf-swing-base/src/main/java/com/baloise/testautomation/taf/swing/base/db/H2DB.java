@@ -33,12 +33,13 @@ public class H2DB {
     initConnection();
     SwCommand.createTable();
     SwCommandProperties.createTable();
+    SwCommandProperties.deleteAll();
+    SwCommand.deleteAll();
   }
 
   public static void init() {
     try {
       startServer();
-      initConnection();
       createTables();
     }
     catch (Exception e) {}
@@ -56,8 +57,10 @@ public class H2DB {
         conn = null;
       }
       Class.forName("org.h2.Driver");
-      conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:" + port
-          + "/mem:swinginstrumentation;DB_CLOSE_DELAY=-1", "sa", "");
+      conn = DriverManager.getConnection("jdbc:h2:~/swinginstrumentation;AUTO_SERVER=TRUE", "sa", "");
+//      conn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test;AUTO_SERVER=TRUE", "sa", "");
+//      conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:" + port
+//          + "/mem:swinginstrumentation;DB_CLOSE_DELAY=-1", "sa", "");
     }
     catch (Exception e2) {
       System.out.println("error initialising database");
@@ -67,6 +70,11 @@ public class H2DB {
   }
 
   public static void startServer() {
+/*    System.out.println("startServer is called from...");
+    StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+    for (int i = 0; i < stackTraceElements.length; i++) {
+      System.out.println(stackTraceElements[i]);
+    }
     try {
       if (server != null) {
         if (server.isRunning(false)) {
@@ -82,6 +90,7 @@ public class H2DB {
     catch (SQLException e) {
       e.printStackTrace();
     }
+*/
   }
 
   public static void stopServer() {

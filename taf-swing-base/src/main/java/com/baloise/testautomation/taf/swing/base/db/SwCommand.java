@@ -38,6 +38,21 @@ public class SwCommand extends H2Table {
     }
   }
 
+  public static void deleteAll() {
+    String deleteSQL = "DELETE FROM COMMANDS";
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement(deleteSQL);
+      ps.execute();
+    }
+    catch (Exception e) {
+      error("error deleting all commands", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+  
   public static void deleteCommandsForId(int id) {
     String deleteSQL = "DELETE FROM COMMANDS WHERE id = " + id;
     PreparedStatement ps = null;

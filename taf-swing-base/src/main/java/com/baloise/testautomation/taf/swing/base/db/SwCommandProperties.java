@@ -36,6 +36,21 @@ public class SwCommandProperties extends H2Table {
     }
   }
 
+  public static void deleteAll() {
+    String deleteSQL = "DELETE FROM COMMAND_PROPERTIES";
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement(deleteSQL);
+      ps.execute();
+    }
+    catch (Exception e) {
+      error("error deleting all commands properties", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+  
   public static void deleteCommandPropertiesForId(int id) {
     String deleteSQL = "DELETE FROM COMMAND_PROPERTIES WHERE c_id = " + id;
     PreparedStatement ps = null;

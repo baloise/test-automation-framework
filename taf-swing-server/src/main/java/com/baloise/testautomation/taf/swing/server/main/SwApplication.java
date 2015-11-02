@@ -454,10 +454,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   @Override
-  public void startInstrumentation(String url) {}
+  public void startInstrumentation(String url, String javaClassPathContains) {}
 
   @Override
-  public void startInstrumentationWithSpy(String url, String filename) {}
+  public void startInstrumentationWithSpy(String url, String javaClassPathContains, String filename) {}
 
   public String storeFormatted(Document xml, String path) throws Exception {
     TransformerFactory tf = TransformerFactory.newInstance();
@@ -521,6 +521,14 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private String toMappedXML() {
     return toFullXML();
+  }
+
+  /**
+   * @param string
+   */
+  public static boolean waitForWindowWithTitle(String windowTitle) {
+    ISwElement<Component> element = new SwApplication().findElementByXpath(null, "//*[@title='" + windowTitle + "']");
+    return element != null;
   }
 
 }

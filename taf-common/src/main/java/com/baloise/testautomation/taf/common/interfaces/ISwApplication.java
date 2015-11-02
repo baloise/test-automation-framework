@@ -26,6 +26,7 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public final String paramCommand = "command";
   public final String paramId = "id";
   public final String paramType = "type";
+  public final String paramJavaClassPath = "javaclasspath";
   public final String paramSpy = "spy";
   public final String paramPath = "path";
   public final String paramWatch = "watch";
@@ -49,9 +50,9 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public void sendKeys(String keys);
 
-  public void startInstrumentation(String url);
+  public void startInstrumentation(String url, String javaClassPathContains);
 
-  public void startInstrumentationWithSpy(String url, String filename);
+  public void startInstrumentationWithSpy(String url, String javaClassPathContains, String filename);
 
   public void storeHierarchy(String path);
 

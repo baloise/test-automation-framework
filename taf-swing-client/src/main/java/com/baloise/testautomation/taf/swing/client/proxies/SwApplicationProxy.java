@@ -212,13 +212,14 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   }
 
   @Override
-  public void startInstrumentation(String commandline) {
+  public void startInstrumentation(String commandline, String javaClassPathContains) {
     H2DB.init();
 
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
+    props.putObject(paramJavaClassPath, javaClassPathContains);
     props.putObject(paramType, ISwApplication.type.toString());
     startCommand(0, props);
     start(commandline);
@@ -232,13 +233,14 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   }
 
   @Override
-  public void startInstrumentationWithSpy(String commandline, String filename) {
+  public void startInstrumentationWithSpy(String commandline, String javaClassPathContains, String filename) {
     H2DB.init();
 
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
+    props.putObject(paramJavaClassPath, javaClassPathContains);
     props.putObject(paramType, ISwApplication.type.toString());
     props.putObject(paramSpy, true);
     props.putObject(paramPath, filename);
