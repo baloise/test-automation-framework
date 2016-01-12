@@ -34,6 +34,10 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
         selectByTitle(props.getString(paramTitle));
         props.clear();
         break;
+      case selectbyindex:
+        selectByIndex(props.getLong(paramIndex));
+        props.clear();
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -67,6 +71,14 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
 
   public void selectByTitle(String title) {
     getFixture().selectTab(title);
+  }
+
+  public void selectByIndex(Long index) {
+    if (index != null) {
+      getFixture().selectTab(index.intValue());
+    } else {
+      throw new IllegalArgumentException("tag index must NOT be null");
+    }
   }
 
 }

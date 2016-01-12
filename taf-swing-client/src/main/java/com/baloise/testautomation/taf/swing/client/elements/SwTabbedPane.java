@@ -26,6 +26,10 @@ public class SwTabbedPane extends AElement {
     find().selectByTitle(title);
   }
 
+  public void clickTab(Long index) {
+    find().selectByIndex(index);
+  }
+
   public ISwTabbedPane<?> find() {
     return (ISwTabbedPane<?>)swFind(ISwTabbedPane.type);
   }
