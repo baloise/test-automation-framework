@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
+import com.baloise.testautomation.taf.base.types.TafString;
 
 /**
  * 
@@ -77,6 +78,11 @@ public abstract class ABrInput extends AInput {
         find().sendKeys(Keys.TAB);
       }
     }
+  }
+  
+  public void fillWith(String value) {
+    fillValue = TafString.normalString(value);
+    fill();
   }
 
   // @Override
