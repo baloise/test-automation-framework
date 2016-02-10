@@ -468,7 +468,14 @@ public abstract class ABase implements IComponent {
         }
         if (o instanceof IData) {
           assertNotNull("field data NOT found: " + f.getName(), data.get(f.getName()));
-          setElementCheck(data.get(f.getName()).asString(), (IData<?>)o);
+          IType t = data.get(f.getName());
+          assertNotNull("field data NOT found: " + f.getName(), t);
+          if (t.isSkip()) {
+            setElementCheck(TafType.SKIP, (IData<?>)o);
+          }
+          else {
+            setElementCheck(data.get(f.getName()).asString(), (IData<?>)o);
+          }
         }
       }
       catch (IllegalArgumentException e) {

@@ -39,6 +39,14 @@ public abstract class AInput extends AElement {
     return null;
   }
 
+  public IType fillValue() {
+    return fillValue;
+  }
+  
+  public IType checkValue() {
+    return checkValue;
+  }
+  
   public String fillValueAsString() {
     if (fillValue != null) {
       return fillValue.asString();
