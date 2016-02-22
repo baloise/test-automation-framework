@@ -212,7 +212,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   }
 
   @Override
-  public void startInstrumentation(String commandline, String javaClassPathContains) {
+  public void startInstrumentation(String commandline, String javaClassPathContains, String sunJavaCommandContains) {
     H2DB.init();
 
     deleteFor(getReference().intValue());
@@ -220,6 +220,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramId, getReference());
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramJavaClassPath, javaClassPathContains);
+    props.putObject(paramSunJavaCommand, sunJavaCommandContains);
     props.putObject(paramType, ISwApplication.type.toString());
     startCommand(0, props);
     start(commandline);
@@ -233,7 +234,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
   }
 
   @Override
-  public void startInstrumentationWithSpy(String commandline, String javaClassPathContains, String filename) {
+  public void startInstrumentationWithSpy(String commandline, String javaClassPathContains, String sunJavaCommandContains, String filename) {
     H2DB.init();
 
     deleteFor(getReference().intValue());
@@ -241,6 +242,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     props.putObject(paramId, getReference());
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramJavaClassPath, javaClassPathContains);
+    props.putObject(paramSunJavaCommand, sunJavaCommandContains);
     props.putObject(paramType, ISwApplication.type.toString());
     props.putObject(paramSpy, true);
     props.putObject(paramPath, filename);

@@ -27,6 +27,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
@@ -59,6 +60,7 @@ import com.baloise.testautomation.taf.swing.server.elements.SwFrame;
 import com.baloise.testautomation.taf.swing.server.elements.SwInput;
 import com.baloise.testautomation.taf.swing.server.elements.SwInternalFrame;
 import com.baloise.testautomation.taf.swing.server.elements.SwLabel;
+import com.baloise.testautomation.taf.swing.server.elements.SwList;
 import com.baloise.testautomation.taf.swing.server.elements.SwMenuItem;
 import com.baloise.testautomation.taf.swing.server.elements.SwTabbedPane;
 import com.baloise.testautomation.taf.swing.server.elements.SwTable;
@@ -413,6 +415,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     if (c instanceof JLabel) {
       return new SwLabel(tid, (JLabel)c);
     }
+    if (c instanceof JList) {
+      return new SwList(tid, (JList)c);
+    }
     if (c instanceof JTabbedPane) {
       return new SwTabbedPane(tid, (JTabbedPane)c);
     }
@@ -454,10 +459,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   @Override
-  public void startInstrumentation(String url, String javaClassPathContains) {}
+  public void startInstrumentation(String url, String javaClassPathContains, String sunJavaCommandContains) {}
 
   @Override
-  public void startInstrumentationWithSpy(String url, String javaClassPathContains, String filename) {}
+  public void startInstrumentationWithSpy(String url, String javaClassPathContains,  String sunJavaCommandContains, String filename) {}
 
   public String storeFormatted(Document xml, String path) throws Exception {
     TransformerFactory tf = TransformerFactory.newInstance();

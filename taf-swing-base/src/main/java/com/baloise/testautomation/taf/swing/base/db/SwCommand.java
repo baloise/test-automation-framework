@@ -231,6 +231,33 @@ public class SwCommand extends H2Table {
     }
   }
 
+  /**
+   * 
+   */
+  public static void listCommands() {
+    ResultSet rs = null;
+    PreparedStatement ps = null;
+    try {
+      ps = conn()
+          .prepareStatement("select id, status from commands");
+      rs = ps.executeQuery();
+      // System.out.println(ps);
+      if (rs != null) {
+        while (rs.next()) {
+          System.out.println("Record: id = " + rs.getInt(1) + ", status = " + rs.getInt(2));
+        }
+      }
+    }
+    catch (SQLException e) {
+      error("error loading commands", e);
+      e.printStackTrace();
+      throw new SwError(e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+
   // public static boolean isAllDone(int id) {
   // return (getForId(id, Status.working).size() == 0) && (getForId(id, Status.ready).size() == 0);
   // }

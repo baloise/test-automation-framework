@@ -10,12 +10,13 @@ package com.baloise.testautomation.taf.swing.server.main;
 
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramCommand;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramId;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramJavaClassPath;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramMessage;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramPath;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramSpy;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramStatus;
+import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramSunJavaCommand;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramWatch;
-import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramJavaClassPath;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -50,34 +51,11 @@ public class SwStarter {
 
   public SwStarter() {
     info("will try to start instrumentation");
-    Properties props = System.getProperties();
-    info("listing jvm properties");
-    for (Object p : props.keySet()) {
-      info(p + " = " + System.getProperty((String)p));
-    }
-    try {
-      //H2DB.init();
-      H2DB.initConnection();
-      SwCommand nextCommand = getNextCommand();
-      if (nextCommand != null) {
-        execStartInstrumentation(nextCommand);
-        info("started! Id = " + swApplication.id);
-      }
-      else {
-        info("command " + nextCommand + " not executed, use startinstrumentation to start instrumentation");
-      }
-    }
-    catch (Exception e) {
-      File file = new File("c:/testing/error.log");
-      try {
-        PrintStream ps = new PrintStream(file);
-        e.printStackTrace(ps);
-        ps.close();
-      }
-      catch (Exception ex) {}
-      error("error starting instrumentation", e);
-    }
 
+    debugSystemProperties();
+    
+    tryToStartInstrumentation();
+    
     if (watch) {
       Thread watcher = new Thread() {
         public void run() {
@@ -101,6 +79,17 @@ public class SwStarter {
     }
   }
 
+  /**
+   * 
+   */
+  private void debugSystemProperties() {
+    Properties props = System.getProperties();
+    info("listing jvm properties");
+    for (Object p : props.keySet()) {
+      info(p + " = " + System.getProperty((String)p));
+    }
+  }
+
   private void execStartInstrumentation(SwCommand command) {
     TafProperties resultProps = new TafProperties();
     try {
@@ -109,8 +98,13 @@ public class SwStarter {
       String c = props.getString(paramCommand);
       if (ISwApplication.Command.startinstrumentation.toString().equalsIgnoreCase(c)) {
         String classPathContains = props.getString(paramJavaClassPath);
+        String sunJavaCommandContains = props.getString(paramSunJavaCommand);
         info("looking for jvm java.class.path property containing '" + classPathContains + "'");
         boolean found = System.getProperty("java.class.path").toLowerCase().contains(classPathContains.toLowerCase());
+        if (!found) {
+          info("looking for jvm sun.java.command property containing '" + sunJavaCommandContains + "'");
+          found = System.getProperty("sun.java.command").toLowerCase().contains(sunJavaCommandContains.toLowerCase());
+        }
         if (found) {
           swApplication.id = props.getLong(paramId).intValue();
           spy = props.getBoolean(paramSpy);
@@ -217,6 +211,34 @@ public class SwStarter {
     SwCommandProperties.insertForId(id, props);
   }
 
+  private boolean tryToStartInstrumentation() {
+    try {
+      H2DB.initConnection();
+      info("H2DB-connection initialised");
+      SwCommand nextCommand = getNextCommand();
+      if (nextCommand != null) {
+        execStartInstrumentation(nextCommand);
+        if (swApplication.id != 0) {
+          info("started! Id = " + swApplication.id);
+          return true;
+        }
+      }
+      else {
+        info("command " + nextCommand + " not executed, use startinstrumentation to start instrumentation");
+      }
+    } catch (Exception e) {
+      File file = new File("c:/testing/error.log");
+      try {
+        PrintStream ps = new PrintStream(file);
+        e.printStackTrace(ps);
+        ps.close();
+      }
+      catch (Exception ex) {}
+      error("starting instrumentation was NOT successful", e);
+    }
+    return false;
+  }
+
   public void watch() {
     while (true) {
       try {
@@ -224,9 +246,13 @@ public class SwStarter {
         System.out.println("watching!");
         System.out.println("id = " + swApplication.id);
         System.out.println("polling active = " + pollingActive);
+        SwCommand.listCommands();
+        SwCommandProperties.listProperties();
+        debugSystemProperties();
         pollingActive = false;
       }
       catch (Exception e) {
+        e.printStackTrace();
         // TODO: handle exception
       }
     }
