@@ -53,9 +53,9 @@ public class SwStarter {
     info("will try to start instrumentation");
 
     debugSystemProperties();
-    
+
     tryToStartInstrumentation();
-    
+
     if (watch) {
       Thread watcher = new Thread() {
         public void run() {
@@ -74,7 +74,8 @@ public class SwStarter {
         }
       };
       thread.start();
-    } else {
+    }
+    else {
       info("Application seems to NOT need instrumentation --> application will run without instrumentation");
     }
   }
@@ -144,7 +145,12 @@ public class SwStarter {
   private SwCommand getNextCommand() {
     try {
       List<SwCommand> commands = SwCommand.getReadyCommandsForId(swApplication.id);
-      return commands.get(0);
+      try {
+        return commands.get(0);
+      }
+      catch (ArrayIndexOutOfBoundsException e) {
+        info("no next command found --> try again at next poll intervall");
+      }
     }
     catch (SwError swe) {
       info("getting commands failed --> init database to be ready when next attempt is made");
@@ -226,7 +232,8 @@ public class SwStarter {
       else {
         info("command " + nextCommand + " not executed, use startinstrumentation to start instrumentation");
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       File file = new File("c:/testing/error.log");
       try {
         PrintStream ps = new PrintStream(file);

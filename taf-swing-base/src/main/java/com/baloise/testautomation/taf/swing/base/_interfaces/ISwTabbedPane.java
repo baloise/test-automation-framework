@@ -23,10 +23,9 @@ public interface ISwTabbedPane<R> extends ISwElement<R> {
 
   public final String paramTitle = "title";
   public final String paramIndex = "index";
-  
+
+  public void selectByIndex(Long index);
 
   public void selectByTitle(String title);
 
-  public void selectByIndex(Long index);
-  
 }

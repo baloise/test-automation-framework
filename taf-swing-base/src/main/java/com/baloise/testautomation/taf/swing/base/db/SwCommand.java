@@ -52,7 +52,7 @@ public class SwCommand extends H2Table {
       closePreparedStatement(ps);
     }
   }
-  
+
   public static void deleteCommandsForId(int id) {
     String deleteSQL = "DELETE FROM COMMANDS WHERE id = " + id;
     PreparedStatement ps = null;
@@ -112,6 +112,32 @@ public class SwCommand extends H2Table {
     }
   }
 
+  /**
+   * 
+   */
+  public static void listCommands() {
+    ResultSet rs = null;
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement("select id, status from commands");
+      rs = ps.executeQuery();
+      // System.out.println(ps);
+      if (rs != null) {
+        while (rs.next()) {
+          System.out.println("Record: id = " + rs.getInt(1) + ", status = " + rs.getInt(2));
+        }
+      }
+    }
+    catch (SQLException e) {
+      error("error loading commands", e);
+      e.printStackTrace();
+      throw new SwError(e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+
   public static void setAllToDone(int id) {
     String updateSQL = "UPDATE COMMANDS SET status = " + Status.done.ordinal() + " WHERE id = " + id;
     PreparedStatement ps = null;
@@ -131,10 +157,6 @@ public class SwCommand extends H2Table {
   public int status = 0;
 
   public int id = 0;
-
-  public SwCommand(int id) {
-    this(id, Status.preparing.ordinal());
-  }
 
   // public static boolean isAllDone(int id, String type) {
   // return getForId(id, type, Status.done).size() > 0;
@@ -167,11 +189,8 @@ public class SwCommand extends H2Table {
   // return result;
   // }
 
-  public SwCommand(int id, int status) {
-    // TODO
-    super();
-    this.id = id;
-    this.status = status;
+  public SwCommand(int id) {
+    this(id, Status.preparing.ordinal());
   }
 
   // public Command asCommand() {
@@ -182,6 +201,13 @@ public class SwCommand extends H2Table {
   // return null;
   // }
   // }
+
+  public SwCommand(int id, int status) {
+    // TODO
+    super();
+    this.id = id;
+    this.status = status;
+  }
 
   /**
    * 
@@ -225,33 +251,6 @@ public class SwCommand extends H2Table {
     }
     catch (SQLException e) {
       error("error updating status", e);
-    }
-    finally {
-      closePreparedStatement(ps);
-    }
-  }
-
-  /**
-   * 
-   */
-  public static void listCommands() {
-    ResultSet rs = null;
-    PreparedStatement ps = null;
-    try {
-      ps = conn()
-          .prepareStatement("select id, status from commands");
-      rs = ps.executeQuery();
-      // System.out.println(ps);
-      if (rs != null) {
-        while (rs.next()) {
-          System.out.println("Record: id = " + rs.getInt(1) + ", status = " + rs.getInt(2));
-        }
-      }
-    }
-    catch (SQLException e) {
-      error("error loading commands", e);
-      e.printStackTrace();
-      throw new SwError(e);
     }
     finally {
       closePreparedStatement(ps);

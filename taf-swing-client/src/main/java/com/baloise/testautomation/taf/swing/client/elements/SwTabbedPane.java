@@ -22,12 +22,12 @@ public class SwTabbedPane extends AElement {
     throw new SwError("click is not supported on tabbed pane");
   }
 
-  public void clickTab(String title) {
-    find().selectByTitle(title);
-  }
-
   public void clickTab(Long index) {
     find().selectByIndex(index);
+  }
+
+  public void clickTab(String title) {
+    find().selectByTitle(title);
   }
 
   public ISwTabbedPane<?> find() {

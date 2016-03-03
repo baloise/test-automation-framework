@@ -16,14 +16,18 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwList<R> extends ISwElement<R> {
 
   public enum Command {
-    gettextat
+    gettextat, getsize
   }
 
   public final String type = "list";
 
+  public final String paramSize = "size";
+
   public final String paramIndex = "index";
 
   public final String paramText = "text";
+
+  public Long getSize();
 
   public String getTextAt(Long index);
 

@@ -60,10 +60,6 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     return null;
   }
 
-  public WebElement findByCustom(WebElement root, ByCustom annotation) {
-    return null;
-  }
-
   @Override
   public List<WebElement> findAllBy(WebElement root, By by) {
     if (root == null) {
@@ -91,6 +87,10 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   public WebElement findByCssSelector(WebElement root, ByCssSelector annotation) {
     List<WebElement> elements = findAllByCssSelector(root, annotation.value());
     return get(elements, annotation.index());
+  }
+
+  public WebElement findByCustom(WebElement root, ByCustom annotation) {
+    return null;
   }
 
   public WebElement findById(WebElement root, ById annotation) {

@@ -73,12 +73,21 @@ import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
  */
 public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
+  /**
+   * @param string
+   */
+  public static boolean waitForWindowWithTitle(String windowTitle) {
+    ISwElement<Component> element = new SwApplication().findElementByXpath(null, "//*[@title='" + windowTitle + "']");
+    return element != null;
+  }
+
   public int id = 0;
   public Hashtable<Long, ISwElement<Component>> components;
   private long counter;
-  private Component root = null;
 
   // private Robot robot = BasicRobot.robotWithCurrentAwtHierarchy();
+
+  private Component root = null;
 
   private int timeoutInSeconds = 60;
 
@@ -127,25 +136,29 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     xml.append(">");
     // level++;
     if (c instanceof Container) {
-      Component[] cs;
+      Component[] cs = new Component[] {};
       if (c instanceof JMenu) {
         cs = ((JMenu)c).getMenuComponents();
       }
       else {
         if (c instanceof JTable) {
-          cs = new Component[] {};
           allCellsToXML(xml, (JTable)c);
         }
         else {
-          // if (c instanceof JTabbedPane) {
-          // Component tab = ((JTabbedPane)c).getSelectedComponent();
-          // if (tab instanceof Container) {
-          // cs = ((Container)tab).getComponents();
-          // } else {
-          // cs = ((Container)c).getComponents();
-          // }
-          // } else {
-          cs = ((Container)c).getComponents();
+          if (c instanceof JList) {
+            allListItemsToXML(xml, (JList)c);
+          }
+          else {
+            // if (c instanceof JTabbedPane) {
+            // Component tab = ((JTabbedPane)c).getSelectedComponent();
+            // if (tab instanceof Container) {
+            // cs = ((Container)tab).getComponents();
+            // } else {
+            // cs = ((Container)c).getComponents();
+            // }
+            // } else {
+            cs = ((Container)c).getComponents();
+          }
         }
       }
       // }
@@ -169,6 +182,12 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   // private int level = 0;
+
+  public void allListItemsToXML(StringBuilder xml, JList list) {
+    for (int i = 0; i < list.getModel().getSize(); i++) {
+      xml.append("<listitem row=\"" + i + "\">" + list.getModel().getElementAt(i).toString() + "</listitem>");
+    }
+  }
 
   private String asValidAttribute(String s) {
     return s.replace("&", "&amp;").replace("\"", "&quot;");
@@ -273,6 +292,21 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     return null;
   }
 
+  // @Override
+  // public String getFullXML() {
+  // return null;
+  // }
+  //
+  // @Override
+  // public String getMappedXML() {
+  // return null;
+  // }
+  //
+  // @Override
+  // public String toString(long tid) {
+  // return null;
+  // }
+
   private NodeList findAllByXpath(Long root, String s) {
     // 1. Instantiate an XPathFactory.
 
@@ -311,21 +345,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     }
     return null;
   }
-
-  // @Override
-  // public String getFullXML() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String getMappedXML() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String toString(long tid) {
-  // return null;
-  // }
 
   @Override
   public ISwElement<Component> findElementByXpath(Long root, String s) {
@@ -380,11 +399,11 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     return new Vector<ISwElement<Component>>();
   }
 
+  // TODO
+
   public ISwElement<Component> get(long tid) {
     return components.get(tid);
   }
-
-  // TODO
 
   private TafProperties getError(String statusMessage) {
     TafProperties result = new TafProperties();
@@ -462,7 +481,8 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   public void startInstrumentation(String url, String javaClassPathContains, String sunJavaCommandContains) {}
 
   @Override
-  public void startInstrumentationWithSpy(String url, String javaClassPathContains,  String sunJavaCommandContains, String filename) {}
+  public void startInstrumentationWithSpy(String url, String javaClassPathContains, String sunJavaCommandContains,
+      String filename) {}
 
   public String storeFormatted(Document xml, String path) throws Exception {
     TransformerFactory tf = TransformerFactory.newInstance();
@@ -526,14 +546,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private String toMappedXML() {
     return toFullXML();
-  }
-
-  /**
-   * @param string
-   */
-  public static boolean waitForWindowWithTitle(String windowTitle) {
-    ISwElement<Component> element = new SwApplication().findElementByXpath(null, "//*[@title='" + windowTitle + "']");
-    return element != null;
   }
 
 }

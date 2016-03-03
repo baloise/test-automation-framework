@@ -69,16 +69,17 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
     return ISwTabbedPane.type;
   }
 
-  public void selectByTitle(String title) {
-    getFixture().selectTab(title);
-  }
-
   public void selectByIndex(Long index) {
     if (index != null) {
       getFixture().selectTab(index.intValue());
-    } else {
+    }
+    else {
       throw new IllegalArgumentException("tag index must NOT be null");
     }
+  }
+
+  public void selectByTitle(String title) {
+    getFixture().selectTab(title);
   }
 
 }

@@ -24,13 +24,15 @@ public class RetryTest implements TestRule {
 
   private static Hashtable<String, Integer> retriedMethods = new Hashtable<String, Integer>();
   public static Logger logger = LogManager.getLogger("RetryTest");
-  
-  private int retryCount;
+
+  public static void addRetry(Description description, Integer count) {
+    retriedMethods.put(description.toString(), count);
+  }
 
   public static void clearRetriedMethods() {
     retriedMethods = new Hashtable<String, Integer>();
   }
-  
+
   public static void logRetriedMethods() {
     Set<String> keys = retriedMethods.keySet();
     if (keys.size() > 0) {
@@ -40,11 +42,11 @@ public class RetryTest implements TestRule {
       }
     }
   }
-  
-  public static void addRetry(Description description, Integer count) {
-    retriedMethods.put(description.toString(), count);
-  }
-  
+
+  private int retryCount;
+
+  private boolean wasLastRetry = false;
+
   public RetryTest(int retryCount) {
     this.retryCount = retryCount;
   }
@@ -53,8 +55,6 @@ public class RetryTest implements TestRule {
     return statement(base, description);
   }
 
-  private boolean wasLastRetry = false;
-  
   private Statement statement(final Statement base, final Description description) {
     return new Statement() {
 
@@ -62,7 +62,7 @@ public class RetryTest implements TestRule {
       public void evaluate() throws Throwable {
         wasLastRetry = false;
         Throwable caughtThrowable = null;
-        
+
         // implement retry logic here
         for (int i = 0; i < retryCount; i++) {
           try {

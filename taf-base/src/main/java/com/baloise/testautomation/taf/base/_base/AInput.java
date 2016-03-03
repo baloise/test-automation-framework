@@ -32,6 +32,10 @@ public abstract class AInput extends AElement {
     return !fillValue.isSkip();
   }
 
+  public IType checkValue() {
+    return checkValue;
+  }
+
   public String checkValueAsString() {
     if (checkValue != null) {
       return checkValue.asString();
@@ -42,11 +46,7 @@ public abstract class AInput extends AElement {
   public IType fillValue() {
     return fillValue;
   }
-  
-  public IType checkValue() {
-    return checkValue;
-  }
-  
+
   public String fillValueAsString() {
     if (fillValue != null) {
       return fillValue.asString();

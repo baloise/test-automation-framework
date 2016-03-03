@@ -67,6 +67,37 @@ public abstract class ABase implements IComponent {
     initFields();
   }
 
+  public void basicCheck() {
+    Field[] fields = getCheckFields();
+    for (Field f : fields) {
+      try {
+        Method m = getCheckMethod(f);
+        if (m != null) {
+          m.invoke(this);
+        }
+        else {
+          Object o;
+          o = f.get(this);
+          if (o instanceof ICheck) {
+            ((ICheck)o).check();
+          }
+          else {
+            fail("field cannot be checked (beacause ICheck is not implemented): " + f.getName());
+          }
+        }
+      }
+      catch (InvocationTargetException e1) {
+        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
+      }
+      catch (IllegalArgumentException e) {
+        e.printStackTrace();
+      }
+      catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   public void basicFill() {
     Field[] fields = getFillFields();
     for (Field f : fields) {
@@ -99,38 +130,7 @@ public abstract class ABase implements IComponent {
       }
     }
   }
-  
-  public void basicCheck() {
-    Field[] fields = getCheckFields();
-    for (Field f : fields) {
-      try {
-        Method m = getCheckMethod(f);
-        if (m != null) {
-          m.invoke(this);
-        }
-        else {
-          Object o;
-          o = f.get(this);
-          if (o instanceof ICheck) {
-            ((ICheck)o).check();
-          }
-          else {
-            fail("field cannot be checked (beacause ICheck is not implemented): " + f.getName());
-          }
-        }
-      }
-      catch (InvocationTargetException e1) {
-        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
-      }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-  
+
   @Override
   public boolean canCheck() {
     if (checkId == null) {

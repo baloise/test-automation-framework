@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
-import com.baloise.testautomation.taf.base.types.TafString;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 
 /**
  * 
@@ -23,6 +23,8 @@ import com.baloise.testautomation.taf.base.types.TafString;
 public abstract class ABrInput extends AInput {
 
   private static final int MAX_RETRIES = 5;
+
+  protected abstract IType asCorrectType(String s);
 
   public void check() {
     if (checkValue != null) {
@@ -79,9 +81,9 @@ public abstract class ABrInput extends AInput {
       }
     }
   }
-  
+
   public void fillWith(String value) {
-    fillValue = TafString.normalString(value);
+    fillValue = asCorrectType(value);
     fill();
   }
 

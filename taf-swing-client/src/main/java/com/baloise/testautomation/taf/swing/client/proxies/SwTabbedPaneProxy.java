@@ -22,16 +22,16 @@ public class SwTabbedPaneProxy extends ASwElementProxy implements ISwTabbedPane<
   }
 
   @Override
-  public void selectByTitle(String title) {
-    TafProperties props = new TafProperties();
-    props.putObject(paramTitle, title);
-    executeCommand(Command.selectbytitle.toString(), props);
-  }
-
-  @Override
   public void selectByIndex(Long index) {
     TafProperties props = new TafProperties();
     props.putObject(paramIndex, index);
     executeCommand(Command.selectbyindex.toString(), props);
+  }
+
+  @Override
+  public void selectByTitle(String title) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramTitle, title);
+    executeCommand(Command.selectbytitle.toString(), props);
   }
 }

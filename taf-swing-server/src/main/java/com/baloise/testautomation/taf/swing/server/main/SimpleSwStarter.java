@@ -15,7 +15,7 @@ import java.io.IOException;
  * 
  */
 public class SimpleSwStarter {
-  
+
   public SimpleSwStarter() {
     System.out.println("Instrumentation successful");
     File f = new File("c:/testing/" + System.currentTimeMillis() + ".txt");

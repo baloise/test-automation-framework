@@ -14,9 +14,9 @@ import static org.junit.Assert.fail;
 
 import java.lang.annotation.Annotation;
 
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IComponent;
 import com.baloise.testautomation.taf.base._interfaces.IElement;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 
 /**
@@ -47,7 +47,7 @@ public abstract class AElement implements IElement {
   public Object brFindByCustom() {
     return null;
   }
-  
+
   // public Region roFind() {
   // // TODO
   // return null;

@@ -13,13 +13,20 @@ import static org.junit.Assert.assertEquals;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import com.baloise.testautomation.taf.base._interfaces.ICombobox;
 import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
 
 /**
  * 
  */
-public class BrCombobox extends ABrCombobox implements IData<TafString> {
+public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafString.normalString(s);
+  }
 
   @Override
   public void check() {
@@ -75,5 +82,4 @@ public class BrCombobox extends ABrCombobox implements IData<TafString> {
   public void setFill(TafString value) {
     this.fillValue = value;
   }
-
 }

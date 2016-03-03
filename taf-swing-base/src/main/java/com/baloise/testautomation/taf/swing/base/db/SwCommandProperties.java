@@ -112,6 +112,31 @@ public class SwCommandProperties extends H2Table {
     }
   }
 
+  /**
+   * 
+   */
+  public static void listProperties() {
+    ResultSet rs = null;
+    PreparedStatement ps = null;
+    try {
+      ps = conn().prepareStatement("select key, value, c_id from command_properties");
+      rs = ps.executeQuery();
+      if (rs != null) {
+        while (rs.next()) {
+          System.out.println("Property: id = " + rs.getInt(3) + ", key = " + rs.getString(1) + ", value = "
+              + rs.getString(2));
+        }
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+      error("error loading command properties", e);
+    }
+    finally {
+      closePreparedStatement(ps);
+    }
+  }
+
   public String key = "";
 
   public String value = "";
@@ -137,30 +162,6 @@ public class SwCommandProperties extends H2Table {
     }
     catch (SQLException e) {
       error("error inserting property", e);
-    }
-    finally {
-      closePreparedStatement(ps);
-    }
-  }
-
-  /**
-   * 
-   */
-  public static void listProperties() {
-    ResultSet rs = null;
-    PreparedStatement ps = null;
-    try {
-      ps = conn().prepareStatement("select key, value, c_id from command_properties");
-      rs = ps.executeQuery();
-      if (rs != null) {
-        while (rs.next()) {
-          System.out.println("Property: id = " + rs.getInt(3) + ", key = " + rs.getString(1) + ", value = " + rs.getString(2));
-        }
-      }
-    }
-    catch (SQLException e) {
-      e.printStackTrace();
-      error("error loading command properties", e);
     }
     finally {
       closePreparedStatement(ps);

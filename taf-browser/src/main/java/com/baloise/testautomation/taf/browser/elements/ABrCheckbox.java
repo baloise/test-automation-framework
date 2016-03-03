@@ -9,11 +9,18 @@
 package com.baloise.testautomation.taf.browser.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.ICheckbox;
+import com.baloise.testautomation.taf.base._interfaces.IType;
+import com.baloise.testautomation.taf.base.types.TafBoolean;
 
 /**
  * 
  */
 public abstract class ABrCheckbox extends ABrInput implements ICheckbox {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafBoolean.normalBoolean(s);
+  }
 
   public Boolean fillValueAsPrimitiveBoolean() {
     if (fillValue.isSkip() || fillValue.isEmpty()) {

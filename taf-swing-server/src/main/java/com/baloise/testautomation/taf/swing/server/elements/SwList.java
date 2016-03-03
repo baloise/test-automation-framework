@@ -35,6 +35,10 @@ public class SwList extends ASwElement implements ISwList<Component> {
         props.clear();
         props.putObject(paramText, text);
         break;
+      case getsize:
+        props.clear();
+        props.putObject(paramSize, getSize());
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -57,8 +61,13 @@ public class SwList extends ASwElement implements ISwList<Component> {
   }
 
   @Override
-  public String getType() {
-    return ISwList.type;
+  public Long getSize() {
+    try {
+      return new Long(getFixture().contents().length);
+    }
+    catch (Exception e) {
+      return 0L;
+    }
   }
 
   @Override
@@ -66,5 +75,9 @@ public class SwList extends ASwElement implements ISwList<Component> {
     return getFixture().valueAt(index.intValue());
   }
 
+  @Override
+  public String getType() {
+    return ISwList.type;
+  }
 
 }

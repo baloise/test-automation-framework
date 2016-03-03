@@ -10,7 +10,6 @@ package com.baloise.testautomation.taf.swing.base.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import org.h2.tools.Server;
 
@@ -58,9 +57,9 @@ public class H2DB {
       }
       Class.forName("org.h2.Driver");
       conn = DriverManager.getConnection("jdbc:h2:~/swinginstrumentation;AUTO_SERVER=TRUE", "sa", "");
-//      conn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test;AUTO_SERVER=TRUE", "sa", "");
-//      conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:" + port
-//          + "/mem:swinginstrumentation;DB_CLOSE_DELAY=-1", "sa", "");
+      // conn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test;AUTO_SERVER=TRUE", "sa", "");
+      // conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:" + port
+      // + "/mem:swinginstrumentation;DB_CLOSE_DELAY=-1", "sa", "");
     }
     catch (Exception e2) {
       System.out.println("error initialising database");
@@ -70,27 +69,28 @@ public class H2DB {
   }
 
   public static void startServer() {
-/*    System.out.println("startServer is called from...");
-    StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-    for (int i = 0; i < stackTraceElements.length; i++) {
-      System.out.println(stackTraceElements[i]);
-    }
-    try {
-      if (server != null) {
-        if (server.isRunning(false)) {
-          System.out.println("Server is already running on 'jdbc:h2:" + server.getURL() + "/mem:swinginstrumentation'");
-          return;
-        }
-        stopServer();
-      }
-      server = Server.createTcpServer("-tcpPort", port, "-tcpAllowOthers");
-      server.start();
-      System.out.println("Server started and running on 'jdbc:h2:" + server.getURL() + "/mem:swinginstrumentation'");
-    }
-    catch (SQLException e) {
-      e.printStackTrace();
-    }
-*/
+    /*
+     * System.out.println("startServer is called from...");
+     * StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+     * for (int i = 0; i < stackTraceElements.length; i++) {
+     * System.out.println(stackTraceElements[i]);
+     * }
+     * try {
+     * if (server != null) {
+     * if (server.isRunning(false)) {
+     * System.out.println("Server is already running on 'jdbc:h2:" + server.getURL() + "/mem:swinginstrumentation'");
+     * return;
+     * }
+     * stopServer();
+     * }
+     * server = Server.createTcpServer("-tcpPort", port, "-tcpAllowOthers");
+     * server.start();
+     * System.out.println("Server started and running on 'jdbc:h2:" + server.getURL() + "/mem:swinginstrumentation'");
+     * }
+     * catch (SQLException e) {
+     * e.printStackTrace();
+     * }
+     */
   }
 
   public static void stopServer() {

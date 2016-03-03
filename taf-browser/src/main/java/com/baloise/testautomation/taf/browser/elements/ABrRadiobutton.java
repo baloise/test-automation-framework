@@ -9,11 +9,18 @@
 package com.baloise.testautomation.taf.browser.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IRadiobutton;
+import com.baloise.testautomation.taf.base._interfaces.IType;
+import com.baloise.testautomation.taf.base.types.TafBoolean;
 
 /**
  * 
  */
-public class ABrRadiobutton extends ABrInput implements IRadiobutton {
+public abstract class ABrRadiobutton extends ABrInput implements IRadiobutton {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafBoolean.normalBoolean(s);
+  }
 
   public Boolean fillValueAsPrimitiveBoolean() {
     if (fillValue.isSkip() || fillValue.isEmpty()) {
@@ -35,5 +42,4 @@ public class ABrRadiobutton extends ABrInput implements IRadiobutton {
   public void select() {
     find().click();
   }
-
 }

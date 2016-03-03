@@ -1,9 +1,15 @@
 package com.baloise.testautomation.taf.browser.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafDouble;
 
 public class BrDoubleInput extends ABrInput implements IData<TafDouble> {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafDouble.normalDouble(s);
+  }
 
   @Override
   public TafDouble get() {

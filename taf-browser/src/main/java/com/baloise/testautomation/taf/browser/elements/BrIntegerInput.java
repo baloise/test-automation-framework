@@ -9,12 +9,18 @@
 package com.baloise.testautomation.taf.browser.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 
 /**
  * 
  */
 public class BrIntegerInput extends ABrInput implements IData<TafInteger> {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafInteger.normalInteger(s);
+  }
 
   @Override
   public TafInteger get() {

@@ -75,7 +75,7 @@ public class SwLabel extends ASwElement implements ISwLabel<Component> {
 
   @Override
   public String getText() {
-    return null;
+    return getFixture().text();
   }
 
   @Override
