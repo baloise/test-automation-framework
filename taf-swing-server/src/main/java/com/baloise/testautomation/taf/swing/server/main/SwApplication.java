@@ -8,6 +8,8 @@
  */
 package com.baloise.testautomation.taf.swing.server.main;
 
+import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedString;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
@@ -96,14 +98,14 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   public void allCellsToXML(StringBuilder xml, JTable table) {
     for (int c = 0; c < table.getColumnCount(); c++) {
       xml.append("<header tid = \"" + counter + "\" col = \"" + c + "\" value = \""
-          + asValidAttribute(table.getColumnModel().getColumn(c).getHeaderValue().toString()) + "\"></header>");
+          + asEscaped(table.getColumnModel().getColumn(c).getHeaderValue().toString()) + "\"></header>");
       components.put(counter, new SwTableColumn(counter, c, table));
       counter++;
     }
     for (int c = 0; c < table.getColumnCount(); c++) {
       for (int r = 0; r < table.getRowCount(); r++) {
         xml.append("<cell tid = \"" + counter + "\" row = \"" + r + "\" col = \"" + c + "\" value = \""
-            + asValidAttribute(table.getValueAt(r, c).toString()) + "\"></cell>");
+            + asEscaped(table.getValueAt(r, c).toString()) + "\"></cell>");
         components.put(counter, new SwCell(counter, r, c, table));
         counter++;
       }
@@ -183,14 +185,23 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   // private int level = 0;
 
+
   public void allListItemsToXML(StringBuilder xml, JList list) {
     for (int i = 0; i < list.getModel().getSize(); i++) {
-      xml.append("<listitem row=\"" + i + "\">" + list.getModel().getElementAt(i).toString() + "</listitem>");
+      String s = "";
+      try {
+        String text = list.getModel().getElementAt(i).toString();
+        s = "<listitem index=\"" + i + "\">" + asEscaped(text) + "</listitem>";
+      }
+      catch (Exception e) {
+        s = "<listitem index=\"-1\">" + e.getMessage() + "</listitem>";
+      }
+      xml.append(s);
     }
   }
 
-  private String asValidAttribute(String s) {
-    return s.replace("&", "&amp;").replace("\"", "&quot;");
+  private String asEscaped(String s) {
+    return asEscapedString(s);
   }
 
   private void debugRoot() {
@@ -419,9 +430,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     if (c instanceof JInternalFrame) {
       return new SwInternalFrame(tid, (JInternalFrame)c);
     }
-    // if (c instanceof JMenu) {
-    // return "menu";
-    // }
     if (c instanceof JComboBox) {
       return new SwComboBox(tid, (JComboBox)c);
     }
@@ -446,9 +454,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     if (c instanceof JTable) {
       return new SwTable(tid, (JTable)c);
     }
-    // if (c instanceof JRadioButton) {
-    // return "radiobutton";
-    // }
     if (c instanceof JTextField) {
       return new SwInput(tid, (JTextField)c);
     }

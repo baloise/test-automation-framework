@@ -47,7 +47,12 @@ public class SwList extends ASwElement implements ISwList<Component> {
 
   @Override
   public void fillProperties() {
-    addProperty("size", getComponent().getModel().getSize());
+    try {
+      addProperty("size", getComponent().getModel().getSize());
+    }
+    catch (Exception e) {
+      addProperty("size", -1);
+    }
   }
 
   @Override

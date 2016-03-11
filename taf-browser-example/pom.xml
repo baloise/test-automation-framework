@@ -31,10 +31,10 @@
 		</plugins>
 	</build>
 	<dependencies>
-	<dependency>
-		<groupId>com.baloise.testing.framework</groupId>
-		<artifactId>taf-browser</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
-	</dependency>
+		<dependency>
+			<groupId>com.baloise.testing.framework</groupId>
+			<artifactId>taf-browser</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

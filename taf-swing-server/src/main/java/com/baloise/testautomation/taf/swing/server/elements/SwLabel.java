@@ -60,7 +60,7 @@ public class SwLabel extends ASwElement implements ISwLabel<Component> {
 
   @Override
   public void fillProperties() {
-    addProperty("text", asValidAttribute(getComponent().getText()));
+    addProperty("text", asEscaped(getComponent().getText()));
   }
 
   @Override
