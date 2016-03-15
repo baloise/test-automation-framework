@@ -15,6 +15,7 @@ import static org.junit.Assert.fail;
 import java.lang.annotation.Annotation;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
 import com.baloise.testautomation.taf.base._interfaces.IComponent;
 import com.baloise.testautomation.taf.base._interfaces.IElement;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
@@ -48,15 +49,15 @@ public abstract class AElement implements IElement {
     return null;
   }
 
-  // public Region roFind() {
-  // // TODO
-  // return null;
-  // }
-
   @Override
   public void setBy(Annotation by) {
     this.by = by;
   }
+
+  // public Region roFind() {
+  // // TODO
+  // return null;
+  // }
 
   @Override
   public void setCheck(Annotation check) {
@@ -92,6 +93,29 @@ public abstract class AElement implements IElement {
     }
 
     return element;
+  }
+
+  public void withXPath(IComponent parent, String name, final String xpath) {
+    ByXpath byXpath = new ByXpath() {
+
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return ByXpath.class;
+      }
+
+      @Override
+      public int index() {
+        return 0;
+      }
+
+      @Override
+      public String value() {
+        return xpath;
+      }
+    };
+    setBy(byXpath);
+    setName(name);
+    setComponent(parent);
   }
 
 }
