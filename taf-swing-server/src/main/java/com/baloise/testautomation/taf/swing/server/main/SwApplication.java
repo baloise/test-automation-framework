@@ -35,6 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -67,6 +68,7 @@ import com.baloise.testautomation.taf.swing.server.elements.SwMenuItem;
 import com.baloise.testautomation.taf.swing.server.elements.SwTabbedPane;
 import com.baloise.testautomation.taf.swing.server.elements.SwTable;
 import com.baloise.testautomation.taf.swing.server.elements.SwTableColumn;
+import com.baloise.testautomation.taf.swing.server.elements.SwTree;
 import com.baloise.testautomation.taf.swing.server.elements.SwUnsupportedElement;
 import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
@@ -184,7 +186,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   // private int level = 0;
-
 
   public void allListItemsToXML(StringBuilder xml, JList list) {
     for (int i = 0; i < list.getModel().getSize(); i++) {
@@ -456,6 +457,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     }
     if (c instanceof JTextField) {
       return new SwInput(tid, (JTextField)c);
+    }
+    if (c instanceof JTree) {
+      return new SwTree(tid, (JTree)c);
     }
     return new SwUnsupportedElement(tid, c);
   }

@@ -31,7 +31,7 @@ public class SwList extends AElement {
   public Long getSize() {
     return find().getSize();
   }
-  
+
   public String getTextAt(Long index) {
     return find().getTextAt(index);
   }
@@ -39,5 +39,5 @@ public class SwList extends AElement {
   public boolean hasListItemContaining(String partialText) {
     return findListItemContaining(partialText) != null;
   }
-  
+
 }

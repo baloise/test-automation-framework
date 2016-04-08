@@ -31,6 +31,7 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwList;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
 import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
@@ -278,6 +279,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     supportedElements.put(ISwTabbedPane.type.toLowerCase(), SwTabbedPaneProxy.class);
     supportedElements.put(ISwLabel.type.toLowerCase(), SwLabelProxy.class);
     supportedElements.put(ISwList.type.toLowerCase(), SwListProxy.class);
+    supportedElements.put(ISwTree.type.toLowerCase(), SwTreeProxy.class);
     return supportedElements;
   }
 
