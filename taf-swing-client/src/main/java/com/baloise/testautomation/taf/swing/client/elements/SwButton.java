@@ -10,9 +10,12 @@ public class SwButton extends AButton {
     find().click();
   }
 
-  // @Override
   public ISwButton<?> find() {
     return (ISwButton<?>)swFind(ISwButton.type);
   }
 
+  public boolean isEnabled() {
+    return find().isEnabled();
+  }
+  
 }

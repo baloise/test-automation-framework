@@ -23,6 +23,10 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
         props.clear();
         click();
         break;
+      case isEnabled:
+        props.clear();
+        props.putObject(paramIsEnabled, isEnabled());
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -52,6 +56,14 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
   @Override
   public String getType() {
     return ISwButton.type;
+  }
+
+  /** 
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isEnabled() {
+    return getFixture().isEnabled();
   }
 
 }
