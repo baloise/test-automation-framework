@@ -89,7 +89,12 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
 
   @Override
   public void selectItem(String item) {
-    getFixture().selectItem(item);
+    try {
+      getFixture().enterText(item);
+    }
+    catch (Exception e) {
+      getFixture().selectItem(item);
+    }
   }
 
 }

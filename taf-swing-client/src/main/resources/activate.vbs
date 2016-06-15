@@ -1,1 +1,0 @@
-CreateObject("WScript.Shell").AppActivate Wscript.Arguments(0)

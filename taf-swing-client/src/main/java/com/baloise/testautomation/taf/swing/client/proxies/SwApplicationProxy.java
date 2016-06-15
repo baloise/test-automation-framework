@@ -11,11 +11,14 @@ package com.baloise.testautomation.taf.swing.client.proxies;
 import static org.junit.Assert.fail;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
 
 import org.junit.Assert;
+import org.w3c.dom.Node;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
@@ -144,7 +147,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
   @Override
   public List<ISwElement<Long>> findElementsByXpath(Long root, String xpath) {
-    Vector<ISwElement<Long>> result = new Vector<>();
+    List<ISwElement<Long>> result = new ArrayList<ISwElement<Long>>();
     TafProperties props = new TafProperties();
     props.putObject(paramXPath, xpath);
     props.putObject(paramRoot, root);
@@ -157,6 +160,17 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
         result.add(element);
       }
     }
+
+    // Order elements according to their TID, to fit ordering in swing hierarchy
+    Comparator<ISwElement<Long>> comparator = new Comparator<ISwElement<Long>>() {
+
+      @Override
+      public int compare(ISwElement<Long> element1, ISwElement<Long> element2) {
+        return (element1.getReference().intValue() - element2.getReference().intValue());
+      }
+
+    };
+    Collections.sort(result, comparator);
     return result;
   }
 
