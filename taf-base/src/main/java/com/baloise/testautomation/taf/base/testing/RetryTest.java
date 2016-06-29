@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -24,6 +25,8 @@ public class RetryTest implements TestRule {
 
   private static Hashtable<String, Integer> retriedMethods = new Hashtable<String, Integer>();
   public static Logger logger = LogManager.getLogger("RetryTest");
+  public static boolean doNotRetryOnAssumptionViolatedException = true;
+
 
   public static void addRetry(Description description, Integer count) {
     retriedMethods.put(description.toString(), count);
@@ -58,6 +61,8 @@ public class RetryTest implements TestRule {
   private Statement statement(final Statement base, final Description description) {
     return new Statement() {
 
+      private int actualRetries = 0;
+      
       @Override
       public void evaluate() throws Throwable {
         wasLastRetry = false;
@@ -65,6 +70,7 @@ public class RetryTest implements TestRule {
 
         // implement retry logic here
         for (int i = 0; i < retryCount; i++) {
+          actualRetries++;
           try {
             base.evaluate();
             wasLastRetry = true;
@@ -72,12 +78,19 @@ public class RetryTest implements TestRule {
           }
           catch (Throwable t) {
             caughtThrowable = t;
+            if (doNotRetryOnAssumptionViolatedException) {
+              if (AssumptionViolatedException.class.equals(t.getClass())) {
+                logger.info("No retry because assumption was violated");
+                wasLastRetry = true;
+                break;
+              }
+            }
             System.err.println(description.getDisplayName() + ": run " + (i + 1) + " failed");
             addRetry(description, i + 1);
             t.printStackTrace();
           }
         }
-        System.err.println(description.getDisplayName() + ": giving up after " + retryCount + " failures");
+        System.err.println(description.getDisplayName() + ": giving up after " + actualRetries + " failures/assumption violated");
         wasLastRetry = true;
         throw caughtThrowable;
       }
