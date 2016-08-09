@@ -44,10 +44,14 @@ public class ScreenshotOnFailed extends TestWatcher {
 
   @Override
   protected void failed(Throwable e, Description description) {
-    saveScreenShot();
+    saveScreenShot("failed_" + System.currentTimeMillis() + "_" + description.getMethodName() + ".jpg");
   }
 
   public void saveScreenShot() {
+    saveScreenShot("failed_" + System.currentTimeMillis() + ".jpg");
+  }
+  
+  public void saveScreenShot(String filename) {
     logger.info("Execute saveScreenShot()");
     try {
       Toolkit toolkit = Toolkit.getDefaultToolkit(); // Toolkit class returns the default toolkit
@@ -55,7 +59,7 @@ public class ScreenshotOnFailed extends TestWatcher {
       Rectangle rectangle = new Rectangle(0, 0, dimension.width, dimension.height);
       Robot robot = new Robot();
       BufferedImage image = robot.createScreenCapture(rectangle);
-      File f = new File(path + "failed_" + System.currentTimeMillis() + ".jpg");
+      File f = new File(path + filename);
       ImageIO.write(image, "jpg", f);
       logger.info("Done saveScreenShot() " + f);
     }
