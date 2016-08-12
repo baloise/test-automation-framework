@@ -30,6 +30,7 @@ import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.CheckData;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.DataProvider;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Excel;
@@ -189,6 +190,17 @@ public abstract class ABase implements IComponent {
       }
     }
     return null;
+  }
+
+  public Field[] getCheckDataFields() {
+    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> result = new ArrayList<Field>();
+    for (Field field : fields) {
+      if (field.isAnnotationPresent(CheckData.class)) {
+        result.add(field);
+      }
+    }
+    return result.toArray(new Field[result.size()]);
   }
 
   public Field[] getCheckFields() {
@@ -454,7 +466,13 @@ public abstract class ABase implements IComponent {
     assertFalse("too much data found: '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
     assertTrue("no check data found: '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
     IDataRow data = dataRows.firstElement();
+    setCheckDataFields(data);
     setCheckFields(data);
+  }
+
+  public void setCheckDataFields(IDataRow data) {
+    Field[] fields = getCheckDataFields();
+    setFields(data, fields);
   }
 
   public void setCheckFields(IDataRow data) {
@@ -492,33 +510,6 @@ public abstract class ABase implements IComponent {
     this.parent = parent;
   }
 
-  public void setDataFields(IDataRow data) {
-    Field[] fields = getDataFields();
-    for (Field f : fields) {
-      try {
-        Object o = f.get(this);
-        if (o instanceof IType) {
-          assertNotNull("data not found: " + f.getName(), data.get(f.getName()));
-          if (data.get(f.getName()).isSkip()) {
-            ((IType)o).set(TafType.SKIP);
-          }
-          else {
-            ((IType)o).set(data.get(f.getName()).asString());
-          }
-        }
-        else {
-          fail("data must be an instance of IType: " + f.getName() + " --> " + getClass());
-        }
-      }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
   @SuppressWarnings({"unchecked", "rawtypes"})
   public void setElementCheck(String fieldContents, IData<?> o) {
     if (o instanceof IData) {
@@ -554,6 +545,33 @@ public abstract class ABase implements IComponent {
     fail("element type not supported: " + o.getClass());
   }
 
+  private void setFields(IDataRow data, Field[] fields) {
+    for (Field f : fields) {
+      try {
+        Object o = f.get(this);
+        if (o instanceof IType) {
+          assertNotNull("data not found: " + f.getName(), data.get(f.getName()));
+          if (data.get(f.getName()).isSkip()) {
+            ((IType)o).set(TafType.SKIP);
+          }
+          else {
+            ((IType)o).set(data.get(f.getName()).asString());
+          }
+        }
+        else {
+          fail("data annotated with @Data or @CheckData must be an instance of IType: " + f.getName() + " --> "
+              + getClass());
+        }
+      }
+      catch (IllegalArgumentException e) {
+        e.printStackTrace();
+      }
+      catch (IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   @Override
   public void setFill(String id) {
     setFill(TafString.normalString(id));
@@ -569,8 +587,13 @@ public abstract class ABase implements IComponent {
     assertFalse("too much data found: '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
     assertTrue("no fill data found: '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
     IDataRow data = dataRows.firstElement();
-    setDataFields(data);
+    setFillDataFields(data);
     setFillFields(data);
+  }
+
+  public void setFillDataFields(IDataRow data) {
+    Field[] fields = getDataFields();
+    setFields(data, fields);
   }
 
   public void setFillFields(IDataRow data) {

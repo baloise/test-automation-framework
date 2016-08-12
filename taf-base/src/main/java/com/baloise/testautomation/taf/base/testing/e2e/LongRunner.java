@@ -83,8 +83,8 @@ public class LongRunner extends OrderedRunner {
     private void archiveIfCompleted() {
       LongRunnerMethodInfo method = (LongRunnerMethodInfo)methods.toArray()[methods.size() - 1];
       if (!method.isSuspended() && !method.isUnknown()) {
-        new File(getProcessFileName()).renameTo(new File("completed." + getProcessFileName()));
-        new File(getDataFileName()).renameTo(new File("completed." + getDataFileName()));
+        new File(getProcessFileName(false)).renameTo(new File(getProcessFileName(true)));
+        new File(getDataFileName(false)).renameTo(new File(getDataFileName(true)));
       }
     }
 
@@ -111,8 +111,8 @@ public class LongRunner extends OrderedRunner {
       return data;
     }
 
-    private String getDataFileName() {
-      return testClass.getName() + "." + id + ".props";
+    private String getDataFileName(boolean isCompleted) {
+      return getFileName(isCompleted, ".props");
     }
 
     private Field[] getFields() {
@@ -128,6 +128,14 @@ public class LongRunner extends OrderedRunner {
       return dataFields.toArray(fields);
     }
 
+    private String getFileName(boolean isCompleted, String extension) {
+      String completed = "";
+      if (isCompleted) {
+        completed = "completed.";
+      }
+      return path + completed + testClass.getName() + "." + id + extension;
+    }
+
     public LongRunnerMethodInfo getLongRunnerMethodInfo(String methodName) {
       for (LongRunnerMethodInfo lrmi : methods) {
         if (lrmi.methodName.equals(methodName)) {
@@ -137,8 +145,8 @@ public class LongRunner extends OrderedRunner {
       return null;
     }
 
-    private String getProcessFileName() {
-      return testClass.getName() + "." + id + ".csv";
+    private String getProcessFileName(boolean isCompleted) {
+      return getFileName(isCompleted, ".csv");
     }
 
     public void initWith(LongRunnerInfo aLongRunnerInfo) {
@@ -156,7 +164,7 @@ public class LongRunner extends OrderedRunner {
     public void loadData() {
       FileReader fileReader = null;
       try {
-        fileReader = new FileReader(getDataFileName());
+        fileReader = new FileReader(getDataFileName(false));
         Properties data = getData();
         data.load(fileReader);
         for (Object key : data.keySet()) {
@@ -206,7 +214,7 @@ public class LongRunner extends OrderedRunner {
     public void loadProcess() {
       FileReader fileReader = null;
       try {
-        fileReader = new FileReader(getProcessFileName());
+        fileReader = new FileReader(getProcessFileName(false));
         methods = LongRunnerMethodInfo.loadWith(fileReader);
       }
       catch (IOException e) {
@@ -233,7 +241,7 @@ public class LongRunner extends OrderedRunner {
     public void storeData() {
       FileWriter fileWriter = null;
       try {
-        fileWriter = new FileWriter(getDataFileName());
+        fileWriter = new FileWriter(getDataFileName(false));
         Properties data = getData();
         data.store(fileWriter, "Data for long running JUnit test");
       }
@@ -251,7 +259,7 @@ public class LongRunner extends OrderedRunner {
     public void storeProcess() {
       FileWriter fileWriter = null;
       try {
-        fileWriter = new FileWriter(getProcessFileName());
+        fileWriter = new FileWriter(getProcessFileName(false));
         LongRunnerMethodInfo.print(fileWriter, methods);
       }
       catch (IOException e) {
@@ -482,6 +490,8 @@ public class LongRunner extends OrderedRunner {
 
   public static Logger logger = LogManager.getLogger("LongRunner");
 
+  private static String path = "";
+
   public static Collection<LongRunnerInfo> getFor(Class<?> testClass) {
     Vector<LongRunnerInfo> result = new Vector<LongRunner.LongRunnerInfo>();
     // TODO korrekte Prüfung
@@ -494,7 +504,13 @@ public class LongRunner extends OrderedRunner {
         return name.startsWith(testClassName) && name.endsWith(".csv");
       }
     };
-    final File dir = new File(".");
+    File dir;
+    if (path == null | path.isEmpty()) {
+      dir = new File(".");
+    }
+    else {
+      dir = new File(path);
+    }
     final File[] files = dir.listFiles(fnf);
 
     for (File file : files) {
@@ -503,6 +519,10 @@ public class LongRunner extends OrderedRunner {
       result.add(new LongRunnerInfo(testClass, l));
     }
     return result;
+  }
+
+  public static void setPath(String path) {
+    LongRunner.path = path;
   }
 
   private LongRunnerClassInfo lrci = null;

@@ -85,6 +85,11 @@ public interface IAnnotations {
   }
 
   @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.FIELD)
+  public @interface CheckData {
+  }
+
+  @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.TYPE)
   public @interface Csv {
   }

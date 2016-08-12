@@ -50,7 +50,7 @@ public class ScreenshotOnFailed extends TestWatcher {
   public void saveScreenShot() {
     saveScreenShot("failed_" + System.currentTimeMillis() + ".jpg");
   }
-  
+
   public void saveScreenShot(String filename) {
     logger.info("Execute saveScreenShot()");
     try {

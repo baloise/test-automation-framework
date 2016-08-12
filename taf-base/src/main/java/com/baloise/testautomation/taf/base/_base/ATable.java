@@ -28,6 +28,7 @@ public abstract class ATable extends ABase {
   public void check() {
     for (IDataRow data : checkDataRows) {
       setCheckFields(data);
+      setCheckDataFields(data);
       check(data);
     }
   }
@@ -38,7 +39,7 @@ public abstract class ATable extends ABase {
   public void fill() {
     for (IDataRow data : fillDataRows) {
       setFillFields(data);
-      setDataFields(data);
+      setFillDataFields(data);
       fill(data);
     }
   }

@@ -27,7 +27,6 @@ public class RetryTest implements TestRule {
   public static Logger logger = LogManager.getLogger("RetryTest");
   public static boolean doNotRetryOnAssumptionViolatedException = true;
 
-
   public static void addRetry(Description description, Integer count) {
     retriedMethods.put(description.toString(), count);
   }
@@ -62,7 +61,7 @@ public class RetryTest implements TestRule {
     return new Statement() {
 
       private int actualRetries = 0;
-      
+
       @Override
       public void evaluate() throws Throwable {
         wasLastRetry = false;
@@ -90,7 +89,8 @@ public class RetryTest implements TestRule {
             t.printStackTrace();
           }
         }
-        System.err.println(description.getDisplayName() + ": giving up after " + actualRetries + " failures/assumption violated");
+        System.err.println(description.getDisplayName() + ": giving up after " + actualRetries
+            + " failures/assumption violated");
         wasLastRetry = true;
         throw caughtThrowable;
       }

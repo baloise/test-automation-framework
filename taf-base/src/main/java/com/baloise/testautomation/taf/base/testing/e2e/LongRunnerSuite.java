@@ -31,9 +31,11 @@ public class LongRunnerSuite extends Suite {
   private static Vector<LongRunnerInfo> longRunnerInfo = new Vector<LongRunnerInfo>();
   private static int currentIndex = 0;
 
-  public static void addLongRunnerInfosFor(Class<?> testClass) {
-    assertNotNull(testClass);
-    longRunnerInfo.addAll(LongRunner.getFor(testClass));
+  public static void addLongRunnerInfosFor(Class<?>... testClasses) {
+    for (Class<?> testClass : testClasses) {
+      assertNotNull(testClass);
+      longRunnerInfo.addAll(LongRunner.getFor(testClass));
+    }
     Collections.sort(longRunnerInfo);
   }
 
