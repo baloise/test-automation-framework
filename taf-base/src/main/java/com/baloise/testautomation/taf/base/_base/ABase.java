@@ -393,11 +393,10 @@ public abstract class ABase implements IComponent {
   }
 
   public Collection<IDataRow> loadExcel(String idAndDetail, String suffix) {
-    try (InputStream is = getClass().getResource(getClass().getSimpleName() + suffix).openStream()) {
+    try (InputStream is = ResourceHelper.getResource(this, this.getClass().getSimpleName() + suffix).openStream()) {
       return loadFrom(is, idAndDetail);
     }
     catch (Exception e) {
-      e.printStackTrace();
     }
     fail("excel file with data NOT found for suffix = " + suffix + " --> " + getClass().getSimpleName());
     return null;
