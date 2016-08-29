@@ -123,7 +123,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
       return null;
     }
     if (index < 0) {
-      // TODO Warnung einbauen wenn mehr als ein Element enthalten --> einfachere Entwicklung mˆglich
+      // TODO Warnung einbauen wenn mehr als ein Element enthalten --> einfachere Entwicklung m√∂glich
       return elements.get(0);
     }
     if (elements.size() < index) {
