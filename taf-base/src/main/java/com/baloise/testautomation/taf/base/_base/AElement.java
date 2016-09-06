@@ -80,7 +80,7 @@ public abstract class AElement implements IElement {
             + name, component);
     Object element = component.getSwingFinder().find(by);
     assertNotNull("swing element NOT found: " + name, element);
-    // TODO --> Hier wurde noch der Finder auf das Element weitergegeben. Muss das auch f¸r element
+    // TODO --> Hier wurde noch der Finder auf das Element weitergegeben. Muss das auch f√ºr element
     // gemacht werden?
     // new SwingElement(component.getSwingFinder(), l)
 

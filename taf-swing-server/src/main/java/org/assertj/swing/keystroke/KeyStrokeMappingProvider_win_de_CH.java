@@ -81,7 +81,7 @@ public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvi
     mappings.add(mapping('=', VK_0, SHIFT_MASK));
     mappings.add(mapping('1', VK_1, NO_MASK));
     mappings.add(mapping('+', VK_1, SHIFT_MASK));
-    // mappings.add(mapping('¦', VK_1, ALT_GRAPH_MASK));
+    // mappings.add(mapping('Â¦', VK_1, ALT_GRAPH_MASK));
     mappings.add(mapping('2', VK_2, NO_MASK));
     mappings.add(mapping('"', VK_2, SHIFT_MASK));
     // mappings.add(mapping('@', VK_2, ALT_GRAPH_MASK));
@@ -89,18 +89,18 @@ public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvi
     mappings.add(mapping('*', VK_3, SHIFT_MASK));
     // mappings.add(mapping('#', VK_3, ALT_GRAPH_MASK));
     mappings.add(mapping('4', VK_4, NO_MASK));
-    mappings.add(mapping('ç', VK_4, SHIFT_MASK));
+    mappings.add(mapping('Ã§', VK_4, SHIFT_MASK));
     mappings.add(mapping('5', VK_5, NO_MASK));
     mappings.add(mapping('%', VK_5, SHIFT_MASK));
     mappings.add(mapping('6', VK_6, NO_MASK));
     mappings.add(mapping('&', VK_6, SHIFT_MASK));
-    // mappings.add(mapping('¬', VK_6, ALT_GRAPH_MASK));
+    // mappings.add(mapping('Â¬', VK_6, ALT_GRAPH_MASK));
     mappings.add(mapping('7', VK_7, NO_MASK));
     mappings.add(mapping('/', VK_7, SHIFT_MASK));
     // mappings.add(mapping('|', VK_7, ALT_GRAPH_MASK));
     mappings.add(mapping('8', VK_8, NO_MASK));
     mappings.add(mapping('(', VK_8, SHIFT_MASK));
-    // mappings.add(mapping('¢', VK_8, ALT_GRAPH_MASK));
+    // mappings.add(mapping('Â¢', VK_8, ALT_GRAPH_MASK));
     mappings.add(mapping('9', VK_9, NO_MASK));
     mappings.add(mapping(')', VK_9, SHIFT_MASK));
     mappings.add(mapping('\'', VK_QUOTE, NO_MASK));
@@ -161,7 +161,7 @@ public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvi
     mappings.add(mapping('Z', VK_Z, SHIFT_MASK));
 
     mappings.add(mapping('$', VK_DOLLAR, NO_MASK));
-    mappings.add(mapping('£', VK_DOLLAR, SHIFT_MASK));
+    mappings.add(mapping('Â£', VK_DOLLAR, SHIFT_MASK));
     mappings.add(mapping('<', VK_LESS, NO_MASK));
     mappings.add(mapping('>', VK_LESS, SHIFT_MASK));
     // mappings.add(mapping('\\', VK_LESS, ALT_GRAPH_MASK));

@@ -494,7 +494,7 @@ public class LongRunner extends OrderedRunner {
 
   public static Collection<LongRunnerInfo> getFor(Class<?> testClass) {
     Vector<LongRunnerInfo> result = new Vector<LongRunner.LongRunnerInfo>();
-    // TODO korrekte Prüfung
+    // TODO korrekte PrÃ¼fung
     assertTrue("Test class must be annotated with a Runner that is a LongRunner or a subclass of it", true);
 
     final String testClassName = testClass.getName();

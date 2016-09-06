@@ -21,9 +21,9 @@ public class TafId {
 
   public TafId(String idAndDetail) {
     /*
-     * Wenn die Id als String übergeben wird, dann wird erwartet,
+     * Wenn die Id als String Ã¼bergeben wird, dann wird erwartet,
      * dass die Id und das Detail mit einem
-     * Bindestrich voneinander getrennt werden. Der Mandant darf NIE mit übergeben werden,
+     * Bindestrich voneinander getrennt werden. Der Mandant darf NIE mit Ã¼bergeben werden,
      * da er global verwaltet wird
      */
     super();

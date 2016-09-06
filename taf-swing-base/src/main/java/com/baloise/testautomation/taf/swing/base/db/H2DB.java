@@ -56,7 +56,8 @@ public class H2DB {
         conn = null;
       }
       Class.forName("org.h2.Driver");
-      conn = DriverManager.getConnection("jdbc:h2:~/swinginstrumentation;AUTO_SERVER=TRUE", "sa", "");
+      String tempDir = System.getProperty("java.io.tmpdir");
+      conn = DriverManager.getConnection("jdbc:h2:" + tempDir + "/swinginstrumentation;AUTO_SERVER=TRUE", "sa", "");
       // conn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test;AUTO_SERVER=TRUE", "sa", "");
       // conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:" + port
       // + "/mem:swinginstrumentation;DB_CLOSE_DELAY=-1", "sa", "");
