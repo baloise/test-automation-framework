@@ -57,6 +57,7 @@ public class H2DB {
       }
       Class.forName("org.h2.Driver");
       String tempDir = System.getProperty("java.io.tmpdir");
+      System.out.println("looking for h2db at " + tempDir);
       conn = DriverManager.getConnection("jdbc:h2:" + tempDir + "/swinginstrumentation;AUTO_SERVER=TRUE", "sa", "");
       // conn = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test;AUTO_SERVER=TRUE", "sa", "");
       // conn = DriverManager.getConnection("jdbc:h2:tcp://localhost:" + port

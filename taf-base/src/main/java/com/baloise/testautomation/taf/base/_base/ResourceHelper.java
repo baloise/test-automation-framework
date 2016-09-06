@@ -27,7 +27,8 @@ public class ResourceHelper {
   private static Logger LOGGER = LogManager.getLogger("resource-helper");
 
   public static URL getResource(Object o, String filename) {
-    LOGGER.info("determine URL for object: " + o + " --> " + dataRootPath + resourcePraefix + " --> " + filename);
+    LOGGER.info("determine URL for object: " + o + " --> dataRootPath: " + dataRootPath + " --> resourcePrefix: "
+        + resourcePraefix + " --> filename: " + filename);
     if (dataRootPath.isEmpty()) {
       return o.getClass().getResource(resourcePraefix + filename);
     }
@@ -47,6 +48,10 @@ public class ResourceHelper {
 
   public static void setDataRootPath(String dataRootPath) {
     Assert.assertNotNull("data root cannot be null, use an empty string instead", dataRootPath);
+    if (!dataRootPath.isEmpty()) {
+      Assert
+          .assertTrue("data root must end with '\' or '/'", dataRootPath.endsWith("\\") || dataRootPath.endsWith("/"));
+    }
     ResourceHelper.dataRootPath = dataRootPath;
   }
 
