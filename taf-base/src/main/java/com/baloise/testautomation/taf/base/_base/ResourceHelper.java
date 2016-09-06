@@ -22,17 +22,18 @@ public class ResourceHelper {
 
   private static String dataRootPath = "";
 
+  private static String resourcePraefix = "";
+
   private static Logger LOGGER = LogManager.getLogger("resource-helper");
 
   public static URL getResource(Object o, String filename) {
-    LOGGER.info("determine resource URL for object: " + o + " --> dataroot: " + dataRootPath + " --> filename: "
-        + filename);
+    LOGGER.info("determine URL for object: " + o + " --> " + dataRootPath + resourcePraefix + " --> " + filename);
     if (dataRootPath.isEmpty()) {
-      return o.getClass().getResource(filename);
+      return o.getClass().getResource(resourcePraefix + filename);
     }
     String oWithSlashes = o.getClass().getPackage().getName().replace(".", "/");
     try {
-      URL url = new URL(dataRootPath + oWithSlashes + "/" + filename);
+      URL url = new URL(dataRootPath + oWithSlashes + "/" + resourcePraefix + filename);
       if (new File(url.toURI()).exists()) {
         return url;
       }
@@ -47,6 +48,11 @@ public class ResourceHelper {
   public static void setDataRootPath(String dataRootPath) {
     Assert.assertNotNull("data root cannot be null, use an empty string instead", dataRootPath);
     ResourceHelper.dataRootPath = dataRootPath;
+  }
+
+  public static void setResourcePraefix(String resourcePraefix) {
+    Assert.assertNotNull("resource praefix cannot be null, use an empty string instead", resourcePraefix);
+    ResourceHelper.resourcePraefix = resourcePraefix;
   }
 
 }
