@@ -46,5 +46,10 @@ public class SwStringInput extends ASwInput implements IData<TafString> {
   public void setFill(TafString value) {
     fillValue = value;
   }
+  
+  public void fill(String value) {
+    setFill(value);
+    fill();
+  }
 
 }
