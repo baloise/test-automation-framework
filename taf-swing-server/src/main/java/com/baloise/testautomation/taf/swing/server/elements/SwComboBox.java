@@ -39,6 +39,10 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
         selectItem(props.getString(paramText));
         props.clear();
         break;
+      case selectindex:
+        selectIndex(Integer.parseInt(props.getString(paramText)));
+        props.clear();
+        break;
       case getselecteditem:
         props.clear();
         props.putObject(paramText, getSelectedItem());

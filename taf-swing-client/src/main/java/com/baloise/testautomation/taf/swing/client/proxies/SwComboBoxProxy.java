@@ -36,7 +36,9 @@ public class SwComboBoxProxy extends ASwElementProxy implements ISwComboBox<Long
 
   @Override
   public void selectIndex(int index) {
-    Assert.fail("selectIndex is not yet implemented");
+    TafProperties props = new TafProperties();
+    props.putObject(paramText, index);
+    executeCommand(Command.selectindex.toString(), props);
   }
 
   @Override

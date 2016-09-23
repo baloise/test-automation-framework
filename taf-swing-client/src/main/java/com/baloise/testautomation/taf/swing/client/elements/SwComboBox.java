@@ -43,6 +43,11 @@ public class SwComboBox extends AInput implements IData<TafString> {
       }
     }
   }
+  
+  public void selectIndex(int index) {
+    ISwComboBox<?> se = find();
+    se.selectIndex(index);
+  }
 
   public ISwComboBox<?> find() {
     return (ISwComboBox<?>)swFind(ISwComboBox.type);
