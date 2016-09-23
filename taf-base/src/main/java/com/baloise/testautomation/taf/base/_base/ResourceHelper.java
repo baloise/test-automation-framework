@@ -20,23 +20,39 @@ import org.junit.Assert;
  */
 public class ResourceHelper {
 
+  public static boolean tryWithAndWithoutPrefix = true;
+
   private static String dataRootPath = "";
 
-  private static String resourcePraefix = "";
+  private static String resourcePrefix = "";
 
   private static Logger LOGGER = LogManager.getLogger("resource-helper");
 
   public static URL getResource(Object o, String filename) {
     LOGGER.info("determine URL for object: " + o + " --> dataRootPath: " + dataRootPath + " --> resourcePrefix: "
-        + resourcePraefix + " --> filename: " + filename);
+        + resourcePrefix + " --> filename: " + filename);
     if (dataRootPath.isEmpty()) {
-      return o.getClass().getResource(resourcePraefix + filename);
+      URL resource = o.getClass().getResource(resourcePrefix + filename);
+      if (resource == null) {
+        if (tryWithAndWithoutPrefix) {
+          LOGGER.info("resource with prefix does not exist --> try to find resource WITHOUT prefix");
+          resource = o.getClass().getResource(filename);
+        }
+      }
+      return resource;
     }
     String oWithSlashes = o.getClass().getPackage().getName().replace(".", "/");
     try {
-      URL url = new URL(dataRootPath + oWithSlashes + "/" + resourcePraefix + filename);
+      URL url = new URL(dataRootPath + oWithSlashes + "/" + resourcePrefix + filename);
       if (new File(url.toURI()).exists()) {
         return url;
+      }
+      if (tryWithAndWithoutPrefix) {
+        LOGGER.info("resource with prefix does not exist --> try to find resource WITHOUT prefix");
+        url = new URL(dataRootPath + oWithSlashes + "/" + filename);
+        if (new File(url.toURI()).exists()) {
+          return url;
+        }
       }
     }
     catch (Exception e) {
@@ -55,9 +71,9 @@ public class ResourceHelper {
     ResourceHelper.dataRootPath = dataRootPath;
   }
 
-  public static void setResourcePraefix(String resourcePraefix) {
-    Assert.assertNotNull("resource praefix cannot be null, use an empty string instead", resourcePraefix);
-    ResourceHelper.resourcePraefix = resourcePraefix;
+  public static void setResourcePrefix(String resourcePrefix) {
+    Assert.assertNotNull("resource prefix cannot be null, use an empty string instead", resourcePrefix);
+    ResourceHelper.resourcePrefix = resourcePrefix;
   }
 
 }
