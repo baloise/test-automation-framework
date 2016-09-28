@@ -117,7 +117,7 @@ public abstract class TafType implements IType {
       return;
     }
     if (s.isEmpty()) {
-      setIsEmpty(isEmpty);
+      setIsEmpty(true);
     }
     if (SKIP.equalsIgnoreCase(s)) {
       setIsSkip(true);

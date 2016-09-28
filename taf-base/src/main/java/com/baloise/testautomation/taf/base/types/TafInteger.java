@@ -29,6 +29,9 @@ public class TafInteger extends TafType implements IType {
     if (value == null) {
       return nullInteger();
     }
+    if (value.trim().isEmpty()) {
+      return emptyInteger();
+    }
     if (value.trim().equalsIgnoreCase(EMPTY)) {
       return emptyInteger();
     }
