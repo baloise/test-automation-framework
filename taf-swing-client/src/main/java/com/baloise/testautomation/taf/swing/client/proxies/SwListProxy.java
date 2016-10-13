@@ -35,4 +35,11 @@ public class SwListProxy extends ASwElementProxy implements ISwList<Long> {
     return ISwList.type;
   }
 
+  @Override
+  public void clickItem(Long index) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramIndex, index);
+    props = executeCommand(Command.clickitem.toString(), props);
+  }
+
 }

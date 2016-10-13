@@ -39,6 +39,9 @@ public class SwList extends ASwElement implements ISwList<Component> {
         props.clear();
         props.putObject(paramSize, getSize());
         break;
+      case clickitem:
+        clickItem(props.getLong(paramIndex));
+        
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -78,6 +81,11 @@ public class SwList extends ASwElement implements ISwList<Component> {
   @Override
   public String getTextAt(Long index) {
     return getFixture().valueAt(index.intValue());
+  }
+  
+  @Override
+  public void clickItem(Long index) {
+    getFixture().clickItem(index.intValue());
   }
 
   @Override
