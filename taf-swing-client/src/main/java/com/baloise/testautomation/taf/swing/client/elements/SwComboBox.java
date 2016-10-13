@@ -38,15 +38,39 @@ public class SwComboBox extends AInput implements IData<TafString> {
   public void fill() {
     if (fillValue != null) {
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
-        ISwComboBox<?> se = find();
-        se.selectItem(fillValueAsString());
+        String item = fillValueAsString();
+        selectItemUsingDefaultStrategy(item);
       }
     }
   }
+
+  public void selectItemUsingDefaultStrategy(String item) {
+    selectItem(item);
+  }
+
+  public void selectItem(String item) {
+    ISwComboBox<?> se = find();
+    se.selectItem(item);
+  }
   
-  public void selectIndex(int index) {
+  public void selectIndex(Long index) {
     ISwComboBox<?> se = find();
     se.selectIndex(index);
+  }
+  
+  public void selectIndexByMatchingDescription(String item) {
+    ISwComboBox<?> se = find();
+    se.selectIndexByMatchingDescription(item);
+  }
+  
+  public void selectItemByFillingInput(String item) {
+    ISwComboBox<?> se = find();
+    se.selectItemByFillingInput(item);
+  }
+  
+  public void selectItemByMatchingDescription(String item) {
+    ISwComboBox<?> se = find();
+    se.selectItemByMatchingDescription(item);
   }
 
   public ISwComboBox<?> find() {

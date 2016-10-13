@@ -9,7 +9,8 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JComboBox;
 
 import org.assertj.swing.fixture.JComboBoxFixture;
@@ -40,7 +41,19 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
         props.clear();
         break;
       case selectindex:
-        selectIndex(Integer.parseInt(props.getString(paramText)));
+        selectIndex(props.getLong(paramText));
+        props.clear();
+        break;
+      case selectitembyfillinginput:
+        selectItemByFillingInput(props.getString(paramText));
+        props.clear();
+        break;
+      case selectitembymatchingdescription:
+        selectItemByMatchingDescription(props.getString(paramText));
+        props.clear();
+        break;
+      case selectindexbymatchingdescription:
+        selectIndexByMatchingDescription(props.getString(paramText));
         props.clear();
         break;
       case getselecteditem:
@@ -87,18 +100,34 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
   }
 
   @Override
-  public void selectIndex(int index) {
-    getFixture().selectItem(index);
+  public void selectIndex(Long index) {
+    getFixture().selectItem(index.intValue());
   }
 
   @Override
   public void selectItem(String item) {
     try {
-      getFixture().enterText(item);
+      selectItemByFillingInput(item);
     }
     catch (Exception e) {
-      getFixture().selectItem(item);
+      selectItemByMatchingDescription(item);
     }
+  }
+
+  @Override
+  public void selectItemByFillingInput(String item) {
+    getFixture().enterText(item);
+  }
+  
+  @Override
+  public void selectItemByMatchingDescription(String item) {
+    getFixture().selectItem(item);
+  }
+
+  @Override
+  public void selectIndexByMatchingDescription(String item) {
+    long index = Arrays.asList(getFixture().contents()).indexOf(item);
+    selectIndex(index);
   }
 
 }

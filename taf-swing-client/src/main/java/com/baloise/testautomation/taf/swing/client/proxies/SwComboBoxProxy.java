@@ -35,9 +35,9 @@ public class SwComboBoxProxy extends ASwElementProxy implements ISwComboBox<Long
   }
 
   @Override
-  public void selectIndex(int index) {
+  public void selectIndex(Long index) {
     TafProperties props = new TafProperties();
-    props.putObject(paramText, index);
+    props.putObject(paramIndex, index);
     executeCommand(Command.selectindex.toString(), props);
   }
 
@@ -46,6 +46,27 @@ public class SwComboBoxProxy extends ASwElementProxy implements ISwComboBox<Long
     TafProperties props = new TafProperties();
     props.putObject(paramText, item);
     executeCommand(Command.selectitem.toString(), props);
+  }
+
+  @Override
+  public void selectItemByFillingInput(String item) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramText, item);
+    executeCommand(Command.selectitembyfillinginput.toString(), props);
+  }
+
+  @Override
+  public void selectItemByMatchingDescription(String item) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramText, item);
+    executeCommand(Command.selectitembymatchingdescription.toString(), props);
+  }
+
+  @Override
+  public void selectIndexByMatchingDescription(String item) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramText, item);
+    executeCommand(Command.selectindexbymatchingdescription.toString(), props);
   }
 
 }
