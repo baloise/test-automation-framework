@@ -98,6 +98,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   StringBuilder xml = null;
 
   public void allCellsToXML(StringBuilder xml, JTable table) {
+    info("Adding cells for: " + table);
     for (int c = 0; c < table.getColumnCount(); c++) {
       xml.append("<header tid = \"" + counter + "\" col = \"" + c + "\" value = \""
           + asEscaped(table.getColumnModel().getColumn(c).getHeaderValue().toString()) + "\"></header>");
@@ -106,8 +107,15 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     }
     for (int c = 0; c < table.getColumnCount(); c++) {
       for (int r = 0; r < table.getRowCount(); r++) {
+        String cellText = "";
+        try {
+          cellText = table.getValueAt(r, c).toString();
+        }
+        catch (Exception e) {
+          info("cellText is null: row = " + r + ", column = " + c);
+        }
         xml.append("<cell tid = \"" + counter + "\" row = \"" + r + "\" col = \"" + c + "\" value = \""
-            + asEscaped(table.getValueAt(r, c).toString()) + "\"></cell>");
+            + asEscaped(cellText) + "\"></cell>");
         components.put(counter, new SwCell(counter, r, c, table));
         counter++;
       }
@@ -185,8 +193,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     xml.append(System.getProperty("line.separator"));
   }
 
-  // private int level = 0;
-
   public void allListItemsToXML(StringBuilder xml, JList list) {
     for (int i = 0; i < list.getModel().getSize(); i++) {
       String s = "";
@@ -200,6 +206,8 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       xml.append(s);
     }
   }
+
+  // private int level = 0;
 
   private String asEscaped(String s) {
     return asEscapedString(s);
@@ -277,7 +285,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
    * @param props
    */
   private TafProperties execElementCommand(TafProperties props) {
-    System.out.println("execElementCommand");
+    info("execElementCommand");
     String type = props.getString(paramType);
     try {
       ISwElement<Component> swElement = components.get(props.getLong("tid"));
@@ -289,7 +297,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       }
     }
     catch (Exception e) {
-      System.out.println("SwApplication --> execElementCommand --> not executed");
+      info("SwApplication --> execElementCommand --> not executed");
       return getError("element command not executed (element not found) --> " + e.getMessage());
     }
   }
@@ -303,21 +311,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   public ISwElement<Component> find(ISwElement<Component> root, Annotation annotation) {
     return null;
   }
-
-  // @Override
-  // public String getFullXML() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String getMappedXML() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String toString(long tid) {
-  // return null;
-  // }
 
   private NodeList findAllByXpath(Long root, String s) {
     // 1. Instantiate an XPathFactory.
@@ -353,10 +346,25 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     }
     catch (XPathExpressionException e) {
       e.printStackTrace();
-      System.out.println("XML = " + xml);
+      info("XML = " + xml);
     }
     return null;
   }
+
+  // @Override
+  // public String getFullXML() {
+  // return null;
+  // }
+  //
+  // @Override
+  // public String getMappedXML() {
+  // return null;
+  // }
+  //
+  // @Override
+  // public String toString(long tid) {
+  // return null;
+  // }
 
   @Override
   public ISwElement<Component> findElementByXpath(Long root, String s) {
@@ -380,8 +388,8 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
           for (int i = 0; i < nl.getLength(); i++) {
             try {
               String l = nl.item(i).getAttributes().getNamedItem("tid").getNodeValue();
-              System.out.println("Found: " + l);
-              System.out.println(nl.item(i).getNodeName());
+              info("Found: " + l);
+              info(nl.item(i).getNodeName());
               System.out.println(nl.item(i));
               result.add(components.get(Long.parseLong(l)));
             }
@@ -407,11 +415,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         timeout = true;
       }
     }
-    System.out.println("timed out");
+    info("timed out");
     return new Vector<ISwElement<Component>>();
   }
-
-  // TODO
 
   public ISwElement<Component> get(long tid) {
     return components.get(tid);
@@ -464,6 +470,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     return new SwUnsupportedElement(tid, c);
   }
 
+  private void info(String message) {
+    System.out.println(message);
+  }
+
   private ISwElement<Component> putComponent(Component c) {
     ISwElement<Component> se = getSwElement(counter, c);
     components.put(counter, se);
@@ -473,7 +483,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   @Override
   public void sendKeys(String keys) {
-    System.out.println("sendKeys: " + keys);
+    info("sendKeys: " + keys);
     if (keys.equalsIgnoreCase("{enter}")) {
       SwRobotFactory.getRobot().pressAndReleaseKeys(java.awt.Event.ENTER);
       return;
@@ -505,7 +515,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     String xmlAsString = out.toString().trim();
     if (!xmlAsString.isEmpty()) {
       if (path == null) {
-        System.out.println(xmlAsString);
+        info(xmlAsString);
       }
       else {
         try {

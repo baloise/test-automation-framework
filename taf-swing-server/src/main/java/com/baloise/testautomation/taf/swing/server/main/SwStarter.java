@@ -149,7 +149,10 @@ public class SwStarter {
         return commands.get(0);
       }
       catch (ArrayIndexOutOfBoundsException e) {
-        info("no next command found --> try again at next poll intervall");
+        if (needsInfo) {
+          info("no next command found --> try again at next poll intervall");
+          needsInfo = false;
+        }
       }
     }
     catch (SwError swe) {
@@ -174,11 +177,21 @@ public class SwStarter {
     System.out.println(s);
   }
 
+  private boolean needsInfo = false;
+  private long pollingInfoIntervall = 10; // seconds
+  
   public void poll() {
+    long time = System.currentTimeMillis();
     try {
       while (true) {
         pollingActive = true;
-        info("polling " + System.currentTimeMillis());
+        if (System.currentTimeMillis() > time + (pollingInfoIntervall *1000)) {
+          needsInfo = true;
+          time = System.currentTimeMillis();
+        }
+        if (needsInfo) {
+          info("polling " + System.currentTimeMillis());
+        } 
         try {
           if (spy) {
             swApplication.storeLastHierarchy(spyFileName);
