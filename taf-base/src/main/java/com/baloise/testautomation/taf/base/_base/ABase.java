@@ -19,8 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;

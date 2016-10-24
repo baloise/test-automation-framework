@@ -11,8 +11,8 @@ package com.baloise.testautomation.taf.base._base;
 import java.io.File;
 import java.net.URL;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 /**
