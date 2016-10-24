@@ -73,6 +73,11 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
         props.clear();
         props.putObject(paramText, text);
         break;
+      case getcellindex:
+        String celltext = props.getString(paramText);
+        props.clear();
+        props.putObject(paramText, getCellRow(celltext));
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
@@ -162,6 +167,11 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
   @Override
   public void rightClickCell(String text) {
     getFixture().cell(text).rightClick();
+  }
+
+  @Override
+  public Long getCellRow(String value) {
+    return (long)getFixture().cell(value).row();
   }
 
 }

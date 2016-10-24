@@ -50,5 +50,9 @@ public class SwTable extends AElement {
   public String getCellText(int row, int col) {
     return find().getCellText(row, col);
   }
+  
+  public Long getCellRow(String value) {
+    return find().getCellRow(value);
+  }
 
 }

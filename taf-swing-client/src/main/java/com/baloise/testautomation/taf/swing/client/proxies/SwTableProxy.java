@@ -70,4 +70,12 @@ public class SwTableProxy extends ASwElementProxy implements ISwTable<Long> {
     executeCommand(Command.rightclickcell.toString(), getProperties(text));
   }
 
+  @Override
+  public Long getCellRow(String value) {
+    TafProperties inputProps = new TafProperties();
+    inputProps.putObject(paramText, value);
+    TafProperties outputProps = executeCommand(Command.getcellindex.toString(), inputProps);
+    return outputProps.getLong(paramText);
+  }
+
 }
