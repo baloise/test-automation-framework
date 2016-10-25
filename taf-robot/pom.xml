@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>com.baloise.testing.framework</groupId>
 		<artifactId>taf</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.baloise.testing.framework</groupId>
 	<artifactId>taf-robot</artifactId>
-	<!-- <version>0.0.2</version> -->
+	<!-- <version>0.0.3-SNAPSHOT</version> -->
 
 	<name>Test Automation Framework - Robot</name>
 
