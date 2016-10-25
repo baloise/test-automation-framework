@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>com.baloise.testing.framework</groupId>
 		<artifactId>taf</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 
 	<groupId>com.baloise.testing.framework</groupId>
 	<artifactId>taf-common</artifactId>
-	<!-- <version>0.0.2-SNAPSHOT</version> -->
+	<!-- <version>0.0.2</version> -->
 
 	<name>Test Automation Framework - Common</name>
 
