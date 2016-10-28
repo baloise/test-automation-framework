@@ -27,6 +27,7 @@ import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
@@ -294,6 +295,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     supportedElements.put(ISwLabel.type.toLowerCase(), SwLabelProxy.class);
     supportedElements.put(ISwList.type.toLowerCase(), SwListProxy.class);
     supportedElements.put(ISwTree.type.toLowerCase(), SwTreeProxy.class);
+    supportedElements.put(ISwCheckBox.type.toLowerCase(), SwCheckBoxProxy.class);
     return supportedElements;
   }
 
