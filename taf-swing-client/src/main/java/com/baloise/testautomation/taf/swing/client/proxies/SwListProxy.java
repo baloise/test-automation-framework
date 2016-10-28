@@ -42,4 +42,11 @@ public class SwListProxy extends ASwElementProxy implements ISwList<Long> {
     props = executeCommand(Command.clickitem.toString(), props);
   }
 
+  @Override
+  public void clickItem(String value) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramText, value);
+    props = executeCommand(Command.clickitembytext.toString(), props);
+  }
+
 }

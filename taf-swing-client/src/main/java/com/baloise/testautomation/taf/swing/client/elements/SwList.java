@@ -39,6 +39,10 @@ public class SwList extends AElement {
   public void clickItem(Long index) {
     find().clickItem(index);
   }
+  
+  public void clickItem(String value) {
+    find().clickItem(value);
+  }
 
   public boolean hasListItemContaining(String partialText) {
     return findListItemContaining(partialText) != null;
