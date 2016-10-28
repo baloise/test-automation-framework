@@ -78,4 +78,13 @@ public class SwTableProxy extends ASwElementProxy implements ISwTable<Long> {
     return outputProps.getLong(paramText);
   }
 
+  @Override
+  public void enterValue(int row, int column, String value) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramRow, row);
+    props.putObject(paramCol, column);
+    props.putObject(paramText, value);
+    executeCommand(Command.entervalue.toString(), props);
+  }
+
 }

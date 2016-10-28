@@ -78,10 +78,22 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
         props.clear();
         props.putObject(paramText, getCellRow(celltext));
         break;
+      case entervalue:
+        String value = props.getString(paramText);
+        int row = props.getLong(paramRow).intValue();
+        int column = props.getLong(paramCol).intValue();
+        props.clear();
+        enterValue(row, column, value);
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
     return props;
+  }
+
+  @Override
+  public void enterValue(int row, int column, String value) {
+    getFixture().enterValue(TableCell.row(row).column(column), value);  
   }
 
   public void basicRightClickCell(TafProperties props) {
