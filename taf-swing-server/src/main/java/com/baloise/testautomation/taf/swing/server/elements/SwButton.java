@@ -5,7 +5,7 @@ import java.awt.Component;
 import javax.swing.JButton;
 
 import org.assertj.swing.fixture.JButtonFixture;
-
+import org.assertj.swing.timing.Timeout;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
 
@@ -34,6 +34,7 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
   }
 
   public void click() {
+    getFixture().requireEnabled(Timeout.timeout());
     getFixture().click();
   }
 
