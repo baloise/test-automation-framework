@@ -44,14 +44,20 @@ import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
 /**
  * 
  */
-public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
+public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
-  Long id = 0l;
+  private Long id = 0l;
+  private Long delayBetweenEvents = 10L;
 
   private int timeoutInSeconds = 50;
 
   public SwApplicationProxy(Long id) {
+    this(id, 10L);
+  }
+  
+  public SwApplicationProxy(Long id, Long delayBetweenEvents) {
     this.id = id;
+    this.delayBetweenEvents = delayBetweenEvents;    
   }
 
   public ISwElement<Long> basicFind(Long root, Annotation annotation) {
@@ -235,6 +241,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
+    props.putObject(paramDelayBetweenEvents, delayBetweenEvents);
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramJavaClassPath, javaClassPathContains);
     props.putObject(paramSunJavaCommand, sunJavaCommandContains);
@@ -258,6 +265,7 @@ public class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
+    props.putObject(paramDelayBetweenEvents, delayBetweenEvents);
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramJavaClassPath, javaClassPathContains);
     props.putObject(paramSunJavaCommand, sunJavaCommandContains);

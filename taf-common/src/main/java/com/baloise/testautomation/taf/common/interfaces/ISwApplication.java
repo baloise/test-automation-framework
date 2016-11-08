@@ -34,6 +34,7 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public final String paramStatus = "status";
   public final String paramMessage = "message";
   public final String paramXPath = "xpath";
+  public final String paramDelayBetweenEvents = "delayBetweenEvents";
 
   public final String paramRoot = "root";
 

@@ -8,6 +8,7 @@ import org.assertj.swing.fixture.JButtonFixture;
 import org.assertj.swing.timing.Timeout;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
+import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 public class SwButton extends ASwElement implements ISwButton<Component> {
 
@@ -35,6 +36,12 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
 
   public void click() {
     getFixture().requireEnabled(Timeout.timeout());
+    try {
+      Thread.sleep(SwRobotFactory.delayBetweenEvents);
+    }
+    catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     getFixture().click();
   }
 
