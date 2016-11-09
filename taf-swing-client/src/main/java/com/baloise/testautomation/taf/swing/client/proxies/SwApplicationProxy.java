@@ -9,17 +9,13 @@
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import static org.junit.Assert.fail;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
-
 import org.junit.Assert;
-import org.w3c.dom.Node;
-
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
@@ -33,6 +29,7 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwList;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwRadioButton;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
@@ -54,10 +51,10 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   public SwApplicationProxy(Long id) {
     this(id, 10L);
   }
-  
+
   public SwApplicationProxy(Long id, Long delayBetweenEvents) {
     this.id = id;
-    this.delayBetweenEvents = delayBetweenEvents;    
+    this.delayBetweenEvents = delayBetweenEvents;
   }
 
   public ISwElement<Long> basicFind(Long root, Annotation annotation) {
@@ -83,7 +80,9 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
       element = (ISwElement<Long>)c.newInstance();
       element.setApplication(this);
     }
-    catch (Exception e) {}
+    catch (Exception e) {
+      e.printStackTrace();
+    }
     return element;
   }
 
@@ -304,6 +303,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     supportedElements.put(ISwList.type.toLowerCase(), SwListProxy.class);
     supportedElements.put(ISwTree.type.toLowerCase(), SwTreeProxy.class);
     supportedElements.put(ISwCheckBox.type.toLowerCase(), SwCheckBoxProxy.class);
+    supportedElements.put(ISwRadioButton.type.toLowerCase(), SwRadioButtonProxy.class);
     return supportedElements;
   }
 
