@@ -146,7 +146,7 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
    */
   @Override
   public String getCellText(int row, int col) {
-    return null;
+    return getFixture().valueAt(TableCell.row(row).column(col));
   }
 
   @Override
