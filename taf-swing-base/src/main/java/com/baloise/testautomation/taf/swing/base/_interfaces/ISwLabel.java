@@ -16,7 +16,7 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwLabel<R> extends ISwElement<R> {
 
   public enum Command {
-    gettext, rightclick, click
+    gettext, rightclick, click, getx, gety
   }
 
   public final String paramText = "text";
@@ -28,5 +28,9 @@ public interface ISwLabel<R> extends ISwElement<R> {
   public String getText();
 
   public void rightClick();
+  
+  public int getX();
+  
+  public int getY();
 
 }

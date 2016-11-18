@@ -37,4 +37,16 @@ public class SwLabelProxy extends ASwElementProxy implements ISwLabel<Long> {
     executeCommand(Command.rightclick.toString());
   }
 
+  @Override
+  public int getX() {
+    TafProperties props = executeCommand(Command.getx.toString());
+    return props.getLong(paramText).intValue();
+  }
+
+  @Override
+  public int getY() {
+    TafProperties props = executeCommand(Command.gety.toString());
+    return props.getLong(paramText).intValue();
+  }
+
 }

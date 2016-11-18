@@ -47,6 +47,14 @@ public class SwLabel extends ASwElement implements ISwLabel<Component> {
         props.clear();
         click();
         break;
+      case getx:
+        props.clear();
+        props.putObject(paramText, getX());
+        break;
+      case gety:
+        props.clear();
+        props.putObject(paramText, getY());
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
@@ -86,6 +94,16 @@ public class SwLabel extends ASwElement implements ISwLabel<Component> {
   @Override
   public void rightClick() {
     getFixture().rightClick();
+  }
+
+  @Override
+  public int getX() {
+    return component.getX();
+  }
+
+  @Override
+  public int getY() {
+    return component.getY();
   }
 
 }
