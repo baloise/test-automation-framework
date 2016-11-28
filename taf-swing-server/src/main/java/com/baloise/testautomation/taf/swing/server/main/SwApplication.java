@@ -9,14 +9,17 @@
 package com.baloise.testautomation.taf.swing.server.main;
 
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedString;
+import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.Hashtable;
 import java.util.List;
@@ -99,7 +102,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     info("Adding cells for: " + table);
     for (int c = 0; c < table.getColumnCount(); c++) {
       xml.append("<header tid = \"" + counter + "\" col = \"" + c + "\" value = \""
-          + asEscaped(table.getColumnModel().getColumn(c).getHeaderValue().toString()) + "\"></header>");
+          + asEscapedXml(table.getColumnModel().getColumn(c).getHeaderValue().toString()) + "\"></header>");
       components.put(counter, new SwTableColumn(counter, c, table));
       counter++;
     }
@@ -113,7 +116,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
           info("cellText is null: row = " + r + ", column = " + c);
         }
         xml.append("<cell tid = \"" + counter + "\" row = \"" + r + "\" col = \"" + c + "\" value = \""
-            + asEscaped(cellText) + "\"></cell>");
+            + asEscapedXml(cellText) + "\"></cell>");
         components.put(counter, new SwCell(counter, r, c, table));
         counter++;
       }
@@ -196,7 +199,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       String s = "";
       try {
         String text = list.getModel().getElementAt(i).toString();
-        s = "<listitem index=\"" + i + "\">" + asEscaped(text) + "</listitem>";
+        s = "<listitem index=\"" + i + "\">" + asEscapedXml(text) + "</listitem>";
       }
       catch (Exception e) {
         s = "<listitem index=\"-1\">" + e.getMessage() + "</listitem>";
@@ -209,6 +212,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private String asEscaped(String s) {
     return asEscapedString(s);
+  }
+  
+  private String asEscapedXml(String s) {
+    return asEscapedXmlString(s);
   }
 
   private void debugRoot() {
@@ -511,7 +518,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
     t.setOutputProperty(OutputKeys.INDENT, "yes");
     ByteArrayOutputStream out = new ByteArrayOutputStream();
-    OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8");
+    OutputStreamWriter osw = new OutputStreamWriter(out);
     t.transform(new DOMSource(xml), new StreamResult(osw));
     String xmlAsString = out.toString().trim();
     if (!xmlAsString.isEmpty()) {
@@ -520,7 +527,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       }
       else {
         try {
-          FileWriter fw = new FileWriter(path);
+          Writer fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
           fw.write(xmlAsString);
           fw.close();
         }

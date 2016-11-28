@@ -1,12 +1,10 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedString;
-
+import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
 import java.awt.Component;
 import java.awt.Rectangle;
-
 import org.assertj.swing.fixture.AbstractComponentFixture;
-
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -56,6 +54,13 @@ public abstract class ASwElement implements ISwElement<Component> {
       return s;
     }
     return asEscapedString(s);
+  }
+  
+  protected String asEscapedXml(String s) {
+    if (s == null) {
+      return s;
+    }
+    return asEscapedXmlString(s);
   }
 
   public abstract TafProperties basicExecCommand(TafProperties props);
@@ -151,7 +156,7 @@ public abstract class ASwElement implements ISwElement<Component> {
     String attributes = "";
     for (Object key : getProperties().keySet()) {
       attributes = attributes + " " + key.toString() + "=\""
-          + asEscaped(properties.getObject(key.toString()).toString()) + "\"";
+          + asEscapedXml(properties.getObject(key.toString()).toString()) + "\"";
     }
     return attributes;
   }

@@ -11,6 +11,7 @@ package com.baloise.testautomation.taf.swing.server.utils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * 
@@ -24,7 +25,6 @@ public class Encoder {
   private static String UNICODE_LOW = "" + ((char)0x20); // space
   private static String UNICODE_HIGH = "" + ((char)0x7f);
 
-  // should only use for the content of an attribute or tag
   public static String asEscapedString(String content) {
     String result = content;
 
@@ -54,6 +54,10 @@ public class Encoder {
     }
 
     return result;
+  }
+  
+  public static String asEscapedXmlString(String content) {
+    return StringEscapeUtils.escapeXml11(content);
   }
 
 }
