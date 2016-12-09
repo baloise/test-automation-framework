@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -18,10 +17,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
@@ -51,7 +48,7 @@ import com.baloise.testautomation.taf.common.interfaces.IFinder;
 
 public abstract class ABase implements IComponent {
 
-  public static Logger logger = LogManager.getLogger("TAF");
+  public static Logger logger = LoggerFactory.getLogger("TAF");
 
   protected TafString fillId = TafString.emptyString();
 

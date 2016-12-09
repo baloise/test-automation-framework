@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -24,19 +23,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LongRunner extends OrderedRunner {
 
@@ -488,7 +486,7 @@ public class LongRunner extends OrderedRunner {
     unknown, passed, failed, suspended, ignored
   }
 
-  public static Logger logger = LogManager.getLogger("LongRunner");
+  public static Logger logger = LoggerFactory.getLogger("LongRunner");
 
   private static String path = "";
 

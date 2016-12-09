@@ -10,13 +10,12 @@ package com.baloise.testautomation.taf.base.testing;
 
 import java.util.Hashtable;
 import java.util.Set;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -24,7 +23,7 @@ import org.junit.runners.model.Statement;
 public class RetryTest implements TestRule {
 
   private static Hashtable<String, Integer> retriedMethods = new Hashtable<String, Integer>();
-  public static Logger logger = LogManager.getLogger("RetryTest");
+  public static Logger logger = LoggerFactory.getLogger("RetryTest");
   public static boolean doNotRetryOnAssumptionViolatedException = true;
 
   public static void addRetry(Description description, Integer count) {

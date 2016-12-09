@@ -14,20 +14,18 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
  */
 public class ScreenshotOnFailed extends TestWatcher {
 
-  public static Logger logger = LogManager.getLogger("ScreenshotOnFailed");
+  public static Logger logger = LoggerFactory.getLogger("ScreenshotOnFailed");
 
   private String path = "";
 

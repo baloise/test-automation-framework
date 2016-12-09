@@ -10,10 +10,9 @@ package com.baloise.testautomation.taf.base._base;
 
 import java.io.File;
 import java.net.URL;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -26,7 +25,7 @@ public class ResourceHelper {
 
   private static String resourcePrefix = "";
 
-  private static Logger LOGGER = LogManager.getLogger("resource-helper");
+  private static Logger LOGGER = LoggerFactory.getLogger("resource-helper");
 
   public static URL getResource(Object o, String filename) {
     LOGGER.info("determine URL for object: " + o + " --> dataRootPath: " + dataRootPath + " --> resourcePrefix: "
