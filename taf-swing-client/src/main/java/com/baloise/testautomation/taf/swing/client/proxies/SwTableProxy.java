@@ -87,4 +87,10 @@ public class SwTableProxy extends ASwElementProxy implements ISwTable<Long> {
     executeCommand(Command.entervalue.toString(), props);
   }
 
+  @Override
+  public boolean cellExists(String text) {
+    TafProperties outputProps = executeCommand(Command.cellexists.toString(), getProperties(text));
+    return outputProps.getBoolean(paramCellExists);
+  }
+
 }

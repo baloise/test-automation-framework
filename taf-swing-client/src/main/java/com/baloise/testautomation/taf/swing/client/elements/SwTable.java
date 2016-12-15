@@ -50,13 +50,17 @@ public class SwTable extends AElement {
   public String getCellText(int row, int col) {
     return find().getCellText(row, col);
   }
-  
+
   public Long getCellRow(String value) {
     return find().getCellRow(value);
   }
-  
+
   public void enterValue(int row, int col, String value) {
     find().enterValue(row, col, value);
+  }
+
+  public boolean cellExists(String value) {
+    return find().cellExists(value);
   }
 
 }

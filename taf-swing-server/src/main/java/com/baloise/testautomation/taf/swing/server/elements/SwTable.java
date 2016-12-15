@@ -9,12 +9,10 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
-
 import javax.swing.JTable;
-
 import org.assertj.swing.data.TableCell;
+import org.assertj.swing.exception.ActionFailedException;
 import org.assertj.swing.fixture.JTableFixture;
-
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 
@@ -85,6 +83,11 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
         props.clear();
         enterValue(row, column, value);
         break;
+      case cellexists:
+        String cellValue = props.getString(paramText);
+        props.clear();
+        props.putObject(paramCellExists, cellExists(cellValue));
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
@@ -93,7 +96,7 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
 
   @Override
   public void enterValue(int row, int column, String value) {
-    getFixture().enterValue(TableCell.row(row).column(column), value);  
+    getFixture().enterValue(TableCell.row(row).column(column), value);
   }
 
   public void basicRightClickCell(TafProperties props) {
@@ -119,6 +122,17 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
   @Override
   public void clickCell(String text) {
     getFixture().cell(text).click();
+  }
+
+  @Override
+  public boolean cellExists(String text) {
+    try {
+      getFixture().cell(text);
+      return true;
+    }
+    catch (ActionFailedException e) {
+      return false;
+    }
   }
 
   /**

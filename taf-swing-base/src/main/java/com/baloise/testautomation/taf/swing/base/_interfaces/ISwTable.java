@@ -16,14 +16,16 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwTable<R> extends ISwElement<R> {
 
   public enum Command {
-    clickcell, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue
+    clickcell, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists
   }
 
   public final String paramText = "text";
-  
+
   public final String paramRow = "row";
 
   public final String paramCol = "col";
+
+  public final String paramCellExists = "cellExists";
 
   public final String type = "table";
 
@@ -44,5 +46,7 @@ public interface ISwTable<R> extends ISwElement<R> {
   public Long getCellRow(String value);
 
   void enterValue(int row, int column, String value);
+
+  boolean cellExists(String text);
 
 }

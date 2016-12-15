@@ -9,7 +9,8 @@
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import org.junit.Assert;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -19,6 +20,8 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
  */
 public abstract class ASwElementProxy implements ISwElement<Long> {
 
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
+
   protected ISwApplication<?> application = null;
 
   protected Long tid = null;
@@ -27,19 +30,20 @@ public abstract class ASwElementProxy implements ISwElement<Long> {
     return executeCommand(command, new TafProperties());
   }
 
-  protected TafProperties executeCommand(String command, TafProperties props) {
+  protected final TafProperties executeCommand(String command, TafProperties props) {
+    if (application == null) {
+      Assert.fail("client is not set --> use ASwWElementElement.setApplication(yourApplication)");
+    }
+    
     if (props == null) {
       props = new TafProperties();
     }
     props.putObject("tid", getReference());
     props.putObject("command", command);
     props.putObject("type", getType());
-
-    if (application != null) {
-      return application.execCommand(props);
-    }
-    Assert.fail("client is not set --> use ASwWElementElement.setApplication(yourApplication)");
-    return null;
+    
+    logger.debug("Executing command with properties: " + props.toString());   
+    return application.execCommand(props); 
   }
 
   @Override
