@@ -24,8 +24,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
+import org.apache.poi.ss.formula.functions.EDate;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
@@ -84,7 +86,10 @@ public class ExcelDataImporter implements IDataImporter {
     if (cell == null) {
       return TafString.nullString();
     }
-    if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+    if (cell.getCellTypeEnum() == CellType.FORMULA) {
+      String cellFormula = cell.getCellFormula();
+      cellFormula = cellFormula.replace("EDATUM", "EDATE");
+      cell.setCellFormula(cellFormula);
       FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
       evaluator.evaluateInCell(cell);
     }
