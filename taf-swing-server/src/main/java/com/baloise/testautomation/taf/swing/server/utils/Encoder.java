@@ -57,7 +57,7 @@ public class Encoder {
   }
   
   public static String asEscapedXmlString(String content) {
-    return StringEscapeUtils.escapeXml11(content);
+    return StringEscapeUtils.escapeXml10(content);
   }
 
 }
