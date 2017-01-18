@@ -349,18 +349,17 @@ public abstract class ABase implements IComponent {
   public void initOtherFields() {
     Field[] fields = getClass().getFields();
     for (Field f : fields) {
-      if(f.getAnnotation(Rule.class) != null) {
-        return;
-      }
-      try {
-        Object o = f.get(this);
-        if (o == null) {
-          o = f.getType().newInstance();
-          f.set(this, o);
+      if (f.getAnnotation(Rule.class) == null) {
+        try {
+          Object o = f.get(this);
+          if (o == null) {
+            o = f.getType().newInstance();
+            f.set(this, o);
+          }
         }
-      }
-      catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
-        logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
+        catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+          logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
+        }
       }
     }
   }
@@ -400,8 +399,7 @@ public abstract class ABase implements IComponent {
     try (InputStream is = ResourceHelper.getResource(this, this.getClass().getSimpleName() + suffix).openStream()) {
       return loadFrom(is, idAndDetail);
     }
-    catch (Exception e) {
-    }
+    catch (Exception e) {}
     fail("excel file with data NOT found for suffix = " + suffix + " --> " + getClass().getSimpleName());
     return null;
   }
