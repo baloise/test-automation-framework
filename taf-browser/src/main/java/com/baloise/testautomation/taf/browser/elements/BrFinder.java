@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -23,10 +24,30 @@ public class BrFinder implements IBrowserFinder<WebElement> {
 
   protected WebDriver driver = null;
 
+  protected int timeoutInSeconds = 10;
+
   public BrFinder(WebDriver driver) {
     this.driver = driver;
   }
+  
+  public BrFinder(WebDriver driver, int timeoutInSeconds) {
+    this.driver = driver;
+    if (driver != null) {
+      driver.manage().timeouts().implicitlyWait(timeoutInSeconds, TimeUnit.SECONDS);
+    }
+    this.timeoutInSeconds = timeoutInSeconds;
+  }
 
+  public void setTemporaryTimeout(double timeoutInSeconds) {
+    if (driver != null) {
+      driver.manage().timeouts().implicitlyWait(new Double(1000 * timeoutInSeconds).intValue(), TimeUnit.MILLISECONDS);
+    }
+  }
+  
+  public void resetToInitialTimeout() {
+    setTemporaryTimeout(timeoutInSeconds);
+  }
+  
   protected void assertDriverAssigned() {
     assertNotNull("WebDriver not initialized", driver);
   }
