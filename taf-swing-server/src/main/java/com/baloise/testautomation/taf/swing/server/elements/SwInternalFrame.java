@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
-
 import javax.swing.JInternalFrame;
-
 import org.assertj.swing.fixture.JInternalFrameFixture;
-
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInternalFrame;
 
@@ -33,7 +22,23 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
 
   @Override
   public TafProperties basicExecCommand(TafProperties props) {
-    return new TafProperties();
+    System.out.println("SwInput --> basicExecCommand");
+    Command c = getCommand(Command.class, props.getString(paramCommand));
+    System.out.println(c);
+    switch (c) {
+      case click:
+        props.clear();
+        click();
+        break;
+    default:
+      throw new IllegalArgumentException("command valid but not implemented yet: " + c);
+    }
+    return props;
+  }
+  
+  @Override
+  public void click() {
+    getFixture().click();
   }
 
   @Override
@@ -41,9 +46,6 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
     addProperty("title", getComponent().getTitle());
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public JInternalFrame getComponent() {
     return (JInternalFrame)component;
@@ -56,7 +58,7 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
 
   @Override
   public String getType() {
-    return "internalframe";
+    return ISwInternalFrame.type;
   }
 
 }
