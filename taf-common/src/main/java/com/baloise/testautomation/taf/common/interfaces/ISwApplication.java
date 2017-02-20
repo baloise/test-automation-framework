@@ -35,14 +35,11 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public final String paramMessage = "message";
   public final String paramXPath = "xpath";
   public final String paramDelayBetweenEvents = "delayBetweenEvents";
-
   public final String paramRoot = "root";
-
   public final String paramKeys = "keys";
-
   public final String valueStarted = "started";
-
   public final String type = "application";
+  public final String paramTimeout = "timeout";
 
   public TafProperties execCommand(TafProperties props);
 

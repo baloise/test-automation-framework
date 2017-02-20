@@ -94,7 +94,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private Component root = null;
 
-  private int timeoutInSeconds = 60;
+  private int timeoutInMsecs = 60000;
 
   StringBuilder xml = null;
 
@@ -239,6 +239,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   private TafProperties execApplicationCommand(TafProperties props) {
     String command = props.getString(paramCommand);
     TafProperties result = new TafProperties();
+    Long to = props.getLong(paramTimeout);
+    if (to != null) {
+      timeoutInMsecs = to.intValue();
+    }
     if (Command.findelementbyxpath.toString().equalsIgnoreCase(command)) {
       try {
         ASwElement element = (ASwElement)findElementByXpath(props.getLong(paramRoot), props.getString(paramXPath));
@@ -356,21 +360,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     return null;
   }
 
-  // @Override
-  // public String getFullXML() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String getMappedXML() {
-  // return null;
-  // }
-  //
-  // @Override
-  // public String toString(long tid) {
-  // return null;
-  // }
-
   @Override
   public ISwElement<Component> findElementByXpath(Long root, String s) {
     List<ISwElement<Component>> elements = findElementsByXpath(root, s);
@@ -416,7 +405,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         catch (Exception e2) {}
         // e.printStackTrace();
       }
-      if (System.currentTimeMillis() > time + 1000 * timeoutInSeconds) {
+      if (System.currentTimeMillis() > time + timeoutInMsecs) {
         timeout = true;
       }
     }

@@ -47,7 +47,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   private Long id = 0l;
   private Long delayBetweenEvents = 10L;
 
-  private int timeoutInSeconds = 50;
+  public int serverTimeoutInMsecs = 50000;
 
   public SwApplicationProxy(Long id) {
     this(id, 10L);
@@ -134,15 +134,21 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     }
     return null;
   }
-
-  @Override
-  public ISwElement<Long> findElementByXpath(Long root, String xpath) {
+  
+  private TafProperties execApplicationCommand(Long root, String xpath, Command command) {
     TafProperties props = new TafProperties();
     props.putObject(paramXPath, xpath);
     props.putObject(paramRoot, root);
-    props.putObject(paramCommand, Command.findelementbyxpath.toString());
+    props.putObject(paramCommand, command.toString());
     props.putObject(paramType, ISwApplication.type);
+    props.putObject(paramTimeout, new Long(serverTimeoutInMsecs));
     props = execCommand(props);
+    return props;
+  }
+
+  @Override
+  public ISwElement<Long> findElementByXpath(Long root, String xpath) {
+    TafProperties props = execApplicationCommand(root, xpath, Command.findelementbyxpath);
     for (String key : props.keySet()) {
       ISwElement<Long> element = getElement(props, key);
       if (element != null) {
@@ -155,12 +161,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   @Override
   public List<ISwElement<Long>> findElementsByXpath(Long root, String xpath) {
     List<ISwElement<Long>> result = new ArrayList<ISwElement<Long>>();
-    TafProperties props = new TafProperties();
-    props.putObject(paramXPath, xpath);
-    props.putObject(paramRoot, root);
-    props.putObject(paramCommand, Command.findelementsbyxpath.toString());
-    props.putObject(paramType, ISwApplication.type);
-    props = execCommand(props);
+    TafProperties props = execApplicationCommand(root, xpath, Command.findelementsbyxpath);
     for (String key : props.keySet()) {
       ISwElement<Long> element = getElement(props, key);
       if (element != null) {
@@ -312,10 +313,14 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   public void waitUntilDone(int id) {
     long time = System.currentTimeMillis();
     while (!SwCommand.isAllDone(id)) {
-      if (System.currentTimeMillis() > time + 1000 * timeoutInSeconds) {
+      if (System.currentTimeMillis() > time + clientTimeoutInMsecs()) {
         throw new SwTimeout();
       }
     }
+  }
+  
+  public int clientTimeoutInMsecs() {
+    return (serverTimeoutInMsecs) + 5000;
   }
 
 }
