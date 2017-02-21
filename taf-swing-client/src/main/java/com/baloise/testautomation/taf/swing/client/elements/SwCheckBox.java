@@ -41,15 +41,24 @@ public class SwCheckBox extends AInput implements IData<TafBoolean> {
   public void fill() {
     if (fillValue != null) {
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
-        ISwCheckBox<?> se = find();
         if (fillValue.asBoolean()) {
-          se.check();
+          setChecked();
         }
         else {
-          se.uncheck();
+          setUnchecked();
         }
       }
     }
+  }
+  
+  public void setChecked() {
+    ISwCheckBox<?> se = find();
+    se.check();
+  }
+  
+  public void setUnchecked() {
+    ISwCheckBox<?> se = find();
+    se.uncheck();
   }
 
   public ISwCheckBox<?> find() {
