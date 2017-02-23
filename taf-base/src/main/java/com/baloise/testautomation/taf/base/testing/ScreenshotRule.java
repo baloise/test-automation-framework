@@ -14,7 +14,9 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
+
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.slf4j.Logger;
@@ -49,12 +51,22 @@ public class ScreenshotRule extends TestWatcher {
   @Override
   protected void failed(Throwable e, Description description) {
     if (onFailed) {
-      saveScreenShot("failed_" + System.currentTimeMillis() + "_" + description.getMethodName() + ".jpg");
+      saveScreenShot("failed_" + getFilename(description));
     }
   }
 
+  protected void finished(Description description) {
+    if (onAfter) {
+      saveScreenShot("after_" + getFilename(description));
+    }
+  }
+
+  private String getFilename(Description description) {
+    return System.currentTimeMillis() + "_" + description.getMethodName() + ".jpg";
+  }
+
   public void saveScreenShot() {
-    saveScreenShot("failed_" + System.currentTimeMillis() + ".jpg");
+    saveScreenShot("screenshot_" + System.currentTimeMillis() + ".jpg");
   }
 
   public void saveScreenShot(String filename) {
@@ -76,13 +88,7 @@ public class ScreenshotRule extends TestWatcher {
 
   protected void starting(Description description) {
     if (onBefore) {
-      saveScreenShot("before_" + System.currentTimeMillis() + ".jpg");
-    }
-  }
-
-  protected void finished(Description description) {
-    if (onAfter) {
-      saveScreenShot("after_" + System.currentTimeMillis() + ".jpg");
+      saveScreenShot("before_" + getFilename(description));
     }
   }
 
