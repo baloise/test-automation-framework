@@ -213,7 +213,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   private String asEscaped(String s) {
     return asEscapedString(s);
   }
-  
+
   private String asEscapedXml(String s) {
     return asEscapedXmlString(s);
   }
@@ -490,7 +490,16 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public void setRoot() {
     Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-    root = SwingUtilities.getRoot(c);
+    if (c == null) {
+      info("no component has keyboard focus --> looking for active window");
+      c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
+    }
+    info("Component = " + c);
+    root = null;
+    if (c != null) {
+      root = SwingUtilities.getRoot(c);
+    }
+    info("Root = " + root);
   }
 
   @Override
