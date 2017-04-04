@@ -17,6 +17,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.slf4j.Logger;
@@ -62,7 +63,9 @@ public class ScreenshotRule extends TestWatcher {
   }
 
   private String getFilename(Description description) {
-    return System.currentTimeMillis() + "_" + description.getMethodName() + ".jpg";
+    String methodName = description.getMethodName();
+    methodName = String.format("%1.100s", methodName);    
+    return System.currentTimeMillis() + "_" + methodName + ".jpg";
   }
 
   public void saveScreenShot() {
