@@ -23,6 +23,10 @@ public class SwTree extends AElement {
     find().clickPath(path);
   }
 
+  public void doubleClickPath(String path) {
+    find().doubleClickPath(path);
+  }
+
   public ISwTree<?> find() {
     return (ISwTree<?>)swFind(ISwTree.type);
   }

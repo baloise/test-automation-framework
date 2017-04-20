@@ -40,6 +40,11 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
         props.clear();
         clickPath(path);
         break;
+      case doubleclickpath:
+        path = props.getString(paramPath);
+        props.clear();
+        doubleClickPath(path);
+        break;
       case rightclickpath:
         path = props.getString(paramPath);
         props.clear();
@@ -60,6 +65,11 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
   @Override
   public void clickPath(String path) {
     getFixture().clickPath(path);
+  }
+
+  @Override
+  public void doubleClickPath(String path) {
+    getFixture().doubleClickPath(path);
   }
 
   @Override
