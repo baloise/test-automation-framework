@@ -48,9 +48,11 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
   public void fillProperties() {
     addProperty("selectedIndex", getComponent().getSelectedIndex());
     addProperty("tabCount", getComponent().getTabCount());
-    addProperty("selectedTabTitle", getComponent().getTitleAt(getComponent().getSelectedIndex()));
-    for (int i = 0; i < getComponent().getTabCount(); i++) {
-      addProperty("title-" + i, getComponent().getTitleAt(i));
+    if (getComponent().getSelectedIndex() >= 0) {
+      addProperty("selectedTabTitle", getComponent().getTitleAt(getComponent().getSelectedIndex()));
+      for (int i = 0; i < getComponent().getTabCount(); i++) {
+        addProperty("title-" + i, getComponent().getTitleAt(i));
+      }
     }
   }
 
