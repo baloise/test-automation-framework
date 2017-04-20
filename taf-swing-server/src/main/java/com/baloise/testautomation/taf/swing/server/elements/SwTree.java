@@ -40,6 +40,11 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
         props.clear();
         clickPath(path);
         break;
+      case rightclickpath:
+        path = props.getString(paramPath);
+        props.clear();
+        rightClickPath(path);
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
@@ -76,6 +81,11 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
   @Override
   public String getType() {
     return ISwTree.type;
+  }
+
+  @Override
+  public void rightClickPath(String path) {
+    getFixture().rightClickPath(path);
   }
 
 }

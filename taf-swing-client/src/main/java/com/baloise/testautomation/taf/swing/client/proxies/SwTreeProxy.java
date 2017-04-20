@@ -28,4 +28,11 @@ public class SwTreeProxy extends ASwElementProxy implements ISwTree<Long> {
     return ISwTree.type;
   }
 
+  @Override
+  public void rightClickPath(String path) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramPath, path);
+    executeCommand(Command.rightclickpath.toString(), props);
+  }
+
 }

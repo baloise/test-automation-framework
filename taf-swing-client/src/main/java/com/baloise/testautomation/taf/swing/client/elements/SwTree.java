@@ -27,4 +27,8 @@ public class SwTree extends AElement {
     return (ISwTree<?>)swFind(ISwTree.type);
   }
 
+  public void rightClickPath(String path) {
+    find().rightClickPath(path);
+  }
+  
 }
