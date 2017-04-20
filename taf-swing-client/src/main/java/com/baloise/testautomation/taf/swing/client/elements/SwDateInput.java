@@ -9,12 +9,18 @@
 package com.baloise.testautomation.taf.swing.client.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafDate;
 
 /**
  * 
  */
 public class SwDateInput extends ASwInput implements IData<TafDate> {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafDate.normalDate(s);
+  }
 
   @Override
   public TafDate get() {

@@ -24,8 +24,6 @@ public abstract class ABrInput extends AInput {
 
   private static final int MAX_RETRIES = 5;
 
-  protected abstract IType asCorrectType(String s);
-
   public void check() {
     if (checkValue != null) {
       if (!checkValue.isSkip() && checkValue.isNotNull()) {
@@ -80,11 +78,6 @@ public abstract class ABrInput extends AInput {
         find().sendKeys(Keys.TAB);
       }
     }
-  }
-
-  public void fillWith(String value) {
-    fillValue = asCorrectType(value);
-    fill();
   }
 
   // @Override

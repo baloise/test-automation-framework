@@ -9,12 +9,18 @@
 package com.baloise.testautomation.taf.swing.client.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
 
 /**
  * 
  */
 public class SwStringInput extends ASwInput implements IData<TafString> {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafString.normalString(s);
+  }
 
   @Override
   public TafString get() {

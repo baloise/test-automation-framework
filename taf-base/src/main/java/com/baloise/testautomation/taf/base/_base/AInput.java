@@ -18,6 +18,10 @@ public abstract class AInput extends AElement {
   protected IType fillValue = null;
   protected IType checkValue = null;
 
+  protected abstract IType asCorrectType(String s);
+
+  public abstract void fill();
+  
   public boolean canCheck() {
     if (checkValue == null) {
       return false;
@@ -41,6 +45,11 @@ public abstract class AInput extends AElement {
       return checkValue.asString();
     }
     return null;
+  }
+
+  public void fillWith(String value) {
+    fillValue = asCorrectType(value);
+    fill();
   }
 
   public IType fillValue() {

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 
@@ -19,6 +20,11 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
  * 
  */
 public class SwComboBox extends AInput implements IData<TafString> {
+
+  @Override
+  protected IType asCorrectType(String s) {
+    return TafString.normalString(s);
+  }
 
   @Override
   public void check() {
