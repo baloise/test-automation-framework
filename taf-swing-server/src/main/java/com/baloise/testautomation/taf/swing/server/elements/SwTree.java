@@ -13,6 +13,7 @@ import java.awt.Component;
 import javax.swing.JTree;
 
 import org.assertj.swing.fixture.JTreeFixture;
+import org.junit.Test;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
@@ -40,6 +41,11 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
         props.clear();
         clickPath(path);
         break;
+      case doubleclickeachelement:
+        path = props.getString(paramPath);
+        props.clear();
+        doubleClickEachElement(path);
+        break;
       case doubleclickpath:
         path = props.getString(paramPath);
         props.clear();
@@ -65,6 +71,17 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
   @Override
   public void clickPath(String path) {
     getFixture().clickPath(path);
+  }
+
+  @Override
+  public void doubleClickEachElement(String path) {
+    String[] elements = path.split("/");
+    String partialPath = "";
+    for (String element : elements) {
+      partialPath = partialPath + element;
+      getFixture().doubleClickPath(partialPath);
+      partialPath = partialPath + "/";
+    }
   }
 
   @Override

@@ -24,6 +24,13 @@ public class SwTreeProxy extends ASwElementProxy implements ISwTree<Long> {
   }
 
   @Override
+  public void doubleClickEachElement(String path) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramPath, path);
+    executeCommand(Command.doubleclickeachelement.toString(), props);
+  }
+
+  @Override
   public void doubleClickPath(String path) {
     TafProperties props = new TafProperties();
     props.putObject(paramPath, path);
