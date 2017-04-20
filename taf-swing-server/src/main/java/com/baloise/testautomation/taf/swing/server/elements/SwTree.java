@@ -13,7 +13,6 @@ import java.awt.Component;
 import javax.swing.JTree;
 
 import org.assertj.swing.fixture.JTreeFixture;
-import org.junit.Test;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
