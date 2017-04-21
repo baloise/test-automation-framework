@@ -9,10 +9,16 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
+
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+
 import org.assertj.swing.data.TableCell;
 import org.assertj.swing.exception.ActionFailedException;
 import org.assertj.swing.fixture.JTableFixture;
+import org.assertj.swing.fixture.JTableHeaderFixture;
+
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 
@@ -131,6 +137,13 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
 
   @Override
   public void clickHeader(String columnName) {
+    JTableHeaderFixture tableHeader = getFixture().tableHeader();
+    JTableHeader target = tableHeader.target();
+    TableColumnModel columnModel = target.getColumnModel();
+    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+      System.out.println("column header class" + i + ": " + columnModel.getColumn(i).getHeaderValue().getClass());
+      System.out.println("column " + i + ": " + columnModel.getColumn(i).getHeaderValue()) ;
+    }
     getFixture().tableHeader().clickColumn(columnName);
   }
 
