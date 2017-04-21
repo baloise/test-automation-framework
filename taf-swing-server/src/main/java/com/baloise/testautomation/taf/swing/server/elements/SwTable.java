@@ -60,6 +60,11 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
       case clickcell:
         basicClickCell(props);
         break;
+      case clickheader:
+        String columnName = props.getString(paramText);
+        props.clear();
+        clickHeader(columnName);
+        break;
       case rightclickcell:
         basicRightClickCell(props);
         break;
@@ -122,6 +127,11 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
   @Override
   public void clickCell(String text) {
     getFixture().cell(text).click();
+  }
+
+  @Override
+  public void clickHeader(String columnName) {
+    getFixture().tableHeader().clickColumn(columnName);
   }
 
   @Override

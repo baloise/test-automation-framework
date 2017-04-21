@@ -39,6 +39,10 @@ public class SwTable extends AElement {
     find().clickCell(text);
   }
 
+  public void clickHeader(String columnName) {
+    find().clickHeader(columnName);
+  }
+
   public void doubleClickCell(int row, int col) {
     find().doubleClickCell(row, col);
   }

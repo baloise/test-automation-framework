@@ -27,6 +27,11 @@ public class SwTableProxy extends ASwElementProxy implements ISwTable<Long> {
   }
 
   @Override
+  public void clickHeader(String columnName) {
+    executeCommand(Command.clickheader.toString(), getProperties(columnName));
+  }
+
+  @Override
   public void doubleClickCell(int row, int col) {
     executeCommand(Command.doubleclickcell.toString(), getProperties(row, col));
   }

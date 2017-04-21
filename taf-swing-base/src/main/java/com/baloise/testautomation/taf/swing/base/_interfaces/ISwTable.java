@@ -16,7 +16,7 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwTable<R> extends ISwElement<R> {
 
   public enum Command {
-    clickcell, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists
+    clickcell, clickheader, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists
   }
 
   public final String paramText = "text";
@@ -33,6 +33,8 @@ public interface ISwTable<R> extends ISwElement<R> {
 
   public void clickCell(String text);
 
+  public void clickHeader(String columnName);
+  
   public void doubleClickCell(int row, int col);
 
   public void doubleClickCell(String text);
