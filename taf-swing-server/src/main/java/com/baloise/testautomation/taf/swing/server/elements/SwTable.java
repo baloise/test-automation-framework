@@ -140,11 +140,18 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
     JTableHeaderFixture tableHeader = getFixture().tableHeader();
     JTableHeader target = tableHeader.target();
     TableColumnModel columnModel = target.getColumnModel();
+    int index = -1;
     for (int i = 0; i < columnModel.getColumnCount(); i++) {
-      System.out.println("column header class" + i + ": " + columnModel.getColumn(i).getHeaderValue().getClass());
-      System.out.println("column " + i + ": " + columnModel.getColumn(i).getHeaderValue()) ;
+      if (columnName.equals(columnModel.getColumn(i).getHeaderValue())) {
+        index = i;
+      }
     }
-    getFixture().tableHeader().clickColumn(columnName);
+    if (index >= 0) {
+      getFixture().tableHeader().clickColumn(index);
+    }
+    else {
+      System.out.println("Table column with name '" + columnName + "' --> NOT found --> NOT clicked");
+    }
   }
 
   @Override
