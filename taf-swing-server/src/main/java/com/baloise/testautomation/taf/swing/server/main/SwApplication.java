@@ -167,9 +167,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
             allListItemsToXML(xml, (JList)c);
           }
           else {
-            if (c instanceof JTabbedPane) {
-              allTabsToXML(xml, (JTabbedPane)c);
-            } else {
+//            if (c instanceof JTabbedPane) {
+//              allTabsToXML(xml, (JTabbedPane)c);
+//            } else {
             // if (c instanceof JTabbedPane) {
             // Component tab = ((JTabbedPane)c).getSelectedComponent();
             // if (tab instanceof Container) {
@@ -179,7 +179,10 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
             // }
             // } else {
               cs = ((Container)c).getComponents();
-            }
+              for (int i = 0; i < cs.length; i++) {
+                cs[i] = ((Container)c).getComponent(i);
+              }
+//            }
           }
         }
       }
