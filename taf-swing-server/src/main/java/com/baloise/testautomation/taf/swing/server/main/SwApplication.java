@@ -218,12 +218,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   public void allTabsToXML(StringBuilder xml, JTabbedPane tabbedPane) {
-    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-      System.out.println("Tab component " + i + ": " + tabbedPane.getTabComponentAt(i));
-      allComponentsToXML(xml, tabbedPane.getTabComponentAt(i));
-    }
     for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
-      System.out.println("Normal component " + i + ": " + tabbedPane.getTabComponentAt(i));
       allComponentsToXML(xml, tabbedPane.getComponentAt(i));
     }
   }
