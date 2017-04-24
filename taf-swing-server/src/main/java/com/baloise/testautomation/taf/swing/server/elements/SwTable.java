@@ -144,6 +144,7 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
     for (int i = 0; i < columnModel.getColumnCount(); i++) {
       if (columnName.equals(columnModel.getColumn(i).getHeaderValue())) {
         index = i;
+        break;
       }
     }
     if (index >= 0) {
