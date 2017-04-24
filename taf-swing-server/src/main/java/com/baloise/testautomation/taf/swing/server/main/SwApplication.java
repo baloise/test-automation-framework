@@ -10,6 +10,7 @@ package com.baloise.testautomation.taf.swing.server.main;
 
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedString;
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
@@ -24,6 +25,7 @@ import java.lang.annotation.Annotation;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -33,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -48,9 +51,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -214,7 +219,12 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public void allTabsToXML(StringBuilder xml, JTabbedPane tabbedPane) {
     for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+      System.out.println("Tab component " + i + ": " + tabbedPane.getTabComponentAt(i));
       allComponentsToXML(xml, tabbedPane.getTabComponentAt(i));
+    }
+    for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
+      System.out.println("Normal component " + i + ": " + tabbedPane.getTabComponentAt(i));
+      allComponentsToXML(xml, tabbedPane.getComponentAt(i));
     }
   }
   
