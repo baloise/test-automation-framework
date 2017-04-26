@@ -169,15 +169,16 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
           else {
             if (c instanceof JTabbedPane) {
               allTabsToXML(xml, (JTabbedPane)c);
-            } else {
-            // if (c instanceof JTabbedPane) {
-            // Component tab = ((JTabbedPane)c).getSelectedComponent();
-            // if (tab instanceof Container) {
-            // cs = ((Container)tab).getComponents();
-            // } else {
-            // cs = ((Container)c).getComponents();
-            // }
-            // } else {
+            }
+            else {
+              // if (c instanceof JTabbedPane) {
+              // Component tab = ((JTabbedPane)c).getSelectedComponent();
+              // if (tab instanceof Container) {
+              // cs = ((Container)tab).getComponents();
+              // } else {
+              // cs = ((Container)c).getComponents();
+              // }
+              // } else {
               cs = ((Container)c).getComponents();
             }
           }
@@ -208,7 +209,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       String s = "";
       try {
         String text = list.getModel().getElementAt(i).toString();
-        s = "<listitem index=\"" + i + "\">" + asEscapedXml(text) + "</listitem>";
+        s = "<!-- " + text + " -->";
+        s = s + System.getProperty("line.separator");
+        s = s + "<listitem index=\"" + i + "\">" + asEscapedXml(text) + "</listitem>";
       }
       catch (Exception e) {
         s = "<listitem index=\"-1\">" + e.getMessage() + "</listitem>";
@@ -219,10 +222,14 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public void allTabsToXML(StringBuilder xml, JTabbedPane tabbedPane) {
     for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
+      xml.append("<tab title=\"" + asEscapedXml(tabbedPane.getTitleAt(i)) + "\">");
+      xml.append(System.getProperty("line.separator"));
       allComponentsToXML(xml, tabbedPane.getComponentAt(i));
+      xml.append("</tab>");
+      xml.append(System.getProperty("line.separator"));
     }
   }
-  
+
   // private int level = 0;
 
   private String asEscaped(String s) {
