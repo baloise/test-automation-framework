@@ -222,7 +222,11 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public void allTabsToXML(StringBuilder xml, JTabbedPane tabbedPane) {
     for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
-      xml.append("<tab title=\"" + asEscapedXml(tabbedPane.getTitleAt(i)) + "\">");
+      String title = asEscapedXml(tabbedPane.getTitleAt(i));
+      if (title.isEmpty()) {
+        title = "untitled-" + i;
+      }
+      xml.append("<tab title=\"" +  title + "\">");
       xml.append(System.getProperty("line.separator"));
       allComponentsToXML(xml, tabbedPane.getComponentAt(i));
       xml.append("</tab>");
