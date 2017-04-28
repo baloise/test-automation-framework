@@ -28,7 +28,7 @@ public class SwButtonProxy extends ASwElementProxy implements ISwButton<Long> {
 
   @Override
   public boolean isEnabled() {
-    TafProperties props = executeCommand(Command.isEnabled.toString());
+    TafProperties props = executeCommand(Command.isenabled.toString());
     return props.getBoolean(paramIsEnabled);
   }
 

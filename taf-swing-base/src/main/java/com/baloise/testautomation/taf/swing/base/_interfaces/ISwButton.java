@@ -16,7 +16,7 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwButton<R> extends ISwElement<R> {
 
   public enum Command {
-    click, isEnabled
+    click, isenabled
   }
 
   public static String type = "button";

@@ -20,11 +20,6 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
 
   @Override
   public TafProperties basicExecCommand(TafProperties props) {
-    System.out.println("listing properties, size = " + props.keySet().size());
-    for (String key : props.keySet()) {
-      System.out.println(key + ": " + props.getObject(key));
-    }
-    System.out.println("getting command");
     Command c = getCommand(Command.class, props.getString(paramCommand));
     System.out.println("command: " + c);
     switch (c) {
@@ -32,7 +27,7 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
         props.clear();
         click();
         break;
-      case isEnabled:
+      case isenabled:
         props.clear();
         props.putObject(paramIsEnabled, isEnabled());
         break;
