@@ -104,6 +104,7 @@ public abstract class ASwElement implements ISwElement<Component> {
       return getDoneProperties(props);
     }
     catch (Exception e) {
+      e.printStackTrace();
       System.out.println("ASwElement --> exception caught: " + e);
       return getErrorProperties(e.toString());
     }
