@@ -1,11 +1,13 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
+import java.util.Enumeration;
 
 import javax.swing.JButton;
 
 import org.assertj.swing.fixture.JButtonFixture;
 import org.assertj.swing.timing.Timeout;
+
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
 import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
@@ -18,7 +20,13 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
 
   @Override
   public TafProperties basicExecCommand(TafProperties props) {
+    System.out.println("listing properties, size = " + props.keySet().size());
+    for (String key : props.keySet()) {
+      System.out.println(key + ": " + props.getObject(key));
+    }
+    System.out.println("getting command");
     Command c = getCommand(Command.class, props.getString(paramCommand));
+    System.out.println("command: " + c);
     switch (c) {
       case click:
         props.clear();
