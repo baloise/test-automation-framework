@@ -16,10 +16,12 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwInput<R> extends ISwElement<R> {
 
   public enum Command {
-    click, clear, entertext, gettext
+    click, clear, entertext, gettext, isenabled;
   }
 
   public final String paramText = "text";
+  
+  public final String paramIsEnabled = "isenabled";
 
   public final String type = "input";
 
@@ -30,5 +32,7 @@ public interface ISwInput<R> extends ISwElement<R> {
   public void enterText(String text);
 
   public String getText();
+  
+  public boolean isEnabled();
 
 }

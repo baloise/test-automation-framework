@@ -48,4 +48,7 @@ public abstract class ASwInput extends AInput {
     return (ISwInput<?>)swFind(ISwInput.type);
   }
 
+  public boolean isEnabled() {
+    return find().isEnabled();
+  }
 }

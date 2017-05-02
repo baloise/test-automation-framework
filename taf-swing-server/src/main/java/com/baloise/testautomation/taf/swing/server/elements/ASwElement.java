@@ -175,6 +175,10 @@ public abstract class ASwElement implements ISwElement<Component> {
     return tid;
   }
 
+  public boolean isEnabled() {
+    return getFixture().isEnabled();
+  }
+  
   @Override
   public void setApplication(ISwApplication<?> application) {}
 

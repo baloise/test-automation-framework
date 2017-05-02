@@ -40,6 +40,12 @@ public class SwInputProxy extends ASwElementProxy implements ISwInput<Long> {
   }
 
   @Override
+  public boolean isEnabled() {
+    TafProperties props = executeCommand(Command.isenabled.toString());
+    return props.getBoolean(paramIsEnabled);
+  }
+
+  @Override
   public String getType() {
     return ISwInput.type;
   }

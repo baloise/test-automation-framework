@@ -49,6 +49,10 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
         props.clear();
         props.putObject(paramText, getText());
         break;
+      case isenabled:
+        props.clear();
+        props.putObject(paramIsEnabled, isEnabled());
+        break;
       default:
         throw new IllegalArgumentException("command valid but not implemented yet: " + c);
     }

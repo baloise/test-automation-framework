@@ -12,6 +12,7 @@ import java.awt.Component;
 
 import javax.swing.JList;
 
+import org.assertj.swing.cell.JListCellReader;
 import org.assertj.swing.fixture.JListFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
@@ -83,7 +84,39 @@ public class SwList extends ASwElement implements ISwList<Component> {
 
   @Override
   public String getTextAt(Long index) {
-    return getFixture().valueAt(index.intValue());
+    String result = getFixture().valueAt(index.intValue());
+    
+    try {
+      getFixture().replaceCellReader(new JListCellReader() {
+        
+        @Override
+        public String valueAt(JList list, int index) {
+          try {
+            Object element = list.getModel().getElementAt(index);
+            Component renderer = list.getCellRenderer().getListCellRendererComponent(list, element, index, true, true);
+            if (renderer != null) {
+              System.out.println("renderer: " + renderer.getClass());
+            }
+            if (element != null) {
+              System.out.println("element: " + element.getClass());
+              System.out.println(element);
+              return element.toString();
+            }
+          }
+          catch (Exception e) {
+          }
+          return "no item found";
+        }
+      });
+      
+      String otherResult = getFixture().valueAt(index.intValue());
+      System.out.println("Listeneintrag: " + otherResult);
+    }
+    catch (Exception e) {
+    }
+    
+    return result;
+    
   }
   
   @Override
