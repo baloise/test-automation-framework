@@ -84,11 +84,12 @@ public class SwList extends ASwElement implements ISwList<Component> {
 
   @Override
   public String getTextAt(Long index) {
-    String result = getFixture().valueAt(index.intValue());
-    
+    JListFixture fixture = getFixture();
+    String result = fixture.valueAt(index.intValue());
+
     try {
-      getFixture().replaceCellReader(new JListCellReader() {
-        
+      fixture.replaceCellReader(new JListCellReader() {
+
         @Override
         public String valueAt(JList list, int index) {
           try {
@@ -103,22 +104,20 @@ public class SwList extends ASwElement implements ISwList<Component> {
               return element.toString();
             }
           }
-          catch (Exception e) {
-          }
+          catch (Exception e) {}
           return "no item found";
         }
       });
-      
-      String otherResult = getFixture().valueAt(index.intValue());
+
+      String otherResult = fixture.valueAt(index.intValue());
       System.out.println("Listeneintrag: " + otherResult);
     }
-    catch (Exception e) {
-    }
-    
+    catch (Exception e) {}
+
     return result;
-    
+
   }
-  
+
   @Override
   public void clickItem(Long index) {
     getFixture().clickItem(index.intValue());
