@@ -70,7 +70,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void basicCheck() {
-    Field[] fields = getCheckFields();
+    List<Field> fields = getCheckFields();
     for (Field f : fields) {
       try {
         Method m = getCheckMethod(f);
@@ -101,7 +101,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void basicFill() {
-    Field[] fields = getFillFields();
+    List<Field> fields = getFillFields();
     for (Field f : fields) {
       try {
         Method m = getFillMethod(f);
@@ -193,7 +193,7 @@ public abstract class ABase implements IComponent {
     return null;
   }
 
-  public Field[] getCheckDataFields() {
+  public List<Field> getCheckDataFields() {
     List<Field> fields = Arrays.asList(getClass().getFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
@@ -201,10 +201,10 @@ public abstract class ABase implements IComponent {
         result.add(field);
       }
     }
-    return result.toArray(new Field[result.size()]);
+    return result;
   }
 
-  public Field[] getCheckFields() {
+  public List<Field> getCheckFields() {
     List<Field> fields = Arrays.asList(getClass().getFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
@@ -219,14 +219,14 @@ public abstract class ABase implements IComponent {
             .value()));
       }
     });
-    return result.toArray(new Field[result.size()]);
+    return result;
   }
 
   public Method getCheckMethod(Field f) {
     return getMethod("check", f);
   }
 
-  public Field[] getDataFields() {
+  public List<Field> getDataFields() {
     List<Field> fields = Arrays.asList(getClass().getFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
@@ -234,7 +234,7 @@ public abstract class ABase implements IComponent {
         result.add(field);
       }
     }
-    return result.toArray(new Field[result.size()]);
+    return result;
   }
 
   @Override
@@ -242,7 +242,7 @@ public abstract class ABase implements IComponent {
     return fillId;
   }
 
-  public Field[] getFillFields() {
+  public List<Field> getFillFields() {
     List<Field> fields = Arrays.asList(getClass().getFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
@@ -257,7 +257,7 @@ public abstract class ABase implements IComponent {
             .value()));
       }
     });
-    return result.toArray(new Field[result.size()]);
+    return result;
   }
 
   public Method getFillMethod(Field f) {
@@ -294,7 +294,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initByFields() {
-    Field[] fields = getClass().getFields();
+    List<Field> fields = Arrays.asList(getClass().getFields());
     for (Field f : fields) {
       try {
         Annotation by = getByAnnotation(f);
@@ -324,7 +324,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initDataFields() {
-    Field[] fields = getClass().getFields();
+    List<Field> fields = Arrays.asList(getClass().getFields());
     for (Field f : fields) {
       try {
         if (f.isAnnotationPresent(Data.class)) {
@@ -347,7 +347,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initOtherFields() {
-    Field[] fields = getClass().getFields();
+    List<Field> fields = Arrays.asList(getClass().getFields());
     for (Field f : fields) {
       if (f.getAnnotation(Rule.class) == null) {
         try {
@@ -472,12 +472,12 @@ public abstract class ABase implements IComponent {
   }
 
   public void setCheckDataFields(IDataRow data) {
-    Field[] fields = getCheckDataFields();
+    List<Field> fields = getCheckDataFields();
     setFields(data, fields);
   }
 
   public void setCheckFields(IDataRow data) {
-    Field[] fields = getCheckFields();
+    List<Field> fields = getCheckFields();
     for (Field f : fields) {
       try {
         Object o = f.get(this);
@@ -546,7 +546,7 @@ public abstract class ABase implements IComponent {
     fail("element type not supported: " + o.getClass());
   }
 
-  private void setFields(IDataRow data, Field[] fields) {
+  private void setFields(IDataRow data, List<Field> fields) {
     for (Field f : fields) {
       try {
         Object o = f.get(this);
@@ -593,12 +593,12 @@ public abstract class ABase implements IComponent {
   }
 
   public void setFillDataFields(IDataRow data) {
-    Field[] fields = getDataFields();
+    List<Field> fields = getDataFields();
     setFields(data, fields);
   }
 
   public void setFillFields(IDataRow data) {
-    Field[] fields = getFillFields();
+    List<Field> fields = getFillFields();
     for (Field f : fields) {
       try {
         Object o = f.get(this);
@@ -630,7 +630,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void validate() {
-    Field[] fields = getClass().getDeclaredFields();
+    List<Field> fields = Arrays.asList(getClass().getDeclaredFields());
     for (Field f : fields) {
       if (f.isAnnotationPresent(Check.class) || f.isAnnotationPresent(Fill.class) || f.isAnnotationPresent(Data.class)) {
         if (!Modifier.isPublic(f.getModifiers())) {
