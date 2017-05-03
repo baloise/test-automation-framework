@@ -10,7 +10,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,7 +64,6 @@ public abstract class ABase implements IComponent {
   public Annotation check = null;
 
   public ABase() {
-    validate();
     initFields();
   }
 
@@ -194,7 +192,7 @@ public abstract class ABase implements IComponent {
   }
 
   public List<Field> getCheckDataFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(CheckData.class)) {
@@ -204,8 +202,25 @@ public abstract class ABase implements IComponent {
     return result;
   }
 
+  private List<Field> getAllFields() {
+    List<Field> allFields = new ArrayList<>();
+    Class<?> currentClass = getClass();
+    while (currentClass != null) {
+      allFields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
+      currentClass = currentClass.getSuperclass();
+    }
+    return allFields;
+  }
+
+  private List<Field> makeFieldsAccessible(List<Field> allFields) {
+    for (Field field: allFields) {
+      field.setAccessible(true);
+    }
+    return allFields;
+  }
+
   public List<Field> getCheckFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(Check.class)) {
@@ -227,7 +242,7 @@ public abstract class ABase implements IComponent {
   }
 
   public List<Field> getDataFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(Data.class)) {
@@ -243,7 +258,7 @@ public abstract class ABase implements IComponent {
   }
 
   public List<Field> getFillFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     List<Field> result = new ArrayList<Field>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(Fill.class)) {
@@ -294,7 +309,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initByFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     for (Field f : fields) {
       try {
         Annotation by = getByAnnotation(f);
@@ -324,7 +339,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initDataFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     for (Field f : fields) {
       try {
         if (f.isAnnotationPresent(Data.class)) {
@@ -347,7 +362,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initOtherFields() {
-    List<Field> fields = Arrays.asList(getClass().getFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     for (Field f : fields) {
       if (f.getAnnotation(Rule.class) == null) {
         try {
@@ -627,17 +642,6 @@ public abstract class ABase implements IComponent {
   @Override
   public void setName(String name) {
     this.name = name;
-  }
-
-  public void validate() {
-    List<Field> fields = Arrays.asList(getClass().getDeclaredFields());
-    for (Field f : fields) {
-      if (f.isAnnotationPresent(Check.class) || f.isAnnotationPresent(Fill.class) || f.isAnnotationPresent(Data.class)) {
-        if (!Modifier.isPublic(f.getModifiers())) {
-          fail("Fill, Check or Data-annotated field must be declared as public: " + f.getName() + " --> " + getClass());
-        }
-      }
-    }
   }
 
 }
