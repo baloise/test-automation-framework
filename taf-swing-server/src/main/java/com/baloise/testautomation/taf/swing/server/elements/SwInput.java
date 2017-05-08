@@ -10,7 +10,9 @@ package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Window;
 
+import javax.swing.JDialog;
 import javax.swing.JTextField;
 
 import org.assertj.swing.fixture.JTextComponentFixture;
@@ -82,8 +84,25 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextField getComponent() {
-    //waitUntilFocused();
+    waitUntilFocused();
     return (JTextField)component;
+  }
+
+  private Window getSelectedWindow(Window[] windows) {
+    Window result = null;
+    for (int i = 0; i < windows.length; i++) {
+      Window window = windows[i];
+      if (window.isActive()) {
+        result = window;
+      }
+      else {
+        Window[] ownedWindows = window.getOwnedWindows();
+        if (ownedWindows != null) {
+          result = getSelectedWindow(ownedWindows);
+        }
+      }
+    }
+    return result;
   }
 
   private void waitUntilFocused() {
@@ -91,26 +110,30 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
     boolean timedOut = false;
     boolean isFocusOwner = false;
     while (!(timedOut | isFocusOwner)) {
-      boolean hasParent = true;
-      Container parent = component.getParent();
-      while (hasParent) {
-        if (parent != null) {
-          isFocusOwner = parent.isFocusOwner();
-          System.out.println("parent: " + parent + ", is focus owner: " + isFocusOwner);
-          parent = parent.getParent();
-        }
-        if (parent == null) {
-          System.out.println("no more parent");
-          hasParent = false;
-        }
+      Window activeWindow = javax.swing.FocusManager.getCurrentManager().getActiveWindow();
+      System.out.println("active window: " + activeWindow);
+      Window focusedWindow = javax.swing.FocusManager.getCurrentManager().getFocusedWindow();
+      System.out.println("focused window: " + focusedWindow);
+      Window selectedWindow = getSelectedWindow(Window.getWindows());
+      System.out.println("selected window: " + focusedWindow);
+      // boolean hasParent = true;
+      // Container parent = component.getParent();
+      // JDialog d;
+      // while (hasParent) {
+      // if (parent != null) {
+      // isFocusOwner = parent.isFocusOwner();
+      // System.out.println("parent: " + parent + ", is focus owner: " + isFocusOwner);
+      // parent = parent.getParent();
+      // }
+      // if (parent == null) {
+      // System.out.println("no more parent");
+      // hasParent = false;
+      // }
+      // }
+      try {
+        Thread.sleep(1000);
       }
-      if (!isFocusOwner) {
-        try {
-          Thread.sleep(1000);
-        }
-        catch (Exception e) {
-        }
-      }
+      catch (Exception e) {}
       if (System.currentTimeMillis() > time + 30000) {
         System.out.println("timed out");
         timedOut = true;
