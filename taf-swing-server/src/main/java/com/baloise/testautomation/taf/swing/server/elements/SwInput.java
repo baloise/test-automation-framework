@@ -8,12 +8,13 @@
  */
 package com.baloise.testautomation.taf.swing.server.elements;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.Window;
 
-import javax.swing.JDialog;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.assertj.swing.fixture.JTextComponentFixture;
 
@@ -115,7 +116,9 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
       Window focusedWindow = javax.swing.FocusManager.getCurrentManager().getFocusedWindow();
       System.out.println("focused window: " + focusedWindow);
       Window selectedWindow = getSelectedWindow(Window.getWindows());
-      System.out.println("selected window: " + focusedWindow);
+      System.out.println("selected window: " + selectedWindow);
+      AWTEvent peekEvent = Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent();
+      System.out.println("peekEvent: " + peekEvent);
       // boolean hasParent = true;
       // Container parent = component.getParent();
       // JDialog d;
@@ -143,6 +146,7 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextComponentFixture getFixture() {
+    waitUntilFocused();
     return new JTextComponentFixture(getRobot(), getComponent());
   }
 
