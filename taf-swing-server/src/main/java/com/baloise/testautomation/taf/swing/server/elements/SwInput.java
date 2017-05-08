@@ -9,6 +9,7 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.JTextField;
 
@@ -81,7 +82,40 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextField getComponent() {
+    waitUntilFocused();
     return (JTextField)component;
+  }
+
+  private void waitUntilFocused() {
+    long time = System.currentTimeMillis();
+    boolean timedOut = false;
+    boolean isFocusOwner = false;
+    while (!(timedOut | isFocusOwner)) {
+      boolean hasParent = true;
+      Container parent = component.getParent();
+      while (hasParent) {
+        if (parent != null) {
+          isFocusOwner = parent.isFocusOwner();
+          System.out.println("parent: " + parent + ", is focus owner: " + isFocusOwner);
+          parent = parent.getParent();
+        }
+        if (parent == null) {
+          System.out.println("no more parent");
+          hasParent = false;
+        }
+      }
+      if (!isFocusOwner) {
+        try {
+          Thread.sleep(1000);
+        }
+        catch (Exception e) {
+        }
+      }
+      if (System.currentTimeMillis() > time + 30000) {
+        System.out.println("timed out");
+        timedOut = true;
+      }
+    }
   }
 
   @Override
