@@ -84,7 +84,7 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextField getComponent() {
-    waitUntilFocused();
+   // waitUntilFocused();
     return (JTextField)component;
   }
 
