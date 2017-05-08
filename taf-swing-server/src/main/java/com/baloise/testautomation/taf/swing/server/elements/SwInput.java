@@ -146,7 +146,7 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextComponentFixture getFixture() {
-    waitUntilFocused();
+    // waitUntilFocused();
     return new JTextComponentFixture(getRobot(), getComponent());
   }
 
