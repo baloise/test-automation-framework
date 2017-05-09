@@ -16,7 +16,9 @@ import java.awt.Window;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.assertj.swing.fixture.AbstractComponentFixture;
 import org.assertj.swing.fixture.JTextComponentFixture;
+import org.assertj.swing.query.ComponentShowingQuery;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
@@ -85,7 +87,7 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextField getComponent() {
-   // waitUntilFocused();
+    // waitUntilFocused();
     return (JTextField)component;
   }
 
@@ -106,33 +108,14 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
     return result;
   }
 
-  private void waitUntilFocused() {
+  private void waitUntilReady() {
     long time = System.currentTimeMillis();
     boolean timedOut = false;
-    boolean isFocusOwner = false;
-    while (!(timedOut | isFocusOwner)) {
-      Window activeWindow = javax.swing.FocusManager.getCurrentManager().getActiveWindow();
-      System.out.println("active window: " + activeWindow);
-      Window focusedWindow = javax.swing.FocusManager.getCurrentManager().getFocusedWindow();
-      System.out.println("focused window: " + focusedWindow);
-      Window selectedWindow = getSelectedWindow(Window.getWindows());
-      System.out.println("selected window: " + selectedWindow);
-      AWTEvent peekEvent = Toolkit.getDefaultToolkit().getSystemEventQueue().peekEvent();
-      System.out.println("peekEvent: " + peekEvent);
-      // boolean hasParent = true;
-      // Container parent = component.getParent();
-      // JDialog d;
-      // while (hasParent) {
-      // if (parent != null) {
-      // isFocusOwner = parent.isFocusOwner();
-      // System.out.println("parent: " + parent + ", is focus owner: " + isFocusOwner);
-      // parent = parent.getParent();
-      // }
-      // if (parent == null) {
-      // System.out.println("no more parent");
-      // hasParent = false;
-      // }
-      // }
+    while (!timedOut) {
+      if (ComponentShowingQuery.isShowing(component)) {
+        return;
+      }
+      System.out.println("component is not yet showing: " + component);
       try {
         Thread.sleep(1000);
       }
@@ -146,7 +129,7 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
 
   @Override
   public JTextComponentFixture getFixture() {
-    // waitUntilFocused();
+    waitUntilReady();
     return new JTextComponentFixture(getRobot(), getComponent());
   }
 
