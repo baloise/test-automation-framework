@@ -19,6 +19,13 @@ public class TafProperties {
 
   private Hashtable<String, Object> props = new Hashtable<String, Object>();
 
+  public TafProperties() {
+  }
+  
+  public TafProperties(TafProperties propsToCopy) {
+    props = new Hashtable<String, Object>(propsToCopy.props);
+  }
+  
   public void clear() {
     props.clear();
   }

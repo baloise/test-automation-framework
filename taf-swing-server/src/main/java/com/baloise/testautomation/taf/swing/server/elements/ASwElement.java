@@ -55,7 +55,7 @@ public abstract class ASwElement implements ISwElement<Component> {
     }
     return asEscapedString(s);
   }
-  
+
   protected String asEscapedXml(String s) {
     if (s == null) {
       return s;
@@ -94,20 +94,40 @@ public abstract class ASwElement implements ISwElement<Component> {
   // }
   // }
 
+  public static long TIMEOUT_FOR_EXECUTION_IN_SECONDS = 10;
+  
   public TafProperties execCommand(TafProperties props) {
-    System.out.println("ASwElement --> execCommand");
-    try {
-      if (!getType().equalsIgnoreCase(props.getString("type"))) {
-        return getErrorProperties("wrong type (expected = " + getType() + ", actual = " + props.getString("type"));
+    boolean timedOut = false;
+    long time = System.currentTimeMillis();
+    String errorMessage = "no error";
+    while (!timedOut) {
+      TafProperties incomingProps = new TafProperties(props);
+      System.out.println("ASwElement --> execCommand");
+      try {
+        if (!getType().equalsIgnoreCase(incomingProps.getString("type"))) {
+          return getErrorProperties("wrong type (expected = " + getType() + ", actual = "
+              + incomingProps.getString("type"));
+        }
+        incomingProps = basicExecCommand(incomingProps);
+        System.out.println("ASwElement --> execCommand successfully completed");
+        return getDoneProperties(incomingProps);
       }
-      props = basicExecCommand(props);
-      return getDoneProperties(props);
+      catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("ASwElement --> execCommand --> exception caught: " + e);
+        errorMessage = e.toString();
+        try {
+          Thread.sleep(200);
+        }
+        catch (Exception e2) {
+        }
+      }
+      if (System.currentTimeMillis() > time + (TIMEOUT_FOR_EXECUTION_IN_SECONDS * 1000)) {
+        System.out.println("ASwElement --> execCommand --> TIMED OUT");
+        timedOut = true;
+      }
     }
-    catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("ASwElement --> exception caught: " + e);
-      return getErrorProperties(e.toString());
-    }
+    return getErrorProperties(errorMessage);
   }
 
   public abstract void fillProperties();
@@ -178,7 +198,7 @@ public abstract class ASwElement implements ISwElement<Component> {
   public boolean isEnabled() {
     return getFixture().isEnabled();
   }
-  
+
   @Override
   public void setApplication(ISwApplication<?> application) {}
 

@@ -183,6 +183,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   private ISwElement<Long> getElement(TafProperties props, String key) {
+    System.out.println("getElement: " + props.toString());
     ISwElement<Long> element = createElement(props.getString(key));
     if (element != null) {
       try {
