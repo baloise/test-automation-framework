@@ -22,7 +22,7 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
 
   @Override
   public TafProperties basicExecCommand(TafProperties props) {
-    System.out.println("SwInput --> basicExecCommand");
+    System.out.println("SwInternalFrame --> basicExecCommand");
     Command c = getCommand(Command.class, props.getString(paramCommand));
     System.out.println(c);
     switch (c) {

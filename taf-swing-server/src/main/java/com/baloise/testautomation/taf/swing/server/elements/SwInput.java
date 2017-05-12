@@ -8,21 +8,17 @@
  */
 package com.baloise.testautomation.taf.swing.server.elements;
 
-import java.awt.AWTEvent;
 import java.awt.Component;
-import java.awt.Toolkit;
 import java.awt.Window;
 
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
-import org.assertj.swing.fixture.AbstractComponentFixture;
 import org.assertj.swing.fixture.JTextComponentFixture;
-import org.assertj.swing.query.ComponentShowingQuery;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 import com.baloise.testautomation.taf.swing.server.utils.LabelFinder;
+import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 /**
  * 
@@ -74,7 +70,13 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
   }
 
   public void enterText(String text) {
-    getFixture().enterText(text);
+    for (char c : text.toCharArray()) {
+      getFixture().enterText(String.valueOf(c));
+      try {
+        Thread.sleep(SwRobotFactory.delayBetweenKeystrokes);
+      }
+      catch (Exception e) {}
+    }
   }
 
   @Override
@@ -108,28 +110,35 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
     return result;
   }
 
-  private void waitUntilReady() {
-    long time = System.currentTimeMillis();
-    boolean timedOut = false;
-    while (!timedOut) {
-      if (ComponentShowingQuery.isShowing(component)) {
-        return;
-      }
-      System.out.println("component is not yet showing: " + component);
-      try {
-        Thread.sleep(1000);
-      }
-      catch (Exception e) {}
-      if (System.currentTimeMillis() > time + 30000) {
-        System.out.println("timed out");
-        timedOut = true;
-      }
-    }
-  }
+//  private void waitUntilReady() {
+//    System.out.println("WindowMonitor event queues: " + WindowMonitor.instance().allEventQueues().size());
+//    for (EventQueue eq : WindowMonitor.instance().allEventQueues()) {
+//      System.out.println("Check if queue is empty: " + eq);
+//      while (eq.peekEvent() != null) {
+//        System.out.println("Event queue not empty: " + eq);
+//      }
+//    }
+//    // long time = System.currentTimeMillis();
+//    // boolean timedOut = false;
+//    // while (!timedOut) {
+//    // if (ComponentShowingQuery.isShowing(component)) {
+//    // return;
+//    // }
+//    // System.out.println("component is not yet showing: " + component);
+//    // try {
+//    // Thread.sleep(1000);
+//    // }
+//    // catch (Exception e) {}
+//    // if (System.currentTimeMillis() > time + 30000) {
+//    // System.out.println("timed out");
+//    // timedOut = true;
+//    // }
+//    // }
+//  }
 
   @Override
   public JTextComponentFixture getFixture() {
-    waitUntilReady();
+//    waitUntilReady();
     return new JTextComponentFixture(getRobot(), getComponent());
   }
 

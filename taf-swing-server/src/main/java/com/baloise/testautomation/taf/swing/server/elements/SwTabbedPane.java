@@ -74,14 +74,25 @@ public class SwTabbedPane extends ASwElement implements ISwTabbedPane<Component>
   public void selectByIndex(Long index) {
     if (index != null) {
       getFixture().selectTab(index.intValue());
+      if (index.intValue() != getComponent().getSelectedIndex()) {
+        throw new IllegalArgumentException("selection of tab NOT successfull: " + index);
+      }
     }
     else {
-      throw new IllegalArgumentException("tag index must NOT be null");
+      throw new IllegalArgumentException("tab index must NOT be null");
     }
   }
 
   public void selectByTitle(String title) {
-    getFixture().selectTab(title);
+    if (title != null) {
+      getFixture().selectTab(title);
+      if (!title.equals(getComponent().getTitleAt(getComponent().getSelectedIndex()))) {
+        throw new IllegalArgumentException("selection of tab NOT successfull: " + title);
+      }
+    }
+    else {
+      throw new IllegalArgumentException("tab title must NOT be null");
+    }
   }
 
 }
