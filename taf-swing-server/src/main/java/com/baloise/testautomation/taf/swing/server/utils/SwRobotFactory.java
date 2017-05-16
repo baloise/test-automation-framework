@@ -18,9 +18,9 @@ public class SwRobotFactory {
 
   private static Robot robot = null;
   
-  public static int delayBetweenEvents = 60;
-  public static int eventPostingDelay = 60;
-  public static int delayBetweenKeystrokes = 1;
+  public static int delayBetweenEvents = 100;
+  public static int eventPostingDelay = 120; // muss gleich oder grösser als delayBetweenEvents sein
+  public static int delayBetweenKeystrokes = 5;
 
   public static Robot getRobot() {
     if (robot == null) {

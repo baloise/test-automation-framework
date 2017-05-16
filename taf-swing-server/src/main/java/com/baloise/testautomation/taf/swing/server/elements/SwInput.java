@@ -70,6 +70,7 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
   }
 
   public void enterText(String text) {
+//    getFixture().enterText(text);
     for (char c : text.toCharArray()) {
       getFixture().enterText(String.valueOf(c));
       try {
