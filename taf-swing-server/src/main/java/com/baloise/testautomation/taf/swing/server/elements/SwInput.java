@@ -143,7 +143,8 @@ public class SwInput extends ASwElement implements ISwInput<Component> {
   }
 
   public String getText() {
-    return getComponent().getText();
+    return getFixture().text();
+//    return getComponent().getText();
   }
 
   @Override
