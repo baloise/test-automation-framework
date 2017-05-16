@@ -39,12 +39,12 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
 
   public void click() {
     getFixture().requireEnabled(Timeout.timeout());
-    try {
-      Thread.sleep(SwRobotFactory.delayBetweenEvents);
-    }
-    catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+//    try {
+//      Thread.sleep(SwRobotFactory.delayBetweenEvents);
+//    }
+//    catch (InterruptedException e) {
+//      e.printStackTrace();
+//    }
     getFixture().click();
   }
 
