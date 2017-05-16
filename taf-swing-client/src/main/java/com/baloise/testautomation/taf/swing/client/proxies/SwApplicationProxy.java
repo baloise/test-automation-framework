@@ -18,7 +18,8 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.junit.Assert;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
@@ -47,6 +48,8 @@ import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
  */
 public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
+  private static Logger logger = LoggerFactory.getLogger(SwApplicationProxy.class);
+  
   private Long id = 0l;
 
   public int serverTimeoutInMsecs = 50000;
@@ -180,7 +183,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   private ISwElement<Long> getElement(TafProperties props, String key) {
-    System.out.println("getElement: " + props.toString());
+    logger.debug("getElement: " + props.toString());
     ISwElement<Long> element = createElement(props.getString(key));
     if (element != null) {
       try {
