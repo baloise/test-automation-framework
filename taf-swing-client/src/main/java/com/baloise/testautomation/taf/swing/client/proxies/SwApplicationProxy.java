@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import static org.junit.Assert.fail;
@@ -38,17 +30,15 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwRadioButton;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
-import com.baloise.testautomation.taf.swing.base.db.H2DB;
-import com.baloise.testautomation.taf.swing.base.db.SwCommand;
-import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
-import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
+import com.baloise.testautomation.taf.swing.base.client.interaction.InteractionController;
+import com.baloise.testautomation.taf.swing.base.client.interaction.MockInteractionController;
+import com.baloise.testautomation.taf.swing.base.client.interaction.RealInteractionController;
 
-/**
- * 
- */
 public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
   private static Logger logger = LoggerFactory.getLogger(SwApplicationProxy.class);
+  
+  private static InteractionController interactionController = RealInteractionController.withoutJournal();
   
   private Long id = 0l;
 
@@ -88,14 +78,14 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   private void deleteFor(int id) {
-    SwCommandProperties.deleteCommandPropertiesForId(id);
-    SwCommand.deleteCommandsForId(id);
+    interactionController.deleteCommandPropertiesForId(id);
+    interactionController.deleteCommandsForId(id);
   }
 
   @Override
   public TafProperties execCommand(TafProperties props) {
     startCommandAndWait(getReference().intValue(), props);
-    return SwCommandProperties.getTafPropertiesForId(getReference().intValue());
+    return interactionController.getTafPropertiesForId(getReference().intValue());
   }
 
   @Override
@@ -213,22 +203,16 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   public void start(String commandline) {
-    Process p = null;
-    try {
-      p = Runtime.getRuntime().exec(commandline);
-      p.waitFor();
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
+    interactionController.startApplication(commandline);
+  }
+  
+  public void stop(String jnlp) {
+    interactionController.stopApplication(jnlp);
   }
 
+
   private void startCommand(int id, TafProperties props) {
-    deleteFor(id);
-    SwCommand c = new SwCommand(id);
-    c.insert();
-    SwCommandProperties.insertForId(id, props);
-    c.setToReady();
+    interactionController.startCommand(id, props);
   }
 
   private void startCommandAndWait(int id, TafProperties props) {
@@ -238,8 +222,9 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
 
   @Override
   public void startInstrumentation(String commandline, String javaClassPathContains, String sunJavaCommandContains) {
-    H2DB.init();
-
+    interactionController.init();
+    logger.info("Starting instrumentation with commandline: " + commandline + "; Java classpath: "
+        + javaClassPathContains + "; Java command: " + sunJavaCommandContains);
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
@@ -251,7 +236,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     start(commandline);
     waitUntilDone(0);
     // startCommandAndWait(0, props);
-    props = SwCommandProperties.getTafPropertiesForId(0);
+    props = interactionController.getTafPropertiesForId(0);
     if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
       Assert.fail("application is not instrumented: " + getReference());
     }
@@ -261,7 +246,9 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   @Override
   public void startInstrumentationWithSpy(String commandline, String javaClassPathContains,
       String sunJavaCommandContains, String filename) {
-    H2DB.init();
+    logger.info("Starting instrumentation with spy with commandline: " + commandline + "; Java classpath: "
+        + javaClassPathContains + "; Java command: " + sunJavaCommandContains + "; Spy file: " + filename);
+    interactionController.init();
 
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
@@ -276,7 +263,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     start(commandline);
     waitUntilDone(0);
     // startCommandAndWait(0, props);
-    props = SwCommandProperties.getTafPropertiesForId(0);
+    props = interactionController.getTafPropertiesForId(0);
     if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
       Assert.fail("application is not instrumented: " + getReference());
     }
@@ -310,12 +297,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   public void waitUntilDone(int id) {
-    long time = System.currentTimeMillis();
-    while (!SwCommand.isAllDone(id)) {
-      if (System.currentTimeMillis() > time + clientTimeoutInMsecs()) {
-        throw new SwTimeout();
-      }
-    }
+    interactionController.waitUntilDone(id, clientTimeoutInMsecs());
   }
   
   public int clientTimeoutInMsecs() {
@@ -347,6 +329,18 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     props.putObject(paramType, ISwApplication.type);
     props.putObject(paramDelayBetweenKeystrokes, ms);
     execCommand(props);
+  }
+  
+  public void initInteractionMocking(String path) {
+   interactionController = MockInteractionController.newWithJournal(path);
+  }
+
+  public void initInteractionJournal() {
+    interactionController = RealInteractionController.withJournal();
+  }
+  
+  public void serializeInteractionJournal(String path) {
+    interactionController.serializeJournal(path);
   }
 
 }

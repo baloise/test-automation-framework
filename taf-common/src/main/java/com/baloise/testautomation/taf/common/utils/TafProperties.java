@@ -1,25 +1,33 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.common.utils;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Set;
 
-/**
- * 
- */
-public class TafProperties {
+public class TafProperties implements Serializable {
 
+  private static final long serialVersionUID = 1L;
+  
   private Hashtable<String, Object> props = new Hashtable<String, Object>();
 
   public TafProperties() {
+  }
+  
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof TafProperties)) {
+      return false;
+    }
+    return this.getProps().equals(((TafProperties)other).getProps());
+  }
+  
+  @Override
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + props.hashCode();
+    return result;
+    
   }
   
   public TafProperties(TafProperties propsToCopy) {
@@ -72,6 +80,10 @@ public class TafProperties {
       return null;
     }
     return o.toString();
+  }
+  
+  private Hashtable<String, Object> getProps() {
+    return props;
   }
 
   public Enumeration<String> keys() {
