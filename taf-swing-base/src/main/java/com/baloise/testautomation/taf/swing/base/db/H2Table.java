@@ -1,21 +1,10 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.base.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * 
- */
-public class H2Table {
+class H2Table {
 
   protected static void closePreparedStatement(PreparedStatement ps) {
     if (ps != null) {

@@ -1,27 +1,14 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.base.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.Vector;
-
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 
-/**
- * 
- */
 public class SwCommandProperties extends H2Table {
 
-  public static void createTable() {
+  static void createTable() {
     String sql = "CREATE TABLE COMMAND_PROPERTIES (" + "c_id int, key varchar(255), value varchar(2000)" + ");";
     PreparedStatement ps = null;
     try {
@@ -36,7 +23,7 @@ public class SwCommandProperties extends H2Table {
     }
   }
 
-  public static void deleteAll() {
+  static void deleteAll() {
     String deleteSQL = "DELETE FROM COMMAND_PROPERTIES";
     PreparedStatement ps = null;
     try {
@@ -98,13 +85,6 @@ public class SwCommandProperties extends H2Table {
     return props;
   }
 
-  public static void insertForId(int id, Properties props) {
-    for (Object key : props.keySet()) {
-      SwCommandProperties cp = new SwCommandProperties(id, (String)key, props.getProperty((String)key));
-      cp.insert();
-    }
-  }
-
   public static void insertForId(int id, TafProperties props) {
     for (String key : props.keySet()) {
       SwCommandProperties cp = new SwCommandProperties(id, key, props.getString(key));
@@ -112,9 +92,6 @@ public class SwCommandProperties extends H2Table {
     }
   }
 
-  /**
-   * 
-   */
   public static void listProperties() {
     ResultSet rs = null;
     PreparedStatement ps = null;
@@ -137,20 +114,20 @@ public class SwCommandProperties extends H2Table {
     }
   }
 
-  public String key = "";
+  private String key = "";
 
-  public String value = "";
+  private String value = "";
 
-  public int id = 0;
+  private int id = 0;
 
-  public SwCommandProperties(int id, String key, String value) {
+  private SwCommandProperties(int id, String key, String value) {
     super();
     this.id = id;
     this.key = key;
     this.value = value;
   }
 
-  public void insert() {
+  private void insert() {
     String insertSQL = "INSERT INTO COMMAND_PROPERTIES " + "(c_id, key, value) " + "VALUES (?, ?, ?)";
     PreparedStatement ps = null;
     try {
