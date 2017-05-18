@@ -20,7 +20,7 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public enum Command {
-    startinstrumentation, findelementbyxpath, findelementsbyxpath, sendkeys, storehierarchy
+    startinstrumentation, findelementbyxpath, findelementsbyxpath, sendkeys, storehierarchy, setdelaybetweenkeystrokes, seteventpostingdelay, setdelaybetweenevents
   }
 
   public final String paramCommand = "command";
@@ -35,6 +35,8 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public final String paramMessage = "message";
   public final String paramXPath = "xpath";
   public final String paramDelayBetweenEvents = "delayBetweenEvents";
+  public final String paramEventPostingDelay = "eventPostingDelay";
+  public final String paramDelayBetweenKeystrokes = "delayBetweenKeystrokes";
   public final String paramRoot = "root";
   public final String paramKeys = "keys";
   public final String valueStarted = "started";
@@ -55,5 +57,11 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
       String filename);
 
   public void storeHierarchy(String path);
+  
+  public void setDelayBetweenEvents(Long ms);
+  
+  public void setEventPostingDelay(Long ms);
+  
+  public void setDelayBetweenKeystrokes(Long ms);
 
 }

@@ -107,9 +107,9 @@ public class SwStarter {
         }
         if (found) {
           swApplication.id = props.getLong(paramId).intValue();
-          if (props.getLong(paramDelayBetweenEvents) != null) {
-            SwRobotFactory.delayBetweenEvents = props.getLong(paramDelayBetweenEvents).intValue();
-          }
+//          if (props.getLong(paramDelayBetweenEvents) != null) {
+//            SwRobotFactory.delayBetweenEvents = props.getLong(paramDelayBetweenEvents).intValue();
+//          }
           spy = props.getBoolean(paramSpy);
           watch = props.getBoolean(paramWatch);
           spyFileName = props.getString(paramPath);

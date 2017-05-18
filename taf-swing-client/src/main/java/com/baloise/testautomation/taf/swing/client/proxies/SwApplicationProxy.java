@@ -9,13 +9,16 @@
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import static org.junit.Assert.fail;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+
 import org.junit.Assert;
+
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
@@ -45,17 +48,11 @@ import com.baloise.testautomation.taf.swing.base.db.SwTimeout;
 public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
   private Long id = 0l;
-  private Long delayBetweenEvents = 10L;
 
   public int serverTimeoutInMsecs = 50000;
 
   public SwApplicationProxy(Long id) {
-    this(id, 10L);
-  }
-
-  public SwApplicationProxy(Long id, Long delayBetweenEvents) {
     this.id = id;
-    this.delayBetweenEvents = delayBetweenEvents;
   }
 
   public ISwElement<Long> basicFind(Long root, Annotation annotation) {
@@ -243,7 +240,6 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
-    props.putObject(paramDelayBetweenEvents, delayBetweenEvents);
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramJavaClassPath, javaClassPathContains);
     props.putObject(paramSunJavaCommand, sunJavaCommandContains);
@@ -267,7 +263,6 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     deleteFor(getReference().intValue());
     TafProperties props = new TafProperties();
     props.putObject(paramId, getReference());
-    props.putObject(paramDelayBetweenEvents, delayBetweenEvents);
     props.putObject(paramCommand, ISwApplication.Command.startinstrumentation);
     props.putObject(paramJavaClassPath, javaClassPathContains);
     props.putObject(paramSunJavaCommand, sunJavaCommandContains);
@@ -322,6 +317,33 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   
   public int clientTimeoutInMsecs() {
     return (serverTimeoutInMsecs) + 5000;
+  }
+
+  @Override
+  public void setDelayBetweenEvents(Long ms) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramCommand, Command.setdelaybetweenevents.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props.putObject(paramDelayBetweenEvents, ms);
+    execCommand(props);
+  }
+
+  @Override
+  public void setEventPostingDelay(Long ms) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramCommand, Command.seteventpostingdelay.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props.putObject(paramEventPostingDelay, ms);
+    execCommand(props);
+  }
+
+  @Override
+  public void setDelayBetweenKeystrokes(Long ms) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramCommand, Command.setdelaybetweenkeystrokes.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props.putObject(paramDelayBetweenKeystrokes, ms);
+    execCommand(props);
   }
 
 }

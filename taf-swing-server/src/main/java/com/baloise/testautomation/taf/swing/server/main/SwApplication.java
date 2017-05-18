@@ -59,6 +59,7 @@ import org.xml.sax.InputSource;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton.Command;
 import com.baloise.testautomation.taf.swing.server.elements.ASwElement;
 import com.baloise.testautomation.taf.swing.server.elements.SwButton;
 import com.baloise.testautomation.taf.swing.server.elements.SwCell;
@@ -302,7 +303,37 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       }
       catch (Exception e) {}
     }
+    Command c = getCommand(Command.class, command);
+    switch (c) {
+      case setdelaybetweenevents:
+        Long dbe = props.getLong(paramDelayBetweenEvents);
+        props.clear();
+        SwRobotFactory.setDelayBetweenEvents(dbe.intValue());
+        return result;
+      case seteventpostingdelay:
+        Long epd = props.getLong(paramEventPostingDelay);
+        props.clear();
+        SwRobotFactory.setEventPostingDelay(epd.intValue());
+        return result;
+      case setdelaybetweenkeystrokes:
+        Long dbk = props.getLong(paramDelayBetweenKeystrokes);
+        props.clear();
+        SwRobotFactory.setDelayBetweenKeystrokes(dbk.intValue());
+        return result;
+      default:
+        break;
+    }
     return getError("application command returns errors or command is invalid: " + command);
+  }
+
+  private <T extends Enum<T>> T getCommand(Class<T> c, String command) {
+    if (c != null && command != null) {
+      try {
+        return Enum.valueOf(c, command.trim().toLowerCase());
+      }
+      catch (IllegalArgumentException e) {}
+    }
+    return null;
   }
 
   @Override
@@ -597,6 +628,21 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private String toMappedXML() {
     return toFullXML();
+  }
+
+  @Override
+  public void setDelayBetweenEvents(Long ms) {
+    info("should NOT come here --> setDelayBetweenEvents");
+  }
+
+  @Override
+  public void setEventPostingDelay(Long ms) {
+    info("should NOT come here --> setEventPostingDelay");
+  }
+
+  @Override
+  public void setDelayBetweenKeystrokes(Long ms) {
+    info("should NOT come here --> setDelayBetweenKeystrokes");
   }
 
 }

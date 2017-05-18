@@ -30,4 +30,20 @@ public class SwRobotFactory {
     }
     return robot;
   }
+  
+  public static void setDelayBetweenEvents(Integer ms) {
+    System.out.println("setting delay between events (ms): " + ms);
+    getRobot().settings().delayBetweenEvents(ms);
+  }
+  
+  public static void setEventPostingDelay(Integer ms) {
+    System.out.println("setting event posting delay (ms): " + ms);
+    getRobot().settings().eventPostingDelay(ms);
+  }
+  
+  public static void setDelayBetweenKeystrokes(Integer ms) {
+    System.out.println("setting delay between keystrokes (ms): " + ms);
+    delayBetweenKeystrokes = ms;
+  }
+  
 }
