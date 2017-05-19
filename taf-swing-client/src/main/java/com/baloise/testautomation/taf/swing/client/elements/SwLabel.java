@@ -24,4 +24,8 @@ public class SwLabel extends ALabel {
     find().rightClick();
   }
 
+  public String getText() {
+    return find().getText();
+  }
+  
 }
