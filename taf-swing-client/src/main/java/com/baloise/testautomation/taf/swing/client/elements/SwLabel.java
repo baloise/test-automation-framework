@@ -25,6 +25,7 @@ public class SwLabel extends ALabel {
   }
 
   public String getText() {
+    
     return find().getText();
   }
   
