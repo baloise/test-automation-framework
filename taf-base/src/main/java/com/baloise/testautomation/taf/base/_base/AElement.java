@@ -78,12 +78,14 @@ public abstract class AElement implements IElement {
     assertNotNull(
         "component may not be null --> check, if the used annotion is supported (ABase --> getSupportedBys() --> "
             + name, component);
-    Object element = component.getSwingFinder().find(by);
+    Object element = null;
+    if (by instanceof ByCustom) {
+      element = swFindByCustom();
+    }
+    if (element == null) {
+      element = component.getSwingFinder().find(by);
+    }
     assertNotNull("swing element NOT found: " + name, element);
-    // TODO --> Hier wurde noch der Finder auf das Element weitergegeben. Muss das auch für element
-    // gemacht werden?
-    // new SwingElement(component.getSwingFinder(), l)
-
     try {
       ISwElement<?> swElement = (ISwElement<?>)element;
       assertEquals("wrong type", type.toLowerCase(), swElement.getType().toLowerCase());
@@ -95,7 +97,11 @@ public abstract class AElement implements IElement {
     return element;
   }
 
-  public void withXPath(IComponent parent, String name, final String xpath) {
+  public Object swFindByCustom() {
+    return null;
+  }
+
+  public ByXpath getByXpath(final String xpath) {
     ByXpath byXpath = new ByXpath() {
 
       @Override
@@ -113,6 +119,11 @@ public abstract class AElement implements IElement {
         return xpath;
       }
     };
+    return byXpath;
+  }
+  
+  public void withXPath(IComponent parent, String name, final String xpath) {
+    ByXpath byXpath = getByXpath(xpath);
     setBy(byXpath);
     setName(name);
     setComponent(parent);
