@@ -1,8 +1,12 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JInternalFrame;
+
 import org.assertj.swing.fixture.JInternalFrameFixture;
+
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInternalFrame;
 
@@ -29,6 +33,10 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
       case click:
         props.clear();
         click();
+        break;
+      case resizeto:
+        resizeTo(props.getLong(paramWidth), props.getLong(paramHeight));
+        props.clear();
         break;
     default:
       throw new IllegalArgumentException("command valid but not implemented yet: " + c);
@@ -59,6 +67,12 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
   @Override
   public String getType() {
     return ISwInternalFrame.type;
+  }
+
+  @Override
+  public void resizeTo(Long width, Long height) {
+    Dimension size = new Dimension(width.intValue(), height.intValue());
+    getFixture().resizeTo(size);
   }
 
 }
