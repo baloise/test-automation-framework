@@ -20,7 +20,7 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
 
   public enum Command {
-    startinstrumentation, findelementbyxpath, findelementsbyxpath, sendkeys, storehierarchy, setdelaybetweenkeystrokes, seteventpostingdelay, setdelaybetweenevents
+    startinstrumentation, findelementbyxpath, findelementsbyxpath, sendkeys, storehierarchy, setdelaybetweenkeystrokes, seteventpostingdelay, setdelaybetweenevents, settreeseparator
   }
 
   public final String paramCommand = "command";
@@ -42,6 +42,7 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public final String valueStarted = "started";
   public final String type = "application";
   public final String paramTimeout = "timeout";
+  public final String paramSeparator = "separator";
 
   public TafProperties execCommand(TafProperties props);
 
@@ -57,11 +58,13 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
       String filename);
 
   public void storeHierarchy(String path);
-  
+
   public void setDelayBetweenEvents(Long ms);
-  
+
   public void setEventPostingDelay(Long ms);
-  
+
   public void setDelayBetweenKeystrokes(Long ms);
+
+  public void setTreeSeparator(String separator);
 
 }

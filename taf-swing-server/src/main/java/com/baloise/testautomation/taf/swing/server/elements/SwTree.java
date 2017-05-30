@@ -22,6 +22,8 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
  */
 public class SwTree extends ASwElement implements ISwTree<Component> {
 
+  public static String separator = null;
+
   /**
    * @param tagName
    * @param tid
@@ -101,7 +103,11 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
 
   @Override
   public JTreeFixture getFixture() {
-    return new JTreeFixture(getRobot(), getComponent());
+    JTreeFixture treeFixture = new JTreeFixture(getRobot(), getComponent());
+    if (separator != null) {
+      treeFixture.replaceSeparator(separator);
+    }
+    return treeFixture;
   }
 
   @Override

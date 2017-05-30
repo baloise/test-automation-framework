@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
@@ -341,6 +342,15 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   
   public void serializeInteractionJournal(String path) {
     interactionController.serializeJournal(path);
+  }
+
+  @Override
+  public void setTreeSeparator(String separator) {
+    TafProperties props = new TafProperties();
+    props.putObject(paramCommand, Command.settreeseparator.toString());
+    props.putObject(paramType, ISwApplication.type);
+    props.putObject(paramSeparator, separator);
+    execCommand(props);
   }
 
 }

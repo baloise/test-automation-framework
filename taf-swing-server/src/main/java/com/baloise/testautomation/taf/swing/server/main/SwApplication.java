@@ -320,6 +320,14 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         props.clear();
         SwRobotFactory.setDelayBetweenKeystrokes(dbk.intValue());
         return result;
+      case settreeseparator:
+        String separator = props.getString(paramSeparator);
+        if ("{null}".equalsIgnoreCase(separator)) {
+          separator = null;
+        }
+        props.clear();
+        setTreeSeparator(separator);
+        return result;
       default:
         break;
     }
@@ -643,6 +651,14 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   @Override
   public void setDelayBetweenKeystrokes(Long ms) {
     info("should NOT come here --> setDelayBetweenKeystrokes");
+  }
+
+  /** 
+   * {@inheritDoc}
+   */
+  @Override
+  public void setTreeSeparator(String separator) {
+    SwTree.separator = separator;
   }
 
 }
