@@ -32,6 +32,7 @@ public abstract class ASwElement implements ISwElement<Component> {
     addProperty("y", r.y);
     addProperty("width", r.width);
     addProperty("height", r.height);
+    addProperty("showing", Boolean.valueOf(component.isShowing()).toString());
     fillProperties();
   }
 

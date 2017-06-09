@@ -49,7 +49,7 @@ public class SwStarter {
   private String spyFileName = null;
 
   public SwStarter() {
-    info("will try to start instrumentation V0.0.3");
+    info("will try to start instrumentation V0.0.3-001");
 
     debugSystemProperties();
 
