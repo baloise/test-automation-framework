@@ -30,6 +30,7 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwRadioButton;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwTextArea;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
 import com.baloise.testautomation.taf.swing.base.client.interaction.InteractionController;
 import com.baloise.testautomation.taf.swing.base.client.interaction.MockInteractionController;
@@ -283,6 +284,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   public Hashtable<String, Class<?>> supportedElements() {
     Hashtable<String, Class<?>> supportedElements = new Hashtable<>();
     supportedElements.put(ISwInput.type.toLowerCase(), SwInputProxy.class);
+    supportedElements.put(ISwTextArea.type.toLowerCase(), SwTextAreaProxy.class);
     supportedElements.put(ISwButton.type.toLowerCase(), SwButtonProxy.class);
     supportedElements.put(ISwComboBox.type.toLowerCase(), SwComboBoxProxy.class);
     supportedElements.put(ISwTable.type.toLowerCase(), SwTableProxy.class);

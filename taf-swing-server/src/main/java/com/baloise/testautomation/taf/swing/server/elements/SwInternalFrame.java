@@ -34,6 +34,10 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
         props.clear();
         click();
         break;
+      case gettitle:
+        props.clear();
+        props.putObject(paramTitle, getTitle());
+        break;
       case resizeto:
         resizeTo(props.getLong(paramWidth), props.getLong(paramHeight));
         props.clear();
@@ -73,6 +77,11 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
   public void resizeTo(Long width, Long height) {
     Dimension size = new Dimension(width.intValue(), height.intValue());
     getFixture().resizeTo(size);
+  }
+
+  @Override
+  public String getTitle() {
+    return getFixture().target().getTitle();
   }
 
 }

@@ -35,10 +35,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -59,7 +59,6 @@ import org.xml.sax.InputSource;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton.Command;
 import com.baloise.testautomation.taf.swing.server.elements.ASwElement;
 import com.baloise.testautomation.taf.swing.server.elements.SwButton;
 import com.baloise.testautomation.taf.swing.server.elements.SwCell;
@@ -75,6 +74,7 @@ import com.baloise.testautomation.taf.swing.server.elements.SwRadioButton;
 import com.baloise.testautomation.taf.swing.server.elements.SwTabbedPane;
 import com.baloise.testautomation.taf.swing.server.elements.SwTable;
 import com.baloise.testautomation.taf.swing.server.elements.SwTableColumn;
+import com.baloise.testautomation.taf.swing.server.elements.SwTextArea;
 import com.baloise.testautomation.taf.swing.server.elements.SwTree;
 import com.baloise.testautomation.taf.swing.server.elements.SwUnsupportedElement;
 import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
@@ -227,7 +227,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       if (title.isEmpty()) {
         title = "untitled-" + i;
       }
-      xml.append("<tab title=\"" +  title + "\">");
+      xml.append("<tab title=\"" + title + "\">");
       xml.append(System.getProperty("line.separator"));
       allComponentsToXML(xml, tabbedPane.getComponentAt(i));
       xml.append("</tab>");
@@ -523,6 +523,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     if (c instanceof JTextField) {
       return new SwInput(tid, (JTextField)c);
     }
+    if (c instanceof JTextArea) {
+      return new SwTextArea(tid, (JTextArea)c);
+    }
     if (c instanceof JTree) {
       return new SwTree(tid, (JTree)c);
     }
@@ -653,7 +656,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     info("should NOT come here --> setDelayBetweenKeystrokes");
   }
 
-  /** 
+  /**
    * {@inheritDoc}
    */
   @Override

@@ -11,6 +11,10 @@ public class SwInternalFrame extends AElement {
 
   @Override
   public void click() {}
+  
+  public String getTitle() {
+    return find().getTitle();
+  }
 
   public void resizeTo(Long width, Long height) {
     find().resizeTo(width, height);

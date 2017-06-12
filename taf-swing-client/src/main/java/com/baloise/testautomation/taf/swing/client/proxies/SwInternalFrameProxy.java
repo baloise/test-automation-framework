@@ -16,6 +16,12 @@ public class SwInternalFrameProxy extends ASwElementProxy implements ISwInternal
   }
 
   @Override
+  public String getTitle() {
+    TafProperties props = executeCommand(Command.gettitle.toString());
+    return props.getString(paramTitle);
+  }
+  
+  @Override
   public void resizeTo(Long width, Long height) {
     TafProperties props = new TafProperties();
     props.putObject(paramWidth, width);
