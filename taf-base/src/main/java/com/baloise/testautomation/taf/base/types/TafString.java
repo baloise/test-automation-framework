@@ -81,11 +81,25 @@ public class TafString extends TafType implements IType {
 
   @Override
   public Boolean asBoolean() {
+    TafBoolean b = TafBoolean.normalBoolean(asString());
+    if (b.isEmpty() || b.isSkip() || b.isNull()) {
+      return null;
+    }
+    if (b.isNotNull()) {
+      return b.asBoolean();
+    }
     return null;
   }
 
   @Override
   public Date asDate() {
+    TafDate d = TafDate.normalDate(asString());
+    if (d.isEmpty() || d.isSkip() || d.isNull()) {
+      return null;
+    }
+    if (d.isNotNull()) {
+      return d.asDate();
+    }
     return null;
   }
 

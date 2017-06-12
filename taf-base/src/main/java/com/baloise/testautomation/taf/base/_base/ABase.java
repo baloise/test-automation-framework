@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -43,6 +44,7 @@ import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base._interfaces.IElement;
 import com.baloise.testautomation.taf.base._interfaces.IFill;
 import com.baloise.testautomation.taf.base._interfaces.IType;
+import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
 import com.baloise.testautomation.taf.base.excel.ExcelDataImporter;
 import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
@@ -87,7 +89,8 @@ public abstract class ABase implements IComponent {
         }
       }
       catch (InvocationTargetException e1) {
-        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
+        fail(
+            "error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
       }
       catch (IllegalArgumentException e) {
         e.printStackTrace();
@@ -213,7 +216,7 @@ public abstract class ABase implements IComponent {
   }
 
   private List<Field> makeFieldsAccessible(List<Field> allFields) {
-    for (Field field: allFields) {
+    for (Field field : allFields) {
       field.setAccessible(true);
     }
     return allFields;
@@ -230,8 +233,8 @@ public abstract class ABase implements IComponent {
     Collections.sort(result, new Comparator<Field>() {
       @Override
       public int compare(Field f1, Field f2) {
-        return new Integer(f1.getAnnotation(Check.class).value()).compareTo(new Integer(f2.getAnnotation(Check.class)
-            .value()));
+        return new Integer(f1.getAnnotation(Check.class).value())
+            .compareTo(new Integer(f2.getAnnotation(Check.class).value()));
       }
     });
     return result;
@@ -268,8 +271,8 @@ public abstract class ABase implements IComponent {
     Collections.sort(result, new Comparator<Field>() {
       @Override
       public int compare(Field f1, Field f2) {
-        return new Integer(f1.getAnnotation(Fill.class).value()).compareTo(new Integer(f2.getAnnotation(Fill.class)
-            .value()));
+        return new Integer(f1.getAnnotation(Fill.class).value())
+            .compareTo(new Integer(f2.getAnnotation(Fill.class).value()));
       }
     });
     return result;
@@ -406,17 +409,25 @@ public abstract class ABase implements IComponent {
   }
 
   public Collection<IDataRow> loadCsv(String idAndDetail, String suffix) {
-    fail("Csv files not yet supported");
-    return null;
+    String path = this.getClass().getSimpleName().replaceAll(".", "/");
+    path = path + suffix;
+    File f = new File(path);
+    return loadCsvFrom(f, idAndDetail);
   }
 
   public Collection<IDataRow> loadExcel(String idAndDetail, String suffix) {
     try (InputStream is = ResourceHelper.getResource(this, this.getClass().getSimpleName() + suffix).openStream()) {
-      return loadFrom(is, idAndDetail);
+      return loadExcelFrom(is, idAndDetail);
     }
     catch (Exception e) {}
     fail("excel file with data NOT found for suffix = " + suffix + " --> " + getClass().getSimpleName());
     return null;
+  }
+
+  private Collection<IDataRow> loadCsvFrom(File f, String idAndDetail) {
+    CsvDataImporter csvImporter = new CsvDataImporter(f);
+    Collection<IDataRow> dataRows = csvImporter.getWith(new TafId(idAndDetail));
+    return dataRows;
   }
 
   public Collection<IDataRow> loadFill(String idAndDetail) {
@@ -446,7 +457,7 @@ public abstract class ABase implements IComponent {
     return null;
   }
 
-  public Collection<IDataRow> loadFrom(InputStream is, String idAndDetail) {
+  public Collection<IDataRow> loadExcelFrom(InputStream is, String idAndDetail) {
     ExcelDataImporter edl = new ExcelDataImporter(is, 0);
     Collection<IDataRow> dataRows = edl.getWith(new TafId(idAndDetail));
     return dataRows;

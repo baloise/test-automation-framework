@@ -1,0 +1,6 @@
+_mandant;_id;_detail;integer;double;date;string;boolean
+int;test;1;1;1.1;01.01.2000;Ein String;{true}
+int;test;2;2;2.2;02.02.2000;Zwei String;{false}
+test;othertest;;{null};{skip};{empty};;3.3
+test;string;;1;1.2;;;
+test;otherstring;;;;;;
