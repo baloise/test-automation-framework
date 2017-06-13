@@ -66,5 +66,12 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public void setDelayBetweenKeystrokes(Long ms);
 
   public void setTreeSeparator(String separator);
+  
+  public void setTimeoutInMsecs(Long msecs);
+  
+  public Long getTimeoutInMsecs();
+
+  public void setDefaultTimeoutInMsecs();
+
 
 }

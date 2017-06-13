@@ -13,6 +13,7 @@ import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscape
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.io.BufferedWriter;
@@ -64,6 +65,7 @@ import com.baloise.testautomation.taf.swing.server.elements.SwButton;
 import com.baloise.testautomation.taf.swing.server.elements.SwCell;
 import com.baloise.testautomation.taf.swing.server.elements.SwCheckBox;
 import com.baloise.testautomation.taf.swing.server.elements.SwComboBox;
+import com.baloise.testautomation.taf.swing.server.elements.SwDialog;
 import com.baloise.testautomation.taf.swing.server.elements.SwFrame;
 import com.baloise.testautomation.taf.swing.server.elements.SwInput;
 import com.baloise.testautomation.taf.swing.server.elements.SwInternalFrame;
@@ -496,8 +498,11 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     if (c instanceof JInternalFrame) {
       return new SwInternalFrame(tid, (JInternalFrame)c);
     }
+    if (c instanceof Dialog) {
+      return new SwDialog(tid, (Dialog)c);
+    }
     if (c instanceof JComboBox) {
-      return new SwComboBox(tid, (JComboBox)c);
+      return new SwComboBox(tid, (JComboBox<?>)c);
     }
     if (c instanceof JMenuItem) {
       return new SwMenuItem(tid, (JMenuItem)c);
@@ -509,7 +514,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       return new SwLabel(tid, (JLabel)c);
     }
     if (c instanceof JList) {
-      return new SwList(tid, (JList)c);
+      return new SwList(tid, (JList<?>)c);
     }
     if (c instanceof JTabbedPane) {
       return new SwTabbedPane(tid, (JTabbedPane)c);
@@ -662,6 +667,22 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   @Override
   public void setTreeSeparator(String separator) {
     SwTree.separator = separator;
+  }
+
+  @Override
+  public void setTimeoutInMsecs(Long msecs) {
+    info("should NOT come here --> setTimeoutInMsecs");
+  }
+
+  @Override
+  public Long getTimeoutInMsecs() {
+    info("should NOT come here --> getTimeoutInMsecs");
+    return null;
+  }
+
+  @Override
+  public void setDefaultTimeoutInMsecs() {
+    info("should NOT come here --> setDefaultTimeoutInMsecs");
   }
 
 }

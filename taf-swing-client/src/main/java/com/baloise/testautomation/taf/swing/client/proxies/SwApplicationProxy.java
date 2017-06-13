@@ -22,6 +22,7 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwDialog;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInternalFrame;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
@@ -127,15 +128,19 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     return null;
   }
   
-  private TafProperties execApplicationCommand(Long root, String xpath, Command command) {
+  private TafProperties execApplicationCommand(Long root, String xpath, Command command, Long timeoutInMsecs) {
     TafProperties props = new TafProperties();
     props.putObject(paramXPath, xpath);
     props.putObject(paramRoot, root);
     props.putObject(paramCommand, command.toString());
     props.putObject(paramType, ISwApplication.type);
-    props.putObject(paramTimeout, new Long(serverTimeoutInMsecs));
+    props.putObject(paramTimeout, timeoutInMsecs);
     props = execCommand(props);
     return props;
+  }
+  
+  private TafProperties execApplicationCommand(Long root, String xpath, Command command) {
+    return execApplicationCommand(root, xpath, command, new Long(serverTimeoutInMsecs));
   }
 
   @Override
@@ -285,6 +290,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     Hashtable<String, Class<?>> supportedElements = new Hashtable<>();
     supportedElements.put(ISwInput.type.toLowerCase(), SwInputProxy.class);
     supportedElements.put(ISwTextArea.type.toLowerCase(), SwTextAreaProxy.class);
+    supportedElements.put(ISwDialog.type.toLowerCase(), SwDialogProxy.class);
     supportedElements.put(ISwButton.type.toLowerCase(), SwButtonProxy.class);
     supportedElements.put(ISwComboBox.type.toLowerCase(), SwComboBoxProxy.class);
     supportedElements.put(ISwTable.type.toLowerCase(), SwTableProxy.class);
@@ -353,6 +359,23 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     props.putObject(paramType, ISwApplication.type);
     props.putObject(paramSeparator, separator);
     execCommand(props);
+  }
+
+  @Override
+  public void setTimeoutInMsecs(Long msecs) {
+    if (msecs != null) {
+      serverTimeoutInMsecs = msecs.intValue();
+    }
+  }
+
+  @Override
+  public Long getTimeoutInMsecs() {
+    return new Long(serverTimeoutInMsecs);
+  }
+
+  @Override
+  public void setDefaultTimeoutInMsecs() {
+    serverTimeoutInMsecs = 50000;
   }
 
 }

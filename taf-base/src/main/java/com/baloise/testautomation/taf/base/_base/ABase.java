@@ -307,7 +307,7 @@ public abstract class ABase implements IComponent {
 
   @Override
   public IFinder<?> getSwingFinder() {
-    fail("method getSwingFinder must be overridden (if it used)");
+    fail("method getSwingFinder must be overridden (if it is used)");
     return null;
   }
 

@@ -70,6 +70,18 @@ public class TafProperties implements Serializable {
     return null;
   }
 
+  public Double getDouble(String key) {
+    Object o = getObject(key);
+    if (o == null) {
+      return null;
+    }
+    try {
+      return Double.parseDouble(o.toString());
+    }
+    catch (Exception e) {}
+    return null;
+  }
+
   public Object getObject(String key) {
     return props.get(key);
   }
@@ -109,4 +121,5 @@ public class TafProperties implements Serializable {
     }
     return result.trim();
   }
+
 }
