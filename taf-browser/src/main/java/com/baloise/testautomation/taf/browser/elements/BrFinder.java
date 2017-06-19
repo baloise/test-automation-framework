@@ -32,22 +32,10 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   
   public BrFinder(WebDriver driver, int timeoutInSeconds) {
     this.driver = driver;
-    if (driver != null) {
-      driver.manage().timeouts().implicitlyWait(timeoutInSeconds, TimeUnit.SECONDS);
-    }
     this.timeoutInSeconds = timeoutInSeconds;
+    setDefaultTimeoutInMsecs();
   }
 
-  public void setTemporaryTimeout(double timeoutInSeconds) {
-    if (driver != null) {
-      driver.manage().timeouts().implicitlyWait(new Double(1000 * timeoutInSeconds).intValue(), TimeUnit.MILLISECONDS);
-    }
-  }
-  
-  public void resetToInitialTimeout() {
-    setTemporaryTimeout(timeoutInSeconds);
-  }
-  
   protected void assertDriverAssigned() {
     assertNotNull("WebDriver not initialized", driver);
   }
@@ -214,4 +202,25 @@ public class BrFinder implements IBrowserFinder<WebElement> {
 
   @Override
   public void waitUntilLoadingComplete() {}
+
+  private Long currentTimeout = 0L;
+  
+  @Override
+  public void setTimeoutInMsecs(Long msecs) {
+    currentTimeout = msecs;
+    if (driver != null) {
+      driver.manage().timeouts().implicitlyWait(new Double(currentTimeout).intValue(), TimeUnit.MILLISECONDS);
+    }
+  }
+
+  @Override
+  public Long getTimeoutInMsecs() {
+    return currentTimeout;
+  }
+
+  @Override
+  public void setDefaultTimeoutInMsecs() {
+    setTimeoutInMsecs(1000L * timeoutInSeconds);
+  }
+  
 }

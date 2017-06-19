@@ -7,5 +7,11 @@ public interface IFinder<Element> {
   public Element find(Annotation annotion);
 
   public Element find(Element root, Annotation annotation);
+  
+  public void setTimeoutInMsecs(Long msecs);
+  
+  public Long getTimeoutInMsecs();
+
+  public void setDefaultTimeoutInMsecs();
 
 }
