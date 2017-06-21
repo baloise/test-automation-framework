@@ -9,6 +9,7 @@
 package com.baloise.testautomation.taf.swing.base._interfaces;
 
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
+import com.baloise.testautomation.taf.common.interfaces.ITableData;
 
 /**
  * 
@@ -16,7 +17,7 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwTable<R> extends ISwElement<R> {
 
   public enum Command {
-    clickcell, clickheader, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists
+    clickcell, clickheader, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists, getdata
   }
 
   public final String paramText = "text";
@@ -25,6 +26,10 @@ public interface ISwTable<R> extends ISwElement<R> {
 
   public final String paramCol = "col";
 
+  public final String paramNrOfRows = "nrOfRows";
+
+  public final String paramNrOfCols = "nrOfCols";
+  
   public final String paramCellExists = "cellExists";
 
   public final String type = "table";
@@ -47,8 +52,10 @@ public interface ISwTable<R> extends ISwElement<R> {
 
   public Long getCellRow(String value);
 
-  void enterValue(int row, int column, String value);
+  public void enterValue(int row, int column, String value);
 
-  boolean cellExists(String text);
+  public boolean cellExists(String text);
 
+  public ITableData getData();
+  
 }

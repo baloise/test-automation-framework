@@ -68,7 +68,7 @@ public class RealInteractionController implements InteractionController {
       journal.add(command);
     }
     command.run();
-    logger.info("Interaction command executed: " + command);
+    logger.debug("Interaction command executed: " + command);
   }
 
   @Override

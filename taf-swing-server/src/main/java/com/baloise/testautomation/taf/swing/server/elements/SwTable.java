@@ -19,6 +19,7 @@ import org.assertj.swing.exception.ActionFailedException;
 import org.assertj.swing.fixture.JTableFixture;
 import org.assertj.swing.fixture.JTableHeaderFixture;
 
+import com.baloise.testautomation.taf.common.interfaces.ITableData;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 
@@ -98,6 +99,9 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
         String cellValue = props.getString(paramText);
         props.clear();
         props.putObject(paramCellExists, cellExists(cellValue));
+        break;
+      case getdata:
+        props = getTableData();
         break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
@@ -199,6 +203,35 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
     return (JTable)component;
   }
 
+  public TafProperties getTableData() {
+    TafProperties props = new TafProperties();
+    JTableFixture fixture = getFixture();
+    int nrOfRows = fixture.target().getRowCount();
+    int nrOfCols = fixture.target().getColumnCount();
+    props.putObject(paramNrOfRows, nrOfRows);
+    props.putObject(paramNrOfCols, nrOfCols);
+    String[][] contents = fixture.contents();
+
+    JTableHeaderFixture tableHeader = getFixture().tableHeader();
+    JTableHeader target = tableHeader.target();
+    TableColumnModel columnModel = target.getColumnModel();
+
+    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+      props.putObject("header:" + i, columnModel.getColumn(i).getHeaderValue());
+    }
+    for (int row = 0; row < nrOfRows; row++) {
+      for (int col = 0; col < nrOfCols; col++) {
+        try {
+          props.putObject(row + ":" + col, contents[row][col]);
+        }
+        catch (Exception e) {
+          props.putObject(row + ":" + col, null);
+        }
+      }
+    }
+    return props;
+  }
+
   @Override
   public JTableFixture getFixture() {
     return new JTableFixture(getRobot(), getComponent());
@@ -229,6 +262,11 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
   @Override
   public Long getCellRow(String value) {
     return (long)getFixture().cell(value).row();
+  }
+
+  @Override
+  public ITableData getData() {
+    return null;
   }
 
 }

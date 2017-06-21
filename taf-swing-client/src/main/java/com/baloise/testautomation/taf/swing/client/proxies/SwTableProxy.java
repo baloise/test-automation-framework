@@ -8,8 +8,10 @@
  */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
+import com.baloise.testautomation.taf.common.interfaces.ITableData;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
+import com.baloise.testautomation.taf.swing.base.tabledata.SwTableData;
 
 /**
  * 
@@ -96,6 +98,12 @@ public class SwTableProxy extends ASwElementProxy implements ISwTable<Long> {
   public boolean cellExists(String text) {
     TafProperties outputProps = executeCommand(Command.cellexists.toString(), getProperties(text));
     return outputProps.getBoolean(paramCellExists);
+  }
+
+  @Override
+  public ITableData getData() {
+    TafProperties props = executeCommand(Command.getdata.toString());
+    return new SwTableData(props);
   }
 
 }
