@@ -113,4 +113,21 @@ public class SwTableData implements ITableData {
     return getColumn(getColumnIndex(colHeader));
   }
 
+  public boolean checkCellExists(String celltext, int count) {
+    int nrOfMatches = 0;
+    for (int row = 0; row < getNrOfRows(); row++) {
+      List<String> rowContents = getRow(row);
+      for (String cellContents : rowContents) {
+        if (celltext.equals(cellContents)) {
+          nrOfMatches++;
+        }
+      }
+    }
+    return count == nrOfMatches;
+  }
+  
+  public boolean checkCellExists(String celltext) {
+    return checkCellExists(celltext, 1);
+  }
+  
 }
