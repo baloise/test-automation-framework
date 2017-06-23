@@ -14,6 +14,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -36,18 +37,18 @@ import com.baloise.testautomation.taf.base.types.TafString;
 public class TestExcelDataLoader {
 
   @Test
-  public void nrOfRows() {
+  public void nrOfRows() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     assertEquals(1, edl.getNrOfDataRowsWith(new TafId("int", "test", "1")));
     assertEquals(1, edl.getNrOfDataRowsWith(new TafId("int", "TEST", "2")));
     assertEquals(0, edl.getNrOfDataRowsWith(new TafId("inti", "TEST", "2")));
   }
 
   @Test
-  public void openWithFile() {
+  public void openWithFile() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     assertEquals(1, edl.getNrOfDataRowsWith(new TafId("int", "test", "1")));
   }
 
@@ -64,9 +65,9 @@ public class TestExcelDataLoader {
   }
 
   @Test
-  public void rowContents1() {
+  public void rowContents1() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("int", "TEst", "1"));
     assertEquals(1, data.size());
     Vector<IDataRow> vData = new Vector<>();
@@ -79,9 +80,9 @@ public class TestExcelDataLoader {
   }
 
   @Test
-  public void rowContents2() {
+  public void rowContents2() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("int", "TEst", "2"));
     assertEquals(1, data.size());
     Vector<IDataRow> vData = new Vector<>();
@@ -100,9 +101,9 @@ public class TestExcelDataLoader {
   }
 
   @Test
-  public void rowContents3() {
+  public void rowContents3() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("test", "othertest", ""));
     assertEquals(1, data.size());
     Vector<IDataRow> vData = new Vector<>();
@@ -116,9 +117,9 @@ public class TestExcelDataLoader {
   }
 
   @Test
-  public void rowContents4() {
+  public void rowContents4() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("test", "string", ""));
     assertEquals(1, data.size());
     Vector<IDataRow> vData = new Vector<>();
@@ -129,9 +130,9 @@ public class TestExcelDataLoader {
   }
 
   @Test
-  public void rowTafId() {
+  public void rowTafId() throws URISyntaxException {
     ExcelDataImporter edl = new ExcelDataImporter(
-        new File(getClass().getResource("TestExcelDataLoader.xls").getFile()), 0);
+        new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("int", "TEst", ""));
     assertEquals(2, data.size());
     Vector<IDataRow> vData = new Vector<>();
