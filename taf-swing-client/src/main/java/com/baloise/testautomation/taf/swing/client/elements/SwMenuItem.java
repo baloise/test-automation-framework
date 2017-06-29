@@ -21,6 +21,10 @@ public class SwMenuItem extends AElement {
     find().click();
   }
 
+  public boolean isEnabled() {
+    return find().isEnabled();
+  }
+  
   public ISwMenuItem<?> find() {
     return (ISwMenuItem<?>)swFind(ISwMenuItem.type);
   }

@@ -39,6 +39,9 @@ public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
         props.clear();
         click();
         break;
+      case isenabled:
+        props.clear();
+        props.putObject(paramIsEnabled, isEnabled());
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
