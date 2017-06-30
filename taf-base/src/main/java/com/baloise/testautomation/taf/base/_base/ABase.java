@@ -409,8 +409,7 @@ public abstract class ABase implements IComponent {
   }
 
   public Collection<IDataRow> loadCsv(String idAndDetail, String suffix) {
-    String path = this.getClass().getSimpleName().replaceAll(".", "/");
-    path = path + suffix;
+    String path = ResourceHelper.getResource(this, this.getClass().getSimpleName() + suffix).getPath();
     File f = new File(path);
     return loadCsvFrom(f, idAndDetail);
   }
