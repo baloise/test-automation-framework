@@ -13,6 +13,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -38,8 +40,8 @@ public class TestCsvDataLoader {
   public static File file;
 
   @BeforeClass
-  public static void init() {
-    file = new File(TestCsvDataLoader.class.getResource("TestCsvDataLoader.csv").getFile());
+  public static void init() throws URISyntaxException {
+    file = new File(TestCsvDataLoader.class.getResource("TestCsvDataLoader.csv").toURI());
   }
 
   @Test
@@ -92,9 +94,9 @@ public class TestCsvDataLoader {
   }
 
   @Test
-  public void rowContents3() {
+  public void rowContents3() throws URISyntaxException {
     CsvDataImporter edl = new CsvDataImporter(
-        new File(getClass().getResource("TestCsvDataLoader.csv").getFile().toString()));
+        new File(getClass().getResource("TestCsvDataLoader.csv").toURI()));
     Collection<IDataRow> data = edl.getWith(new TafId("test", "othertest", ""));
     assertEquals(1, data.size());
     Vector<IDataRow> vData = new Vector<>();
