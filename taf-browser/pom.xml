@@ -13,6 +13,10 @@
 
 	<name>Test Automation Framework - Browser</name>
 
+	<properties>
+		<assemblyOutputDirectory>${project.build.directory}</assemblyOutputDirectory>
+	</properties>
+
 	<build>
 		<testResources>
 			<testResource>
@@ -27,6 +31,25 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<outputDirectory>${assemblyOutputDirectory}</outputDirectory>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
