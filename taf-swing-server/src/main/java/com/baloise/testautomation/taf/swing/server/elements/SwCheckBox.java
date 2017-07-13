@@ -83,6 +83,16 @@ public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
   }
 
   @Override
+  public boolean isEnabled() {
+    try {
+      getFixture().requireEnabled();
+      return true;
+    }
+    catch (Exception e) {}
+    return false;
+  }
+
+  @Override
   public boolean isChecked() {
     try {
       getFixture().requireSelected();
