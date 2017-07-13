@@ -10,6 +10,7 @@ package com.baloise.testautomation.taf.swing.client.proxies;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem.Command;
 
 /**
  * 
@@ -36,5 +37,12 @@ public class SwCheckBoxProxy extends ASwElementProxy implements ISwCheckBox<Long
   public void uncheck() {
     executeCommand(Command.uncheck.toString());
   }
+
+  @Override
+  public boolean isEnabled() {
+    TafProperties props = executeCommand(Command.isenabled.toString());
+    return props.getBoolean(paramIsEnabled);
+  }
+
 
 }

@@ -47,6 +47,10 @@ public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
         props.clear();
         props.putObject(paramState, isChecked());
         break;
+      case isenabled:
+        props.clear();
+        props.putObject(paramIsEnabled, isEnabled());
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
