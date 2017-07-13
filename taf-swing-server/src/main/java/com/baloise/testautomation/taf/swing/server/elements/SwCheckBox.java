@@ -88,7 +88,7 @@ public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
       getFixture().requireEnabled();
       return true;
     }
-    catch (Exception e) {}
+    catch (Throwable e) {}
     return false;
   }
 
@@ -98,7 +98,7 @@ public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
       getFixture().requireSelected();
       return true;
     }
-    catch (Exception e) {}
+    catch (Throwable e) {}
     return false;
   }
 
