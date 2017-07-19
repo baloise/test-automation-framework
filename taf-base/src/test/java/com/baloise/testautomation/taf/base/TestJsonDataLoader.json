@@ -1,0 +1,52 @@
+[
+  {
+    "mandant": "int",
+    "id": "test",
+    "detail": "1",
+    "integer": 1,
+    "double": 1.1,
+    "date": "01.01.2000",
+    "string": "Ein String",
+    "boolean": true
+  },
+  {
+    "mandant": "int",
+    "id": "test",
+    "detail": 2,
+    "integer": 2,
+    "double": 2.2,
+    "date": "02.02.2000",
+    "string": "Zwei String",
+    "boolean": false
+  },
+  {
+    "mandant": "test",
+    "id": "othertest",
+    "detail": null,
+    "integer": null,
+    "double": "{skip}",
+    "date": "{empty}",
+    "string": "",
+    "boolean": 3.3
+  },
+  {
+    "mandant": "test",
+    "id": "string",
+    "detail": null,
+    "integer": 1,
+    "double": 1.2,
+    "date": "",
+    "string": "",
+    "boolean": ""
+  },
+  {
+    "mandant": "test",
+    "id": "otherstring",
+    "detail": null,
+    "integer": "",
+    "double": "",
+    "date": "",
+    "string": "",
+    "boolean": ""
+  }
+]
