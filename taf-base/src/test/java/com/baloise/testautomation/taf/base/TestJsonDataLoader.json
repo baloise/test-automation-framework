@@ -7,7 +7,7 @@
     "double": 1.1,
     "date": "01.01.2000",
     "string": "Ein String",
-    "boolean": true
+    "boolean": "{true}"
   },
   {
     "mandant": "int",
@@ -17,13 +17,13 @@
     "double": 2.2,
     "date": "02.02.2000",
     "string": "Zwei String",
-    "boolean": false
+    "boolean": "{false}"
   },
   {
     "mandant": "test",
     "id": "othertest",
-    "detail": null,
-    "integer": null,
+    "detail": "{null}",
+    "integer": "{null}",
     "double": "{skip}",
     "date": "{empty}",
     "string": "",
@@ -32,7 +32,7 @@
   {
     "mandant": "test",
     "id": "string",
-    "detail": null,
+    "detail": "{null}",
     "integer": 1,
     "double": 1.2,
     "date": "",
@@ -42,7 +42,7 @@
   {
     "mandant": "test",
     "id": "otherstring",
-    "detail": null,
+    "detail": "{null}",
     "integer": "",
     "double": "",
     "date": "",
