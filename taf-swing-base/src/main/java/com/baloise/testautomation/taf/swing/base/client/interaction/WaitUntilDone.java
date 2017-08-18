@@ -23,6 +23,10 @@ class WaitUntilDone implements InteractionCommand {
       if (System.currentTimeMillis() > time + clientTimeoutInMsecs) {
         throw new SwTimeout();
       }
+      try {
+        Thread.sleep(50);
+      }
+      catch (Exception e2) {}
     }
   }
 
