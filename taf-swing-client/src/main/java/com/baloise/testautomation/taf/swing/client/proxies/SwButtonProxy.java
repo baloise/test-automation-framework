@@ -32,4 +32,10 @@ public class SwButtonProxy extends ASwElementProxy implements ISwButton<Long> {
     return props.getBoolean(paramIsEnabled);
   }
 
+  @Override
+  public String getText() {
+    TafProperties props = executeCommand(Command.gettext.toString());
+    return props.getString(paramText);
+  }
+
 }

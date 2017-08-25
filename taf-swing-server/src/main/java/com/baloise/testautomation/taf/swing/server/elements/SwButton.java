@@ -1,7 +1,6 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
-import java.util.Enumeration;
 
 import javax.swing.JButton;
 
@@ -10,7 +9,6 @@ import org.assertj.swing.timing.Timeout;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
-import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 public class SwButton extends ASwElement implements ISwButton<Component> {
 
@@ -31,6 +29,9 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
         props.clear();
         props.putObject(paramIsEnabled, isEnabled());
         break;
+      case gettext:
+        props.clear();
+        props.putObject(paramText, getText());
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -75,6 +76,11 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
   @Override
   public boolean isEnabled() {
     return getFixture().isEnabled();
+  }
+
+  @Override
+  public String getText() {
+    return getFixture().text();
   }
 
 }

@@ -18,4 +18,8 @@ public class SwButton extends AButton {
     return find().isEnabled();
   }
   
+  public String getText() {
+    return find().getText();
+  }
+  
 }
