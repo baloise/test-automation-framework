@@ -38,6 +38,8 @@
 	<modules>
 		<module>taf-base</module>
 		<module>taf-browser</module>
+        <module>taf-browser-example-bing</module>
+        <module>taf-browser-example-simpleadder</module>
 		<module>taf-common</module>
 		<module>taf-robot</module>
 		<module>taf-swing-base</module>
