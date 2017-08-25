@@ -7,7 +7,7 @@
 		<version>0.0.4-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>taf-browser-example</artifactId>
+	<artifactId>taf-browser-example-bing</artifactId>
 
 	<name>Test Automation Framework - Browser</name>
 
