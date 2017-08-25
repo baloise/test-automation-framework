@@ -1,13 +1,8 @@
 package com.baloise.testautomation.taf.base;
 
-import com.baloise.testautomation.taf.base._interfaces.IDataRow;
-import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
-import com.baloise.testautomation.taf.base.json.JsonDataImporter;
-import com.baloise.testautomation.taf.base.types.TafId;
-import com.baloise.testautomation.taf.base.types.TafString;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -16,9 +11,14 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Vector;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.baloise.testautomation.taf.base._interfaces.IDataRow;
+import com.baloise.testautomation.taf.base.json.JsonDataImporter;
+import com.baloise.testautomation.taf.base.types.TafId;
+import com.baloise.testautomation.taf.base.types.TafString;
 
 public class TestJsonDataLoader {
 

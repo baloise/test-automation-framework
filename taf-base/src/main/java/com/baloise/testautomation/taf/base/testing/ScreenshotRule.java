@@ -17,7 +17,6 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.slf4j.Logger;
