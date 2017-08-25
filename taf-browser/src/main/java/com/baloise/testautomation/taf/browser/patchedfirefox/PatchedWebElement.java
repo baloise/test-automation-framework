@@ -14,6 +14,7 @@ public class PatchedWebElement extends RemoteWebElement {
       try {
         rweField.setAccessible(true);
         Field localField = RemoteWebElement.class.getDeclaredField(rweField.getName());
+        localField.setAccessible(true);
         localField.set(this, rweField.get(rwe));
       }
       catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
