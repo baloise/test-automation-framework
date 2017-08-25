@@ -1,8 +1,10 @@
 package com.baloise.testautomation.taf.browser.patchedfirefox;
 
 import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
 import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -28,8 +30,15 @@ public class PatchedWebElement extends RemoteWebElement {
   // with firefox 55 and selenium 3.5.2, clicking is behaving differently from selenium 2.53.0 and firefox 45
   // hovering to an element before clicking seems to work --> override click functionality
   public void click() {
-    Actions a = new Actions(parent);
-    a.moveToElement(this).perform();
+    ((JavascriptExecutor)parent).executeScript("arguments[0].scrollIntoView(true);", this);
+    try {
+      Actions a = new Actions(parent);
+      a.moveToElement(this).perform();
+    }
+    catch (Exception e) {
+      Logger.getGlobal().warning("could not move to web element: " + this);
+      e.printStackTrace();
+    }
     super.click();
   }
 
