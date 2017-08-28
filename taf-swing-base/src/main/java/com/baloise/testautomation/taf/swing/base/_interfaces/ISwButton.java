@@ -23,7 +23,7 @@ public interface ISwButton<R> extends ISwElement<R> {
 
   public static String paramIsEnabled = "isenabled";
 
-  public static String paramText = "label";
+  public static String paramText = "text";
 
   public void click();
   

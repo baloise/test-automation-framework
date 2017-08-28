@@ -32,6 +32,7 @@ public class SwButton extends ASwElement implements ISwButton<Component> {
       case gettext:
         props.clear();
         props.putObject(paramText, getText());
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
