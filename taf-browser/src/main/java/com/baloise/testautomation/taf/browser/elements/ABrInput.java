@@ -11,11 +11,13 @@ package com.baloise.testautomation.taf.browser.elements;
 import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
-import com.baloise.testautomation.taf.base._interfaces.IType;
+import com.baloise.testautomation.taf.common.interfaces.IFinder;
 
 /**
  * 
@@ -74,10 +76,45 @@ public abstract class ABrInput extends AInput {
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
         find().click();
         find().clear();
-        find().sendKeys(fillValueAsString());
-        find().sendKeys(Keys.TAB);
+        if (getDriver() instanceof InternetExplorerDriver) {
+          fillIE();
+        }
+        else {
+          find().sendKeys(fillValueAsString());
+          find().sendKeys(Keys.TAB);
+        }
       }
     }
+  }
+
+  private void fillIE() {
+    // TODO
+    // could be optimized, but hoping for IEDriver to be fixed
+    // so a simple implementation will do for the moment
+    if (fillValueAsString().contains("@")) {
+      for (Character c : fillValueAsString().toCharArray()) {
+        Character character = new Character(c);
+        WebElement we = find();
+        if (character.equals('@')) {
+          we.sendKeys(Keys.chord(Keys.ALT, Keys.CONTROL, "2"));
+        }
+        else {
+          we.sendKeys(character.toString());
+        }
+      }
+    }
+    else {
+      find().sendKeys(fillValueAsString());
+    }
+    find().sendKeys(Keys.TAB);
+  }
+
+  public WebDriver getDriver() {
+    IFinder<?> finder = getFinder();
+    if (finder instanceof BrFinder) {
+      return ((BrFinder)finder).getDriver();
+    }
+    return null;
   }
 
   // @Override
