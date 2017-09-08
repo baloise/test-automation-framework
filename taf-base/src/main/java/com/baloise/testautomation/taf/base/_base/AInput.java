@@ -33,7 +33,7 @@ public abstract class AInput extends AElement {
     if (fillValue == null) {
       return false;
     }
-    return !fillValue.isSkip();
+    return !fillValue.isSkip() && fillValue.isNotNull();
   }
 
   public IType checkValue() {
