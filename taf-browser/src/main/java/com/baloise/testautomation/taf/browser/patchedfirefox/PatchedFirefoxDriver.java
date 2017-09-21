@@ -3,6 +3,7 @@ package com.baloise.testautomation.taf.browser.patchedfirefox;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -30,5 +31,14 @@ public class PatchedFirefoxDriver extends FirefoxDriver {
     return new PatchedWebElement((RemoteWebElement)super.findElement(by));
   }
 
+  @Override
+  public void quit() {
+    Assert.fail("do not call this method because it doesn't react in the way expected");
+  }
+
+  @Override
+  public void close() {
+    Assert.fail("do not call this method because it doesn't react in the way expected");
+  }
 
 }
