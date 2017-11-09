@@ -7,7 +7,6 @@
 		<version>0.0.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.baloise.testing.framework</groupId>
 	<artifactId>taf-common</artifactId>
 	<!-- <version>0.0.3-SNAPSHOT</version> -->
 

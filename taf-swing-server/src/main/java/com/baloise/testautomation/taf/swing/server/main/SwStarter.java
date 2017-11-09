@@ -17,19 +17,20 @@ import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.pa
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramStatus;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramSunJavaCommand;
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramWatch;
-import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramDelayBetweenEvents;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Properties;
+
 import org.assertj.swing.keystroke.KeyStrokeMap;
+
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
 import com.baloise.testautomation.taf.swing.base.db.SwError;
-import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 /**
  * 

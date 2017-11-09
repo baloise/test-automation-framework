@@ -2,7 +2,6 @@ package com.baloise.testautomation.taf.swing.client.proxies;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwDialog;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwDialog.Command;
 
 public class SwDialogProxy extends ASwElementProxy implements ISwDialog<Long> {
 

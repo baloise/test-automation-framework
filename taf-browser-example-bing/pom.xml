@@ -7,16 +7,18 @@
 		<version>0.0.4-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>taf-swing-client</artifactId>
-	<!-- <version>0.0.3-SNAPSHOT</version> -->
+	<artifactId>taf-browser-example-bing</artifactId>
 
-	<name>Test Automation Framework - Swing Client</name>
+	<name>Test Automation Framework - Browser</name>
 
 	<build>
 		<testResources>
 			<testResource>
 				<directory>src/test/java</directory>
 			</testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
 		</testResources>
 		<plugins>
 			<plugin>
@@ -24,7 +26,7 @@
 				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>
-					<target>1.7</target>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -32,13 +34,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.baloise.testing.framework</groupId>
-			<artifactId>taf-base</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.baloise.testing.framework</groupId>
-			<artifactId>taf-swing-base</artifactId>
-			<version>${project.version}</version>
+			<artifactId>taf-browser</artifactId>
+			<version>0.0.4-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

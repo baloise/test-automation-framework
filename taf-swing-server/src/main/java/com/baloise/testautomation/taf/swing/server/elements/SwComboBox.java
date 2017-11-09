@@ -9,8 +9,8 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Arrays;
+
 import javax.swing.JComboBox;
 
 import org.assertj.swing.fixture.JComboBoxFixture;

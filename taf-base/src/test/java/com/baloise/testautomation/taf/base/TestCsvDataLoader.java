@@ -13,7 +13,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,11 +24,7 @@ import org.junit.Test;
 
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
-import com.baloise.testautomation.taf.base.types.TafBoolean;
-import com.baloise.testautomation.taf.base.types.TafDate;
-import com.baloise.testautomation.taf.base.types.TafDouble;
 import com.baloise.testautomation.taf.base.types.TafId;
-import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.base.types.TafString;
 
 /**
