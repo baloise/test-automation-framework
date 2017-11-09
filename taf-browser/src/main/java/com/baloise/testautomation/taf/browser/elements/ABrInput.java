@@ -17,6 +17,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
+import com.baloise.testautomation.taf.common.interfaces.IFinder;
 
 /**
  * 
