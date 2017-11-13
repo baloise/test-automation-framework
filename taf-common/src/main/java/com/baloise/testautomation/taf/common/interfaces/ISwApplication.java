@@ -66,5 +66,7 @@ public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {
   public void setDelayBetweenKeystrokes(Long ms);
 
   public void setTreeSeparator(String separator);
+
+  public boolean getFailOnCommandErrors();
   
 }

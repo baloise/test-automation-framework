@@ -40,12 +40,14 @@ import com.baloise.testautomation.taf.swing.base.client.interaction.RealInteract
 public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
   private static Logger logger = LoggerFactory.getLogger(SwApplicationProxy.class);
-  
+
   private static InteractionController interactionController = RealInteractionController.withoutJournal();
-  
+
   private Long id = 0l;
 
   public int serverTimeoutInMsecs = 50000;
+
+  private boolean failOnCommandErrors = false;
 
   public SwApplicationProxy(Long id) {
     this.id = id;
@@ -88,7 +90,25 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   @Override
   public TafProperties execCommand(TafProperties props) {
     startCommandAndWait(getReference().intValue(), props);
-    return interactionController.getTafPropertiesForId(getReference().intValue());
+    TafProperties returnProperties = interactionController.getTafPropertiesForId(getReference().intValue());
+    checkCommandForErrors(returnProperties);
+    return returnProperties;
+  }
+
+  private void checkCommandForErrors(TafProperties returnProperties) {
+    if (!getFailOnCommandErrors()) {
+      return;
+    }
+    if (returnProperties == null) {
+      return;
+    }
+    String status = returnProperties.getString("status");
+    if (status == null) {
+      return;
+    }
+    if (status.equals("error")) {
+      throw new CommandException(returnProperties);
+    }
   }
 
   @Override
@@ -127,7 +147,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     }
     return null;
   }
-  
+
   private TafProperties execApplicationCommand(Long root, String xpath, Command command, Long timeoutInMsecs) {
     TafProperties props = new TafProperties();
     props.putObject(paramXPath, xpath);
@@ -138,7 +158,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     props = execCommand(props);
     return props;
   }
-  
+
   private TafProperties execApplicationCommand(Long root, String xpath, Command command) {
     return execApplicationCommand(root, xpath, command, new Long(serverTimeoutInMsecs));
   }
@@ -212,7 +232,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   public void start(String commandline) {
     interactionController.startApplication(commandline);
   }
-  
+
   public void stop(String jnlp) {
     interactionController.stopApplication(jnlp);
   }
@@ -308,7 +328,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   public void waitUntilDone(int id) {
     interactionController.waitUntilDone(id, clientTimeoutInMsecs());
   }
-  
+
   public int clientTimeoutInMsecs() {
     return (serverTimeoutInMsecs) + 5000;
   }
@@ -339,7 +359,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     props.putObject(paramDelayBetweenKeystrokes, ms);
     execCommand(props);
   }
-  
+
   public void initInteractionMocking(String path) {
    interactionController = MockInteractionController.newWithJournal(path);
   }
@@ -347,7 +367,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   public void initInteractionJournal() {
     interactionController = RealInteractionController.withJournal();
   }
-  
+
   public void serializeInteractionJournal(String path) {
     interactionController.serializeJournal(path);
   }
@@ -359,6 +379,15 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     props.putObject(paramType, ISwApplication.type);
     props.putObject(paramSeparator, separator);
     execCommand(props);
+  }
+
+  @Override
+  public boolean getFailOnCommandErrors() {
+    return failOnCommandErrors;
+  }
+
+  public void setFailOnCommandErrors(boolean bool) {
+    failOnCommandErrors = bool;
   }
 
   @Override

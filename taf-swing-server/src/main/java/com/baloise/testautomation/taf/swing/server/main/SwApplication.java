@@ -670,6 +670,12 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   @Override
+  public boolean getFailOnCommandErrors() {
+    // Only used in Client
+    return false;
+  }
+
+  @Override
   public void setTimeoutInMsecs(Long msecs) {
     info("should NOT come here --> setTimeoutInMsecs");
   }
