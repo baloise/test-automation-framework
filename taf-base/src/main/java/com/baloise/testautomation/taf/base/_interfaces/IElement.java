@@ -21,6 +21,8 @@ public interface IElement {
 
   public void setBy(Annotation by);
 
+  public Annotation getBy();
+
   public void setCheck(Annotation check);
 
   public void setComponent(IComponent component);

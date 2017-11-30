@@ -117,6 +117,11 @@ public abstract class AElement implements IElement {
     this.by = by;
   }
 
+  @Override
+  public Annotation getBy() {
+    return this.by;
+  }
+
   // public Region roFind() {
   // // TODO
   // return null;

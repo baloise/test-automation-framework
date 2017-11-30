@@ -472,6 +472,11 @@ public abstract class ABase implements IComponent {
   }
 
   @Override
+  public Annotation getBy() {
+    return this.by;
+  }
+
+  @Override
   public void setCheck(Annotation check) {
     assertNotNull("'check' annotation may NOT be null", check);
     this.check = check;
