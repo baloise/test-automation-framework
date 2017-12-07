@@ -1,6 +1,5 @@
 package com.baloise.testautomation.taf.base.testing.e2e;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,6 +14,8 @@ import org.junit.runner.manipulation.Sorter;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
+
+import com.baloise.testautomation.taf.base._base.AnnotationHelper;
 
 public class OrderedRunner extends BlockJUnit4ClassRunner {
 
@@ -61,15 +62,16 @@ public class OrderedRunner extends BlockJUnit4ClassRunner {
   }
 
   private boolean isAnnotatedWithIgnoreAfterFail() {
-    Annotation[] annotations = getRunnerAnnotations();
-    boolean isAnnotedWithIgnoreAfterFail = false;
-    for (Annotation annotation : annotations) {
-      if (annotation instanceof IgnoreAfterFailed) {
-        isAnnotedWithIgnoreAfterFail = true;
-        break;
-      }
-    }
-    return isAnnotedWithIgnoreAfterFail;
+    return AnnotationHelper.hasAnnotationInHierarchy(getTestClass().getJavaClass(), IgnoreAfterFailed.class);
+    // Annotation[] annotations = getRunnerAnnotations();
+    // boolean isAnnotedWithIgnoreAfterFail = false;
+    // for (Annotation annotation : annotations) {
+    // if (annotation instanceof IgnoreAfterFailed) {
+    // isAnnotedWithIgnoreAfterFail = true;
+    // break;
+    // }
+    // }
+    // return isAnnotedWithIgnoreAfterFail;
   }
 
   @Override

@@ -28,19 +28,23 @@ public class ResourceHelper {
   private static Logger LOGGER = LoggerFactory.getLogger("resource-helper");
 
   public static URL getResource(Object o, String filename) {
-    LOGGER.info("determine URL for object: " + o + " --> dataRootPath: " + dataRootPath + " --> resourcePrefix: "
+    return getResource(o.getClass(), filename);
+  }
+  
+  public static URL getResource(Class<?> klass, String filename) {
+    LOGGER.info("determine URL for klass: " + klass + " --> dataRootPath: " + dataRootPath + " --> resourcePrefix: "
         + resourcePrefix + " --> filename: " + filename);
     if (dataRootPath.isEmpty()) {
-      URL resource = o.getClass().getResource(resourcePrefix + filename);
+      URL resource = klass.getResource(resourcePrefix + filename);
       if (resource == null) {
         if (tryWithAndWithoutPrefix) {
           LOGGER.info("resource with prefix does not exist --> try to find resource WITHOUT prefix");
-          resource = o.getClass().getResource(filename);
+          resource = klass.getResource(filename);
         }
       }
       return resource;
     }
-    String oWithSlashes = o.getClass().getPackage().getName().replace(".", "/");
+    String oWithSlashes = klass.getPackage().getName().replace(".", "/");
     try {
       URL url = new URL(dataRootPath + oWithSlashes + "/" + resourcePrefix + filename);
       if (new File(url.toURI()).exists()) {

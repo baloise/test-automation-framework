@@ -2,6 +2,7 @@ package com.baloise.testautomation.taf.browser.elements;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeNotNull;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -26,10 +27,12 @@ public class BrFinder implements IBrowserFinder<WebElement> {
 
   protected int timeoutInSeconds = 10;
 
+  private Long currentTimeout = 0L;
+
   public BrFinder(WebDriver driver) {
     this.driver = driver;
   }
-  
+
   public BrFinder(WebDriver driver, int timeoutInSeconds) {
     this.driver = driver;
     this.timeoutInSeconds = timeoutInSeconds;
@@ -38,6 +41,10 @@ public class BrFinder implements IBrowserFinder<WebElement> {
 
   protected void assertDriverAssigned() {
     assertNotNull("WebDriver not initialized", driver);
+  }
+
+  public void assumeDriverAssigned() {
+    assumeNotNull("WebDriver not initialized", driver);
   }
 
   @Override
@@ -147,47 +154,46 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     return driver;
   }
 
+  @Override
+  public Long getTimeoutInMsecs() {
+    return currentTimeout;
+  }
+
   public String getXPath(WebElement we) {
-    return (String)((JavascriptExecutor)getDriver())
-        .executeScript(
-            "function absoluteXPath(element) {"
-                + "var comp, comps = [];"
-                + "var parent = null;"
-                + "var xpath = '';"
-                + "var getPos = function(element) {"
-                + "var position = 1, curNode;"
-                + "if (element.nodeType == Node.ATTRIBUTE_NODE) {"
-                + "return null;"
-                + "}"
-                + "for (curNode = element.previousSibling; curNode; curNode = curNode.previousSibling) {"
-                + "if (curNode.nodeName == element.nodeName) {"
-                + "++position;"
-                + "}"
-                + "}"
-                + "return position;"
-                + "};"
-                +
+    return (String)((JavascriptExecutor)getDriver()).executeScript("function absoluteXPath(element) {"
+        + "var comp, comps = [];" + "var parent = null;" + "var xpath = '';" + "var getPos = function(element) {"
+        + "var position = 1, curNode;" + "if (element.nodeType == Node.ATTRIBUTE_NODE) {" + "return null;" + "}"
+        + "for (curNode = element.previousSibling; curNode; curNode = curNode.previousSibling) {"
+        + "if (curNode.nodeName == element.nodeName) {" + "++position;" + "}" + "}" + "return position;" + "};" +
 
-                "if (element instanceof Document) {"
-                + "return '/';"
-                + "}"
-                +
+        "if (element instanceof Document) {" + "return '/';" + "}" +
 
-                "for (; element && !(element instanceof Document); element = element.nodeType == Node.ATTRIBUTE_NODE ? element.ownerElement : element.parentNode) {"
-                + "comp = comps[comps.length] = {};" + "switch (element.nodeType) {" + "case Node.TEXT_NODE:"
-                + "comp.name = 'text()';" + "break;" + "case Node.ATTRIBUTE_NODE:"
-                + "comp.name = '@' + element.nodeName;" + "break;" + "case Node.PROCESSING_INSTRUCTION_NODE:"
-                + "comp.name = 'processing-instruction()';" + "break;" + "case Node.COMMENT_NODE:"
-                + "comp.name = 'comment()';" + "break;" + "case Node.ELEMENT_NODE:" + "comp.name = element.nodeName;"
-                + "break;" + "}" + "comp.position = getPos(element);" + "}" +
+        "for (; element && !(element instanceof Document); element = element.nodeType == Node.ATTRIBUTE_NODE ? element.ownerElement : element.parentNode) {"
+        + "comp = comps[comps.length] = {};" + "switch (element.nodeType) {" + "case Node.TEXT_NODE:"
+        + "comp.name = 'text()';" + "break;" + "case Node.ATTRIBUTE_NODE:" + "comp.name = '@' + element.nodeName;"
+        + "break;" + "case Node.PROCESSING_INSTRUCTION_NODE:" + "comp.name = 'processing-instruction()';" + "break;"
+        + "case Node.COMMENT_NODE:" + "comp.name = 'comment()';" + "break;" + "case Node.ELEMENT_NODE:"
+        + "comp.name = element.nodeName;" + "break;" + "}" + "comp.position = getPos(element);" + "}" +
 
-                "for (var i = comps.length - 1; i >= 0; i--) {" + "comp = comps[i];"
-                + "xpath += '/' + comp.name.toLowerCase();" + "if (comp.position !== null) {"
-                + "xpath += '[' + comp.position + ']';" + "}" + "}" +
+        "for (var i = comps.length - 1; i >= 0; i--) {" + "comp = comps[i];" + "xpath += '/' + comp.name.toLowerCase();"
+        + "if (comp.position !== null) {" + "xpath += '[' + comp.position + ']';" + "}" + "}" +
 
-                "return xpath;" +
+        "return xpath;" +
 
-                "} return absoluteXPath(arguments[0]);", we);
+        "} return absoluteXPath(arguments[0]);", we);
+  }
+
+  @Override
+  public void setDefaultTimeoutInMsecs() {
+    setTimeoutInMsecs(1000L * timeoutInSeconds);
+  }
+
+  @Override
+  public void setTimeoutInMsecs(Long msecs) {
+    currentTimeout = msecs;
+    if (driver != null) {
+      driver.manage().timeouts().implicitlyWait(new Double(currentTimeout).intValue(), TimeUnit.MILLISECONDS);
+    }
   }
 
   public void setToDefaultContent() {
@@ -203,24 +209,4 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   @Override
   public void waitUntilLoadingComplete() {}
 
-  private Long currentTimeout = 0L;
-  
-  @Override
-  public void setTimeoutInMsecs(Long msecs) {
-    currentTimeout = msecs;
-    if (driver != null) {
-      driver.manage().timeouts().implicitlyWait(new Double(currentTimeout).intValue(), TimeUnit.MILLISECONDS);
-    }
-  }
-
-  @Override
-  public Long getTimeoutInMsecs() {
-    return currentTimeout;
-  }
-
-  @Override
-  public void setDefaultTimeoutInMsecs() {
-    setTimeoutInMsecs(1000L * timeoutInSeconds);
-  }
-  
 }

@@ -163,10 +163,25 @@ public abstract class ABase implements IComponent {
     basicFill();
   }
 
+  private List<Field> getAllFields() {
+    List<Field> allFields = new ArrayList<>();
+    Class<?> currentClass = getClass();
+    while (currentClass != null) {
+      allFields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
+      currentClass = currentClass.getSuperclass();
+    }
+    return allFields;
+  }
+
   @Override
   public IFinder<?> getBrowserFinder() {
     fail("method getBrowserFinder must be overridden (if it used)");
     return null;
+  }
+
+  @Override
+  public Annotation getBy() {
+    return this.by;
   }
 
   public Annotation getByAnnotation(Field f) {
@@ -205,23 +220,6 @@ public abstract class ABase implements IComponent {
     return result;
   }
 
-  private List<Field> getAllFields() {
-    List<Field> allFields = new ArrayList<>();
-    Class<?> currentClass = getClass();
-    while (currentClass != null) {
-      allFields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
-      currentClass = currentClass.getSuperclass();
-    }
-    return allFields;
-  }
-
-  private List<Field> makeFieldsAccessible(List<Field> allFields) {
-    for (Field field : allFields) {
-      field.setAccessible(true);
-    }
-    return allFields;
-  }
-
   public List<Field> getCheckFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
     List<Field> result = new ArrayList<Field>();
@@ -253,6 +251,25 @@ public abstract class ABase implements IComponent {
       }
     }
     return result;
+  }
+
+  private Class<?> getDataProviderClass() {
+    Class<?> klass = this.getClass();
+    boolean found = false;
+    while (!found) {
+      if (klass.isAnnotationPresent(Excel.class) || klass.isAnnotationPresent(DataProvider.class)) {
+        logger.info("Annotated dataprovider class found: " + klass);
+        return klass;
+      }
+      else {
+        klass = klass.getSuperclass();
+      }
+      if (klass == null) {
+        logger.warn("NO annotated dataprovider class found!");
+        return this.getClass();
+      }
+    }
+    return klass;
   }
 
   @Override
@@ -383,44 +400,36 @@ public abstract class ABase implements IComponent {
   }
 
   public Collection<IDataRow> loadCheck(String idAndDetail) {
-    if (getClass().isAnnotationPresent(Excel.class)) {
-      return loadExcel(idAndDetail, "Check.xls");
+    Class<?> dataProviderClass = getDataProviderClass();
+    if (dataProviderClass.isAnnotationPresent(Excel.class)) {
+      return loadExcel(dataProviderClass, idAndDetail, "Check.xls");
     }
-    if (getClass().isAnnotationPresent(DataProvider.class)) {
-      DataProvider dataprovider = getClass().getAnnotation(DataProvider.class);
+    if (dataProviderClass.isAnnotationPresent(DataProvider.class)) {
+      DataProvider dataprovider = dataProviderClass.getAnnotation(DataProvider.class);
       switch (dataprovider.value()) {
         case EXCEL:
-          return loadExcel(idAndDetail, "Check.xls");
+          return loadExcel(dataProviderClass, idAndDetail, "Check.xls");
         case CSV:
-          return loadCsv(idAndDetail, "Check.csv");
+          return loadCsv(dataProviderClass, idAndDetail, "Check.csv");
         case SELF:
           if (this instanceof IDataProvider) {
             return ((IDataProvider)this).loadCheckData(idAndDetail);
           }
-          fail(this.getClass().getSimpleName()
+          fail(dataProviderClass.getSimpleName()
               + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
         default:
           fail("loading check data FAILED, unknown dataprovider.type found : " + dataprovider.value());
       }
     }
     fail("loading check data FAILED (either file not found or class annotation wrong/missing: "
-        + getClass().getSimpleName());
+        + dataProviderClass.getSimpleName());
     return null;
   }
 
-  public Collection<IDataRow> loadCsv(String idAndDetail, String suffix) {
-    String path = ResourceHelper.getResource(this, this.getClass().getSimpleName() + suffix).getPath();
+  public Collection<IDataRow> loadCsv(Class<?> klass, String idAndDetail, String suffix) {
+    String path = ResourceHelper.getResource(klass, this.getClass().getSimpleName() + suffix).getPath();
     File f = new File(path);
     return loadCsvFrom(f, idAndDetail);
-  }
-
-  public Collection<IDataRow> loadExcel(String idAndDetail, String suffix) {
-    try (InputStream is = ResourceHelper.getResource(this, this.getClass().getSimpleName() + suffix).openStream()) {
-      return loadExcelFrom(is, idAndDetail);
-    }
-    catch (Exception e) {}
-    fail("excel file with data NOT found for suffix = " + suffix + " --> " + getClass().getSimpleName());
-    return null;
   }
 
   private Collection<IDataRow> loadCsvFrom(File f, String idAndDetail) {
@@ -429,30 +438,12 @@ public abstract class ABase implements IComponent {
     return dataRows;
   }
 
-  public Collection<IDataRow> loadFill(String idAndDetail) {
-    if (getClass().isAnnotationPresent(Excel.class)) {
-      return loadExcel(idAndDetail, "Fill.xls");
+  public Collection<IDataRow> loadExcel(Class<?> klass, String idAndDetail, String suffix) {
+    try (InputStream is = ResourceHelper.getResource(klass, klass.getSimpleName() + suffix).openStream()) {
+      return loadExcelFrom(is, idAndDetail);
     }
-
-    if (getClass().isAnnotationPresent(DataProvider.class)) {
-      DataProvider dataprovider = getClass().getAnnotation(DataProvider.class);
-      switch (dataprovider.value()) {
-        case EXCEL:
-          return loadExcel(idAndDetail, "Fill.xls");
-        case CSV:
-          return loadCsv(idAndDetail, "Fill.csv");
-        case SELF:
-          if (this instanceof IDataProvider) {
-            return ((IDataProvider)this).loadFillData(idAndDetail);
-          }
-          fail(this.getClass().getSimpleName()
-              + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
-        default:
-          fail("loading fill data FAILED, unknown dataprovider.type found : " + dataprovider.value());
-      }
-    }
-    fail("loading fill data FAILED (either file not found or class annotation wrong/missing: "
-        + getClass().getSimpleName());
+    catch (Exception e) {}
+    fail("excel file with data NOT found for suffix = " + suffix + " --> " + klass.getSimpleName());
     return null;
   }
 
@@ -465,15 +456,45 @@ public abstract class ABase implements IComponent {
     // return tempData.get(0);
   }
 
+  public Collection<IDataRow> loadFill(String idAndDetail) {
+    Class<?> dataProviderClass = getDataProviderClass();
+    if (dataProviderClass.isAnnotationPresent(Excel.class)) {
+      return loadExcel(dataProviderClass, idAndDetail, "Fill.xls");
+    }
+
+    if (dataProviderClass.isAnnotationPresent(DataProvider.class)) {
+      DataProvider dataprovider = dataProviderClass.getAnnotation(DataProvider.class);
+      switch (dataprovider.value()) {
+        case EXCEL:
+          return loadExcel(dataProviderClass, idAndDetail, "Fill.xls");
+        case CSV:
+          return loadCsv(dataProviderClass, idAndDetail, "Fill.csv");
+        case SELF:
+          if (this instanceof IDataProvider) {
+            return ((IDataProvider)this).loadFillData(idAndDetail);
+          }
+          fail(dataProviderClass.getSimpleName()
+              + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
+        default:
+          fail("loading fill data FAILED, unknown dataprovider.type found : " + dataprovider.value());
+      }
+    }
+    fail("loading fill data FAILED (either file not found or class annotation wrong/missing: "
+        + dataProviderClass.getSimpleName());
+    return null;
+  }
+
+  private List<Field> makeFieldsAccessible(List<Field> allFields) {
+    for (Field field : allFields) {
+      field.setAccessible(true);
+    }
+    return allFields;
+  }
+
   @Override
   public void setBy(Annotation by) {
     assertNotNull("'by' annotation may NOT be null", by);
     this.by = by;
-  }
-
-  @Override
-  public Annotation getBy() {
-    return this.by;
   }
 
   @Override
@@ -659,4 +680,10 @@ public abstract class ABase implements IComponent {
     this.name = name;
   }
 
+  public void sleep(double seconds) {
+    try {
+      Thread.sleep(new Double(seconds * 1000).longValue());
+    }
+    catch (Exception e) {}
+  }
 }
