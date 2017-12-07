@@ -1,42 +1,69 @@
 package com.baloise.testautomation.taf.browser.elements;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeNotNull;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.*;
+import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import static org.junit.Assume.assumeNotNull;
 
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
-import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
+import java.lang.annotation.Annotation;
+import java.util.*;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import com.baloise.testautomation.taf.browser.elements.BrElementFinder.*;
+import org.openqa.selenium.*;
+
 
 public class BrFinder implements IBrowserFinder<WebElement> {
 
+  private Map<Class<? extends Annotation>, WebElementFinder> supportedBys;
   protected WebDriver driver = null;
 
   protected int timeoutInSeconds = 10;
 
+  private Map<Class<? extends Annotation>, WebElementFinder> supportedFinders = new HashMap<>();
+
   private Long currentTimeout = 0L;
 
   public BrFinder(WebDriver driver) {
-    this.driver = driver;
+    this(driver, 10);
   }
 
   public BrFinder(WebDriver driver, int timeoutInSeconds) {
+    createSupportedFinders();
+    registerAdditionalFinders(getAdditionalFinders());
     this.driver = driver;
     this.timeoutInSeconds = timeoutInSeconds;
     setDefaultTimeoutInMsecs();
+  }
+
+  private void registerAdditionalFinders(Collection<WebElementFinder<? extends Annotation>> finders) {
+//    finders.stream().forEach(finder -> registerFinder(finder));
+    for (WebElementFinder<? extends Annotation> finder : finders) {
+      registerFinder(finder);
+    }
+  }
+
+  private void createSupportedFinders() {
+    registerFinder(new ByCssSelectorFinder());
+    registerFinder(new ByIdFinder());
+    registerFinder(new ByNameFinder());
+    registerFinder(new ByTextFinder());
+    registerFinder(new ByXpathFinder());
+  }
+
+  private void registerFinder(WebElementFinder<? extends Annotation> finder) {
+    supportedFinders.put(finder.getAnnotationClass(), finder);
+  }
+
+  protected Collection<WebElementFinder<? extends Annotation>> getAdditionalFinders() {
+    return Collections.emptyList();
   }
 
   protected void assertDriverAssigned() {
@@ -54,26 +81,49 @@ public class BrFinder implements IBrowserFinder<WebElement> {
 
   @Override
   public WebElement find(WebElement root, Annotation annotation) {
-    if (annotation instanceof ById) {
-      return findById(root, (ById)annotation);
-    }
-    if (annotation instanceof ByText) {
-      return findByText(root, (ByText)annotation);
-    }
-    if (annotation instanceof ByCssSelector) {
-      return findByCssSelector(root, (ByCssSelector)annotation);
-    }
     if (annotation instanceof ByCustom) {
       return findByCustom(root, (ByCustom)annotation);
     }
-    if (annotation instanceof ByXpath) {
-      return findByXpath(root, (ByXpath)annotation);
+    WebElementFinder finder = supportedFinders.get(annotation.annotationType());
+    if (finder == null) {
+      return findByDefault(root, annotation);
+    } else {
+      return finder.findElement(annotation, root == null ? driver : root);
     }
-    if (annotation instanceof ByName) {
-      return findByName(root, (ByName)annotation);
+//    fail("annotation not yet supported: " + annotation.annotationType());
+//    return null;
+  }
+
+  private WebElement findByDefault(WebElement root, Annotation annotation) {
+    final String name = annotation.annotationType().getSimpleName();
+    String id;
+    if (name.startsWith("By")) {
+      id = name.substring(2);
+    } else {
+      id = name;
     }
-    fail("annotation not yet supported: " + annotation.annotationType());
-    return null;
+    Logger.getGlobal().warning("could not find WebElementFinder for Annotation " + name
+            + " trying to find ById(" + id + ") or ByName(" + id + ")");
+    SearchContext searchContext = root == null ? driver : root;
+    WebElement element = exists(By.id(id), searchContext);
+    if (element == null) {
+      element = searchContext.findElement(By.name(id));
+    }
+    return element;
+  }
+
+  private WebElement exists(By by, SearchContext searchContext) {
+    WebElement result = null;
+    long timeout = getTimeoutInMsecs();
+    setTimeoutInMsecs(100L);
+    try {
+      result = searchContext.findElement(by);
+    } catch (Exception e) {
+      // do nothing
+    } finally {
+      setTimeoutInMsecs(timeout);
+    }
+    return result;
   }
 
   @Override
