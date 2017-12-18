@@ -50,7 +50,7 @@ public class SwStarter {
   private String spyFileName = null;
 
   public SwStarter() {
-    info("will try to start instrumentation V0.0.3-003");
+    info("will try to start instrumentation Version " + getTafVersion());
 
     debugSystemProperties();
 
@@ -78,6 +78,19 @@ public class SwStarter {
     else {
       info("Application seems to NOT need instrumentation --> application will run without instrumentation");
     }
+  }
+
+  private String getTafVersion() {
+    String tafVersion = null;
+    try {
+      Properties tafProperties = new Properties();
+      tafProperties.load(getClass().getClassLoader().getResourceAsStream("taf-swing-server.properties"));
+      tafVersion = tafProperties.getProperty("taf-swing-server.version");
+    }
+    catch (Exception e) {
+      error("Unable to retrieve TAF Version", e);
+    }
+    return tafVersion == null ? "[unknown]" : tafVersion;
   }
 
   /**
