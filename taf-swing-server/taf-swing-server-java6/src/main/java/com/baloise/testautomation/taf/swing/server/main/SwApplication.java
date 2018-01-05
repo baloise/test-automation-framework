@@ -502,7 +502,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       return new SwDialog(tid, (Dialog)c);
     }
     if (c instanceof JComboBox) {
-      return new SwComboBox(tid, (JComboBox<?>)c);
+      return new SwComboBox(tid, (JComboBox)c);
     }
     if (c instanceof JMenuItem) {
       return new SwMenuItem(tid, (JMenuItem)c);
@@ -514,7 +514,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       return new SwLabel(tid, (JLabel)c);
     }
     if (c instanceof JList) {
-      return new SwList(tid, (JList<?>)c);
+      return new SwList(tid, (JList)c);
     }
     if (c instanceof JTabbedPane) {
       return new SwTabbedPane(tid, (JTabbedPane)c);
