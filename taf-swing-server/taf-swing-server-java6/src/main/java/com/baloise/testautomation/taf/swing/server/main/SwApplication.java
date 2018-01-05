@@ -87,7 +87,7 @@ import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   /**
-   * @param string
+   * @param windowTitle
    */
   public static boolean waitForWindowWithTitle(String windowTitle) {
     ISwElement<Component> element = new SwApplication().findElementByXpath(null, "//*[@title='" + windowTitle + "']");

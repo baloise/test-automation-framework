@@ -9,7 +9,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwRadioButton;
 public class SwRadioButton extends ASwElement implements ISwRadioButton<Component> {
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */

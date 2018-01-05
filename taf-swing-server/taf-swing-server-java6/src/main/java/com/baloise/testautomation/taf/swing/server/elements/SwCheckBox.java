@@ -23,7 +23,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
 public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */

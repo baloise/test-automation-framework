@@ -23,7 +23,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */

@@ -15,7 +15,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwDialog;
 public class SwDialog extends ASwElement implements ISwDialog<Component> {
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */

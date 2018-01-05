@@ -23,7 +23,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
 public class SwLabel extends ASwElement implements ISwLabel<Component> {
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */

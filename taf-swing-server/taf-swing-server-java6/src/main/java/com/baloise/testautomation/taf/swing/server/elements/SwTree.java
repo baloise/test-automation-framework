@@ -25,7 +25,6 @@ public class SwTree extends ASwElement implements ISwTree<Component> {
   public static String separator = null;
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */

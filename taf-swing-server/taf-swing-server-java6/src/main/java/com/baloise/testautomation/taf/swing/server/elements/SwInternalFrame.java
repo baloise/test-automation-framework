@@ -16,7 +16,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwInternalFrame;
 public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Component> {
 
   /**
-   * @param tagName
    * @param tid
    * @param component
    */
