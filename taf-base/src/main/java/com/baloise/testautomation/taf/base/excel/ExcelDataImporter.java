@@ -92,13 +92,13 @@ public class ExcelDataImporter implements IDataImporter {
       FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
       evaluator.evaluateInCell(cell);
     }
-    if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+    if (cell.getCellTypeEnum() == CellType.BLANK) {
       return TafString.emptyString();
     }
-    if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+    if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
       return new TafBoolean(cell.getBooleanCellValue());
     }
-    if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+    if (cell.getCellTypeEnum() == CellType.NUMERIC) {
       if (DateUtil.isCellDateFormatted(cell)) {
         return TafDate.normalDate(cell.getDateCellValue());
       }
@@ -108,7 +108,7 @@ public class ExcelDataImporter implements IDataImporter {
       }
       return new TafDouble(cell.getNumericCellValue());
     }
-    if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+    if (cell.getCellTypeEnum() == CellType.STRING) {
       String s = cell.getStringCellValue();
       if (TafBoolean.TRUE.equalsIgnoreCase(s)) {
         return TafBoolean.trueBoolean();
