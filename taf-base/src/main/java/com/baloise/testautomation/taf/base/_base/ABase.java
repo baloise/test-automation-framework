@@ -515,8 +515,8 @@ public abstract class ABase implements IComponent {
       return;
     }
     Vector<IDataRow> dataRows = new Vector<>(loadCheck(checkId.asString()));
-    assertFalse("too much data found: '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
-    assertTrue("no check data found: '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
+    assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
+    assertTrue("no check data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
     IDataRow data = dataRows.firstElement();
     setCheckDataFields(data);
     setCheckFields(data);
@@ -636,8 +636,8 @@ public abstract class ABase implements IComponent {
       return;
     }
     Vector<IDataRow> dataRows = new Vector<>(loadFill(fillId.asString()));
-    assertFalse("too much data found: '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
-    assertTrue("no fill data found: '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
+    assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
+    assertTrue("no fill data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
     IDataRow data = dataRows.firstElement();
     setFillDataFields(data);
     setFillFields(data);
