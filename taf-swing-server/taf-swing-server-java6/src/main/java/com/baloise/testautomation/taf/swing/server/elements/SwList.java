@@ -94,6 +94,7 @@ public class SwList extends ASwElement implements ISwList<Component> {
         public String valueAt(JList list, int index) {
           try {
             Object element = list.getModel().getElementAt(index);
+            @SuppressWarnings("unchecked")
             Component renderer = list.getCellRenderer().getListCellRendererComponent(list, element, index, true, true);
             if (renderer != null) {
               System.out.println("renderer: " + renderer.getClass());
