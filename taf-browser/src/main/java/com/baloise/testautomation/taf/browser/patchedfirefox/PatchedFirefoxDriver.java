@@ -1,5 +1,7 @@
 package com.baloise.testautomation.taf.browser.patchedfirefox;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -7,8 +9,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.remote.Response;
 
 public class PatchedFirefoxDriver extends FirefoxDriver {
@@ -55,21 +60,22 @@ public class PatchedFirefoxDriver extends FirefoxDriver {
   }
 
 
-//  @Override
-//  public List<WebElement> findElements(By by) {
-//    List<WebElement> elements = super.findElements(by);
-//    List<WebElement> patchedElements = new ArrayList<WebElement>();
-//    for (WebElement element : elements) {
-//      patchedElements.add(new PatchedWebElement((RemoteWebElement)element));
-//    }
-//    return patchedElements;
-//  }
-//
-//  @Override
-//  public WebElement findElement(By by) {
-//    return new PatchedWebElement((RemoteWebElement)super.findElement(by));
-//  }
-//
+  @Override
+  public List<WebElement> findElements(By by) {
+    List<WebElement> elements = super.findElements(by);
+    List<WebElement> patchedElements = new ArrayList<WebElement>();
+    for (WebElement element : elements) {
+      patchedElements.add(new PatchedWebElement((RemoteWebElement)element));
+    }
+    return patchedElements;
+  }
+
+  @Override
+  public WebElement findElement(By by) {
+    return new PatchedWebElement((RemoteWebElement)super.findElement(by));
+  }
+  
+  
 //  @Override
 //  public void quit() {
 //    Assert.fail("do not call this method because it doesn't react in the way expected");
