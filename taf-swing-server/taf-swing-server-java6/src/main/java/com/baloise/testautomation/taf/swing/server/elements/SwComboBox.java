@@ -10,6 +10,7 @@ package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComboBox;
 
@@ -60,6 +61,15 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
         props.clear();
         props.putObject(paramText, getSelectedItem());
         break;
+      case getallitems:
+        props.clear();
+        String items = "";
+        List<String> allItems = getAllItems();
+        for (String item : allItems) {
+          items = items + item + separator;
+        }
+        props.putObject(paramItems, items);
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -94,6 +104,11 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
     return getFixture().selectedItem();
   }
 
+  @Override
+  public List<String> getAllItems() {
+    return Arrays.asList(getFixture().contents());
+  }
+  
   @Override
   public String getType() {
     return ISwComboBox.type;

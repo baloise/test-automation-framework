@@ -2,9 +2,12 @@ package com.baloise.testautomation.taf.swing.server.elements;
 
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedString;
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
+
 import java.awt.Component;
 import java.awt.Rectangle;
+
 import org.assertj.swing.fixture.AbstractComponentFixture;
+
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;

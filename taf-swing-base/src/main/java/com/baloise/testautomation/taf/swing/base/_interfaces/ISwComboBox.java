@@ -8,6 +8,8 @@
  */
 package com.baloise.testautomation.taf.swing.base._interfaces;
 
+import java.util.List;
+
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 
 /**
@@ -19,11 +21,16 @@ public interface ISwComboBox<R> extends ISwElement<R> {
     click,
     selectitem,
     selectindex,
+    getallitems,
     getselecteditem,
     selectitembyfillinginput,
     selectitembymatchingdescription,
     selectindexbymatchingdescription
   }
+
+  public static String separator = "|";
+  
+  public static String paramItems = "items";
 
   public static String paramText = "text";
   
@@ -33,6 +40,8 @@ public interface ISwComboBox<R> extends ISwElement<R> {
 
   public void click();
 
+  public List<String> getAllItems();
+  
   public String getSelectedItem();
 
   public void selectIndex(Long index);
