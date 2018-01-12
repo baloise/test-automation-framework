@@ -10,6 +10,8 @@ package com.baloise.testautomation.taf.swing.client.elements;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base._interfaces.IType;
@@ -89,6 +91,10 @@ public class SwComboBox extends AInput implements IData<TafString> {
     return new TafString(text);
   }
 
+  public List<String> getAllItems() {
+    return find().getAllItems();
+  }
+  
   @Override
   public Class<TafString> getDataTypeClass() {
     return TafString.class;
