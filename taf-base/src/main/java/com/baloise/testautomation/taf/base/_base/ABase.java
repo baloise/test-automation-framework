@@ -11,6 +11,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -168,6 +169,21 @@ public abstract class ABase implements IComponent {
     Class<?> currentClass = getClass();
     while (currentClass != null) {
       allFields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
+      currentClass = currentClass.getSuperclass();
+    }
+    return allFields;
+  }
+
+  private List<Field> getAllNonStaticFields() {
+    List<Field> allFields = new ArrayList<>();
+    Class<?> currentClass = getClass();
+    while (currentClass != null) {
+      Field[] declaredFields = currentClass.getDeclaredFields();
+      for (Field field : declaredFields) {
+        if (!Modifier.isStatic(field.getModifiers())) {
+          allFields.add(field);
+        }
+      }
       currentClass = currentClass.getSuperclass();
     }
     return allFields;
@@ -382,7 +398,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initOtherFields() {
-    List<Field> fields = makeFieldsAccessible(getAllFields());
+    List<Field> fields = makeFieldsAccessible(getAllNonStaticFields());
     for (Field f : fields) {
       if (f.getAnnotation(Rule.class) == null) {
         try {
@@ -515,8 +531,10 @@ public abstract class ABase implements IComponent {
       return;
     }
     Vector<IDataRow> dataRows = new Vector<>(loadCheck(checkId.asString()));
-    assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
-    assertTrue("no check data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
+    assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(),
+        dataRows.size() > 1);
+    assertTrue("no check data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(),
+        dataRows.size() == 1);
     IDataRow data = dataRows.firstElement();
     setCheckDataFields(data);
     setCheckFields(data);
@@ -636,8 +654,10 @@ public abstract class ABase implements IComponent {
       return;
     }
     Vector<IDataRow> dataRows = new Vector<>(loadFill(fillId.asString()));
-    assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() > 1);
-    assertTrue("no fill data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(), dataRows.size() == 1);
+    assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(),
+        dataRows.size() > 1);
+    assertTrue("no fill data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(),
+        dataRows.size() == 1);
     IDataRow data = dataRows.firstElement();
     setFillDataFields(data);
     setFillFields(data);

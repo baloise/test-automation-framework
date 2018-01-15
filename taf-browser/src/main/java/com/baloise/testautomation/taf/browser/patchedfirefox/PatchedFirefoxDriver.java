@@ -1,5 +1,8 @@
 package com.baloise.testautomation.taf.browser.patchedfirefox;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +47,13 @@ public class PatchedFirefoxDriver extends FirefoxDriver {
       }
       catch (Exception e) {
         e.printStackTrace();
+        Robot robot;
+        try {
+          robot = new Robot();
+          robot.keyPress(KeyEvent.VK_ENTER);
+          robot.keyRelease(KeyEvent.VK_ENTER);
+        }
+        catch (AWTException e1) {}
       }
       finally {
         future.cancel(true);
@@ -59,7 +69,6 @@ public class PatchedFirefoxDriver extends FirefoxDriver {
     return super.execute(driverCommand, parameters);
   }
 
-
   @Override
   public List<WebElement> findElements(By by) {
     List<WebElement> elements = super.findElements(by);
@@ -74,16 +83,15 @@ public class PatchedFirefoxDriver extends FirefoxDriver {
   public WebElement findElement(By by) {
     return new PatchedWebElement((RemoteWebElement)super.findElement(by));
   }
-  
-  
-//  @Override
-//  public void quit() {
-//    Assert.fail("do not call this method because it doesn't react in the way expected");
-//  }
-//
-//  @Override
-//  public void close() {
-//    Assert.fail("do not call this method because it doesn't react in the way expected");
-//  }
+
+  // @Override
+  // public void quit() {
+  // Assert.fail("do not call this method because it doesn't react in the way expected");
+  // }
+  //
+  // @Override
+  // public void close() {
+  // Assert.fail("do not call this method because it doesn't react in the way expected");
+  // }
 
 }
