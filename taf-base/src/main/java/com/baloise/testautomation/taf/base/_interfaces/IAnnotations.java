@@ -91,7 +91,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.FIELD)
-  public @interface DoNotInstantiate {
+  public @interface PreserveNull {
   }
 
   @Retention(RetentionPolicy.RUNTIME)
