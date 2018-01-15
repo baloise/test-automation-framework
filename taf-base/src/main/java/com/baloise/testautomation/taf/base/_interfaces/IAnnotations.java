@@ -90,6 +90,11 @@ public interface IAnnotations {
   }
 
   @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.FIELD)
+  public @interface DoNotInstantiate {
+  }
+
+  @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.TYPE)
   public @interface Csv {
   }

@@ -11,9 +11,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -35,6 +33,7 @@ import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.CheckData;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.DataProvider;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.PreserveNull;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Excel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Fill;
 import com.baloise.testautomation.taf.base._interfaces.ICheck;
@@ -168,19 +167,9 @@ public abstract class ABase implements IComponent {
     List<Field> allFields = new ArrayList<>();
     Class<?> currentClass = getClass();
     while (currentClass != null) {
-      allFields.addAll(Arrays.asList(currentClass.getDeclaredFields()));
-      currentClass = currentClass.getSuperclass();
-    }
-    return allFields;
-  }
-
-  private List<Field> getAllNonStaticFields() {
-    List<Field> allFields = new ArrayList<>();
-    Class<?> currentClass = getClass();
-    while (currentClass != null) {
       Field[] declaredFields = currentClass.getDeclaredFields();
       for (Field field : declaredFields) {
-        if (!Modifier.isStatic(field.getModifiers())) {
+        if (!field.isAnnotationPresent(PreserveNull.class)) {
           allFields.add(field);
         }
       }
@@ -398,7 +387,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void initOtherFields() {
-    List<Field> fields = makeFieldsAccessible(getAllNonStaticFields());
+    List<Field> fields = makeFieldsAccessible(getAllFields());
     for (Field f : fields) {
       if (f.getAnnotation(Rule.class) == null) {
         try {
