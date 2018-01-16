@@ -33,6 +33,7 @@ public class ScreenshotRule extends TestWatcher {
   private boolean onBefore = false;
   private boolean onAfter = false;
   private boolean onFailed = false;
+  private boolean withClassName = false;
 
   public ScreenshotRule(String path, boolean onBefore, boolean onAfter, boolean onFailed) {
     super();
@@ -63,6 +64,12 @@ public class ScreenshotRule extends TestWatcher {
 
   private String getFilename(Description description) {
     String methodName = description.getMethodName();
+    if (withClassName) {
+      String[] splittedClassName = description.getClassName().split("\\.");
+      if (splittedClassName.length > 0) {
+        methodName = splittedClassName[splittedClassName.length - 1] + "_" + methodName;
+      }
+    }
     methodName = String.format("%1.100s", methodName);    
     return System.currentTimeMillis() + "_" + methodName + ".jpg";
   }
@@ -94,4 +101,9 @@ public class ScreenshotRule extends TestWatcher {
     }
   }
 
+  public ScreenshotRule withClassName() {
+    this.withClassName = true;
+    return this;
+  }
+  
 }
