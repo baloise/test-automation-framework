@@ -80,7 +80,7 @@ public class SwComboBoxProxy extends ASwElementProxy implements ISwComboBox<Long
   }
 
   protected String[] getSplitedItems(String itemsAsString) {
-    return itemsAsString.split("\\" + separator);
+    return itemsAsString.split("\\" + separator, -1);
   }
 
 }

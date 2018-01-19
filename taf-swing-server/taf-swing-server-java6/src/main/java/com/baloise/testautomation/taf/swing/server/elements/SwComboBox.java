@@ -63,17 +63,27 @@ public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
         break;
       case getallitems:
         props.clear();
-        String items = "";
         List<String> allItems = getAllItems();
-        for (String item : allItems) {
-          items = items + item + separator;
-        }
+        String items = serializeItems(allItems);
         props.putObject(paramItems, items);
         break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
     return props;
+  }
+
+  protected String serializeItems(List<String> allItems) {
+    String items = "";
+    int i;
+    for (i = 0; i < allItems.size(); i++) {
+      String item = allItems.get(i);
+      items = items + item;
+      if (i < allItems.size() - 1) {
+        items = items + separator;
+      }
+    }
+    return items;
   }
 
   @Override

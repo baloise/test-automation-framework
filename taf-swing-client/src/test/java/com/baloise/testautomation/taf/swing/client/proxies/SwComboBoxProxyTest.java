@@ -8,7 +8,7 @@ public class SwComboBoxProxyTest {
 
   @Test
   public void testAllItemsRegexpSplit() {
-    String itemsAsString = "|männlich|weiblich|";
+    String itemsAsString = "|männlich|weiblich";
     String[] splittedItems = new SwComboBoxProxy().getSplitedItems(itemsAsString);
     assertEquals(3, splittedItems.length);
     assertEquals("", splittedItems[0]);
