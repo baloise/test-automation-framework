@@ -75,8 +75,12 @@ public class SwComboBoxProxy extends ASwElementProxy implements ISwComboBox<Long
   public List<String> getAllItems() {
     TafProperties props = executeCommand(Command.getallitems.toString());
     String itemsAsString = props.getString(paramItems);
-    String[] items = itemsAsString.split(separator);
+    String[] items = getSplitedItems(itemsAsString);
     return Arrays.asList(items);
+  }
+
+  protected String[] getSplitedItems(String itemsAsString) {
+    return itemsAsString.split("\\" + separator);
   }
 
 }
