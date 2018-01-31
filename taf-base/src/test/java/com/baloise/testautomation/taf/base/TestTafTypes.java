@@ -12,6 +12,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import org.junit.Test;
 
 import com.baloise.testautomation.taf.base.types.TafComboString;
@@ -51,9 +54,9 @@ public class TestTafTypes {
     assertTrue(i.asTafInteger().isSkip());
     i = new TafInteger("124");
     assertEquals(i.asInteger(), new Integer(124));
-    i = new TafInteger("124.49");
+    i = new TafInteger("124" + DecimalFormatSymbols.getInstance().getDecimalSeparator() + "49");
     assertEquals(new Integer(124), i.asInteger());
-    i = new TafInteger("124.51");
+    i = new TafInteger("124" + DecimalFormatSymbols.getInstance().getDecimalSeparator() +"51");
     assertEquals(new Integer(125), i.asInteger());
     try {
       i = new TafInteger("abc");
