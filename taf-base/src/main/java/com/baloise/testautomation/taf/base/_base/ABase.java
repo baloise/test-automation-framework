@@ -22,7 +22,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-public abstract class ABase<T extends ElementFinder> implements IComponent {
+public abstract class ABase implements IComponent {
 
   public static Logger logger = LoggerFactory.getLogger("TAF");
 
