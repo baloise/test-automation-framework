@@ -19,6 +19,7 @@ import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.pa
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramWatch;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Properties;
@@ -31,16 +32,15 @@ import com.baloise.testautomation.taf.swing.base.db.H2DB;
 import com.baloise.testautomation.taf.swing.base.db.SwCommand;
 import com.baloise.testautomation.taf.swing.base.db.SwCommandProperties;
 import com.baloise.testautomation.taf.swing.base.db.SwError;
+import com.baloise.testautomation.taf.swing.server.utils.ChecksumHelper;
+import com.baloise.testautomation.taf.swing.server.utils.Logger;
 
 /**
  * 
  */
 public class SwStarter {
 
-  private static void error(String s, Exception e) {
-    System.out.println("[ERROR] " + s);
-    e.printStackTrace();
-  }
+  private static Logger logger = new Logger();
 
   private SwApplication swApplication = new SwApplication();
 
@@ -50,7 +50,7 @@ public class SwStarter {
   private String spyFileName = null;
 
   public SwStarter() {
-    info("will try to start instrumentation Version " + getTafVersion());
+    printTafServerVersionInformations();
 
     debugSystemProperties();
 
@@ -66,7 +66,7 @@ public class SwStarter {
     }
 
     if (swApplication.id != 0) {
-      info("Start polling");
+      logger.info("Start polling");
       KeyStrokeMap.reloadFromSystemSettings();
       Thread thread = new Thread() {
         public void run() {
@@ -76,7 +76,22 @@ public class SwStarter {
       thread.start();
     }
     else {
-      info("Application seems to NOT need instrumentation --> application will run without instrumentation");
+      logger.info("Application seems to NOT need instrumentation --> application will run without instrumentation");
+    }
+  }
+
+  private void printTafServerVersionInformations() {
+    logger.info("Will try to start instrumentation Version: " + getTafVersion());
+    File currentJavaJarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+    logger.info("Instrumentation JAR Path: " + currentJavaJarFile.getAbsolutePath());
+    try {
+      logger.info("Instrumentation JAR MD5: " + new ChecksumHelper().getChecksum(new FileInputStream(currentJavaJarFile),
+          "MD5"));
+      logger.info("Instrumentation JAR SHA-1: " + new ChecksumHelper().getChecksum(new FileInputStream(currentJavaJarFile),
+          "SHA-1"));
+    }
+    catch (Exception e) {
+      logger.error("Error trying to print Instrumentation information.", e);
     }
   }
 
@@ -88,7 +103,7 @@ public class SwStarter {
       tafVersion = tafProperties.getProperty("taf-swing-server.version");
     }
     catch (Exception e) {
-      error("Unable to retrieve TAF Version", e);
+      logger.error("Unable to retrieve TAF Version", e);
     }
     return tafVersion == null ? "[unknown]" : tafVersion;
   }
@@ -98,25 +113,25 @@ public class SwStarter {
    */
   private void debugSystemProperties() {
     Properties props = System.getProperties();
-    info("listing jvm properties");
+    logger.info("listing jvm properties");
     for (Object p : props.keySet()) {
-      info(p + " = " + System.getProperty((String)p));
+      logger.info(p + " = " + System.getProperty((String)p));
     }
   }
 
   private void execStartInstrumentation(SwCommand command) {
     TafProperties resultProps = new TafProperties();
     try {
-      info("starting instrumentation");
+      logger.info("starting instrumentation");
       TafProperties props = SwCommandProperties.getTafPropertiesForId(command.id);
       String c = props.getString(paramCommand);
       if (ISwApplication.Command.startinstrumentation.toString().equalsIgnoreCase(c)) {
         String classPathContains = props.getString(paramJavaClassPath);
         String sunJavaCommandContains = props.getString(paramSunJavaCommand);
-        info("looking for jvm java.class.path property containing '" + classPathContains + "'");
+        logger.info("looking for jvm java.class.path property containing '" + classPathContains + "'");
         boolean found = System.getProperty("java.class.path").toLowerCase().contains(classPathContains.toLowerCase());
         if (!found) {
-          info("looking for jvm sun.java.command property containing '" + sunJavaCommandContains + "'");
+          logger.info("looking for jvm sun.java.command property containing '" + sunJavaCommandContains + "'");
           found = System.getProperty("sun.java.command").toLowerCase().contains(sunJavaCommandContains.toLowerCase());
         }
         if (found) {
@@ -130,7 +145,7 @@ public class SwStarter {
           command.setToWorking();
           props = new TafProperties();
           resultProps.putObject(paramStatus, "started");
-          info("started with id = " + swApplication.id);
+          logger.info("started with id = " + swApplication.id);
           setCommandProperties(0, resultProps);
           command.setToDone();
         }
@@ -166,20 +181,20 @@ public class SwStarter {
       }
       catch (ArrayIndexOutOfBoundsException e) {
         if (needsInfo) {
-          info("no next command found --> try again at next poll intervall");
+          logger.info("no next command found --> try again at next poll intervall");
           needsInfo = false;
         }
       }
     }
     catch (SwError swe) {
-      info("getting commands failed --> init database to be ready when next attempt is made");
+      logger.info("getting commands failed --> init database to be ready when next attempt is made");
       try {
         H2DB.initConnection();
       }
       catch (Exception e) {}
     }
     catch (Exception e) {
-      error("unexpected exception", e);
+      logger.error("unexpected exception", e);
     }
     return null;
   }
@@ -187,10 +202,6 @@ public class SwStarter {
   // @Override
   public ISwApplication<?> getSwApplication() {
     return swApplication;
-  }
-
-  private void info(String s) {
-    System.out.println(s);
   }
 
   private boolean needsInfo = false;
@@ -206,8 +217,8 @@ public class SwStarter {
           time = System.currentTimeMillis();
         }
         if (needsInfo) {
-          info("polling " + System.currentTimeMillis());
-        } 
+          logger.info("polling " + System.currentTimeMillis());
+        }
         try {
           if (spy) {
             swApplication.storeLastHierarchy(spyFileName);
@@ -222,17 +233,17 @@ public class SwStarter {
           if (nextCommand != null) {
             nextCommand.setToWorking();
             TafProperties props = SwCommandProperties.getTafPropertiesForId(swApplication.id);
-            info("Executing command: " + nextCommand.id);
-            info("Incoming properties: " + props);
+            logger.info("Executing command: " + nextCommand.id);
+            logger.info("Incoming properties: " + props);
             props = swApplication.execCommand(props);
             setCommandProperties(swApplication.id, props);
             nextCommand.setToDone();
-            info("Outgoing properties: " + props);
-            info("Finished command: " + nextCommand.id);
+            logger.info("Outgoing properties: " + props);
+            logger.info("Finished command: " + nextCommand.id);
           }
         }
         catch (Exception e) {
-          error("error executing command", e);
+          logger.error("error executing command", e);
         }
       }
     }
@@ -249,17 +260,17 @@ public class SwStarter {
   private boolean tryToStartInstrumentation() {
     try {
       H2DB.initConnection();
-      info("H2DB-connection initialised");
+      logger.info("H2DB-connection initialised");
       SwCommand nextCommand = getNextCommand();
       if (nextCommand != null) {
         execStartInstrumentation(nextCommand);
         if (swApplication.id != 0) {
-          info("started! Id = " + swApplication.id);
+          logger.info("started! Id = " + swApplication.id);
           return true;
         }
       }
       else {
-        info("command " + nextCommand + " not executed, use startinstrumentation to start instrumentation");
+        logger.info("command " + nextCommand + " not executed, use startinstrumentation to start instrumentation");
       }
     }
     catch (Exception e) {
@@ -270,7 +281,7 @@ public class SwStarter {
         ps.close();
       }
       catch (Exception ex) {}
-      error("starting instrumentation was NOT successful", e);
+      logger.error("starting instrumentation was NOT successful", e);
     }
     return false;
   }
@@ -293,4 +304,5 @@ public class SwStarter {
       }
     }
   }
+
 }
