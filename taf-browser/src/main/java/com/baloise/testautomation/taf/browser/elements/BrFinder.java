@@ -88,7 +88,8 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     if (finder == null) {
       return findByDefault(root, annotation);
     } else {
-      return finder.findElement(annotation, root == null ? driver : root);
+      // DO NOT directly access driver - use getDriver() instead --> ajaxWaiting will be done correctly
+      return finder.findElement(annotation, root == null ? getDriver() : root);
     }
 //    fail("annotation not yet supported: " + annotation.annotationType());
 //    return null;
@@ -104,7 +105,8 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     }
     Logger.getGlobal().warning("could not find WebElementFinder for Annotation " + name
             + " trying to find ById(" + id + ") or ByName(" + id + ")");
-    SearchContext searchContext = root == null ? driver : root;
+    // DO NOT directly access driver - use getDriver() instead --> ajaxWaiting will be done correctly
+    SearchContext searchContext = root == null ? getDriver() : root;
     WebElement element = exists(By.id(id), searchContext);
     if (element == null) {
       element = searchContext.findElement(By.name(id));
