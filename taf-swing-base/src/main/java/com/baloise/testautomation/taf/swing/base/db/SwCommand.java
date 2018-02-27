@@ -13,7 +13,7 @@ public class SwCommand extends H2Table {
   }
 
   static void createTable() {
-    String sql = "CREATE TABLE COMMANDS (" + "id int, status int" + ");";
+    String sql = "CREATE TABLE IF NOT EXISTS COMMANDS (id int, status int);";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(sql);
@@ -43,10 +43,11 @@ public class SwCommand extends H2Table {
   }
 
   public static void deleteCommandsForId(int id) {
-    String deleteSQL = "DELETE FROM COMMANDS WHERE id = " + id;
+    String deleteSQL = "DELETE FROM COMMANDS WHERE id = ?";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(deleteSQL);
+      ps.setInt(1, id);
       ps.execute();
     }
     catch (SQLException e) {
@@ -63,7 +64,9 @@ public class SwCommand extends H2Table {
     PreparedStatement ps = null;
     try {
       ps = conn()
-          .prepareStatement("select status from commands where id = " + id + " and status = " + status.ordinal());
+          .prepareStatement("select status from commands where id = ? and status = ?");
+      ps.setInt(1, id);
+      ps.setInt(2, status.ordinal());
       rs = ps.executeQuery();
       // System.out.println(ps);
       if (rs != null) {
@@ -121,10 +124,12 @@ public class SwCommand extends H2Table {
   }
 
   public static void setAllToDone(int id) {
-    String updateSQL = "UPDATE COMMANDS SET status = " + Status.done.ordinal() + " WHERE id = " + id;
+    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = ?";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(updateSQL);
+      ps.setInt(1, Status.done.ordinal());
+      ps.setInt(2, id);
       ps.execute();
     }
     catch (SQLException e) {
@@ -150,7 +155,7 @@ public class SwCommand extends H2Table {
   }
 
   public void insert() {
-    String insertSQL = "INSERT INTO COMMANDS " + "(id, status) " + "VALUES (?, ?)";
+    String insertSQL = "INSERT INTO COMMANDS (id, status) VALUES (?, ?)";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(insertSQL);
@@ -179,11 +184,13 @@ public class SwCommand extends H2Table {
   }
 
   private void updateFromTo(Status from, Status to) {
-    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = " + id + " AND status = " + from.ordinal();
+    String updateSQL = "UPDATE COMMANDS SET status = ? WHERE id = ? AND status = ?";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(updateSQL);
       ps.setInt(1, to.ordinal());
+      ps.setInt(2, id);
+      ps.setInt(3, from.ordinal());
       ps.execute();
     }
     catch (SQLException e) {
