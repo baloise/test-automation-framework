@@ -20,7 +20,7 @@ public class SwInternalFrame extends AElement {
     find().resizeTo(width, height);
   }
 
-  public void moveToFrong() {
+  public void moveToFront() {
     find().moveToFront();
   }
   
