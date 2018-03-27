@@ -29,4 +29,9 @@ public class SwInternalFrameProxy extends ASwElementProxy implements ISwInternal
     executeCommand(Command.resizeto.toString(), props);
   }
 
+  @Override
+  public void moveToFront() {
+    executeCommand(Command.movetofront.toString());
+  }
+
 }

@@ -37,6 +37,10 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
         props.clear();
         props.putObject(paramTitle, getTitle());
         break;
+      case movetofront:
+        props.clear();
+        moveToFront();
+        break;
       case resizeto:
         resizeTo(props.getLong(paramWidth), props.getLong(paramHeight));
         props.clear();
@@ -81,6 +85,11 @@ public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Comp
   @Override
   public String getTitle() {
     return getFixture().target().getTitle();
+  }
+
+  @Override
+  public void moveToFront() {
+    getFixture().moveToFront();
   }
 
 }

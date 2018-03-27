@@ -16,7 +16,7 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwInternalFrame<R> extends ISwElement<R> {
 
   public enum Command {
-    click, gettitle, resizeto;
+    click, gettitle, resizeto, movetofront;
   }
 
   public final String type = "internalframe";
@@ -30,5 +30,7 @@ public interface ISwInternalFrame<R> extends ISwElement<R> {
   public String getTitle();
   
   public void resizeTo(Long width, Long height);
+  
+  public void moveToFront();
 
 }
