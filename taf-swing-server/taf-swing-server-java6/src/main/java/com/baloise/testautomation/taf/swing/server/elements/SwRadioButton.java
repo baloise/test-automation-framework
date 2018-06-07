@@ -32,6 +32,10 @@ public class SwRadioButton extends ASwElement implements ISwRadioButton<Componen
         props.clear();
         props.putObject(paramState, isChecked());
         break;
+      case isenabled:
+        props.clear();
+        props.putObject(paramIsEnabled, isEnabled());
+        break;
       default:
         throw new NotSupportedException("command not implemented: " + c);
     }
@@ -76,6 +80,11 @@ public class SwRadioButton extends ASwElement implements ISwRadioButton<Componen
   @Override
   public void uncheck() {
     getFixture().uncheck();
+  }
+  
+  @Override
+  public boolean isEnabled() {
+    return getFixture().isEnabled();
   }
 
 }

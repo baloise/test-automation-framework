@@ -86,4 +86,7 @@ public class SwRadioButton extends AInput implements IData<TafBoolean> {
     fill();
   }
 
+  public boolean isEnabled() {
+    return find().isEnabled();
+  }
 }

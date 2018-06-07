@@ -5,10 +5,12 @@ import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 public interface ISwRadioButton<R> extends ISwElement<R> {
 
   public enum Command {
-    check, uncheck, ischecked
+    check, uncheck, ischecked, isenabled
   }
 
   public static String paramState = "state";
+  
+  public static String paramIsEnabled = "isenabled";
 
   public final String type = "radiobutton";
 
@@ -17,5 +19,6 @@ public interface ISwRadioButton<R> extends ISwElement<R> {
   public boolean isChecked();
 
   public void uncheck();
-
+  
+  public boolean isEnabled();
 }

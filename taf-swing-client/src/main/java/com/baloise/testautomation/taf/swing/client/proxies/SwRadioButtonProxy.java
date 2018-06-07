@@ -26,4 +26,9 @@ public class SwRadioButtonProxy extends ASwElementProxy implements ISwRadioButto
     executeCommand(Command.uncheck.toString());
   }
 
+  @Override
+  public boolean isEnabled() {
+    TafProperties props = executeCommand(Command.isenabled.toString());
+    return props.getBoolean(paramIsEnabled);
+  }
 }
