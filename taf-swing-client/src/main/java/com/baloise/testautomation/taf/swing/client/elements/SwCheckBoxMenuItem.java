@@ -6,11 +6,11 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 
 public class SwCheckBoxMenuItem extends AElement{
 
-	@Override
-	public void click() {
+  @Override
+  public void click() {
     find().click();
-	}
-
+  }
+  
   public boolean isEnabled() {
     return find().isEnabled();
   }
