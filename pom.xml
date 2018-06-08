@@ -24,6 +24,14 @@
 	<dependencies>
 	</dependencies>
 
+	<distributionManagement>
+		<repository>
+			<id>bintray-baloise-mvn</id>
+			<name>baloise-mvn</name>
+			<url>https://api.bintray.com/maven/baloise/mvn/taf/;publish=1</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
