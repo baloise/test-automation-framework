@@ -26,6 +26,9 @@
 
 	<distributionManagement>
 		<repository>
+                        <snapshots>
+                            <enabled>false</enabled>
+                        </snapshots>
 			<id>bintray-baloise-mvn</id>
 			<name>baloise-mvn</name>
 			<url>https://api.bintray.com/maven/baloise/mvn/test-automation-framework/;publish=1</url>
