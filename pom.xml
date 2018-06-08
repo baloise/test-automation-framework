@@ -28,7 +28,7 @@
 		<repository>
 			<id>bintray-baloise-mvn</id>
 			<name>baloise-mvn</name>
-			<url>https://api.bintray.com/maven/baloise/mvn/taf/;publish=1</url>
+			<url>https://api.bintray.com/maven/baloise/mvn/test-automation-framework/;publish=1</url>
 		</repository>
 	</distributionManagement>
 
