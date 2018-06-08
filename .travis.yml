@@ -1,2 +1,2 @@
 language: java
-script: mvn  --settings .travis.settings.xml clean deploy
+script: mvn  --settings .travis.settings.xml clean deploy -X
