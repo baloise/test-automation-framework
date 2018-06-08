@@ -11,8 +11,8 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/baloise/test-automation-framework.git</connection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
     <licenses>
         <license>
@@ -38,11 +38,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
-                <configuration>
-                    <tagNameFormat>Release-@{project.version}</tagNameFormat>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<pushChanges>false</pushChanges>
-                </configuration>
+				<configuration>
+				    <tagNameFormat>Release-@{project.version}</tagNameFormat>
+				    <autoVersionSubmodules>true</autoVersionSubmodules>
+				    <pushChanges>false</pushChanges>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
