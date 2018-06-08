@@ -1,0 +1,9 @@
+<settings>
+  <servers>
+    <server>
+      <id>bintray-baloise-mvn</id>
+      <username>baopso</username>
+      <password>${env.DEPLOY_API_KEY}</password>
+    </server>
+  </servers>
+</settings>
