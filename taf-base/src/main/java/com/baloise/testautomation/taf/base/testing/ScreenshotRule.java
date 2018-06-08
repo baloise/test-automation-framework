@@ -71,11 +71,11 @@ public class ScreenshotRule extends TestWatcher {
       }
     }
     methodName = String.format("%1.100s", methodName);    
-    return System.currentTimeMillis() + "_" + methodName + ".jpg";
+    return System.currentTimeMillis() + "_" + methodName + ".png";
   }
 
   public void saveScreenShot() {
-    saveScreenShot("screenshot_" + System.currentTimeMillis() + ".jpg");
+    saveScreenShot("screenshot_" + System.currentTimeMillis() + ".png");
   }
 
   public void saveScreenShot(String filename) {
@@ -87,7 +87,7 @@ public class ScreenshotRule extends TestWatcher {
       Robot robot = new Robot();
       BufferedImage image = robot.createScreenCapture(rectangle);
       File f = new File(path + filename);
-      ImageIO.write(image, "jpg", f);
+      ImageIO.write(image, "png", f);
       logger.info("Done saveScreenShot() " + f);
     }
     catch (Exception ex) {
