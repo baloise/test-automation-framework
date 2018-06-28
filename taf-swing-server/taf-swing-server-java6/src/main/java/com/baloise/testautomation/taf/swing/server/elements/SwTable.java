@@ -103,10 +103,23 @@ public class SwTable extends ASwElement implements ISwTable<Component> {
       case getdata:
         props = getTableData();
         break;
+      case selectrows:
+        String[] rowsToSelectStrings = props.getString(paramSelectRows).split(",");
+        int[] rowsToSelect = new int[rowsToSelectStrings.length];
+        for (int i = 0; i < rowsToSelectStrings.length; i++) {
+          rowsToSelect[i] = (Integer.valueOf(rowsToSelectStrings[i]));
+        }
+        props.clear();
+        selectRows(rowsToSelect);
+        break;
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
     return props;
+  }
+
+  public void selectRows(int... rows) {
+    getFixture().selectRows(rows);
   }
 
   @Override

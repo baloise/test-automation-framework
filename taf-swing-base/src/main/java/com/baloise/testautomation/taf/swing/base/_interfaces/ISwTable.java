@@ -17,7 +17,8 @@ import com.baloise.testautomation.taf.common.interfaces.ITableData;
 public interface ISwTable<R> extends ISwElement<R> {
 
   public enum Command {
-    clickcell, clickheader, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists, getdata
+    clickcell, clickheader, doubleclickcell, rightclickcell, getcelltext, getcellindex, entervalue, cellexists, getdata,
+    selectrows
   }
 
   public final String paramText = "text";
@@ -31,6 +32,8 @@ public interface ISwTable<R> extends ISwElement<R> {
   public final String paramNrOfCols = "nrOfCols";
   
   public final String paramCellExists = "cellExists";
+
+  public final String paramSelectRows = "selectRows";
 
   public final String type = "table";
 
@@ -53,6 +56,8 @@ public interface ISwTable<R> extends ISwElement<R> {
   public Long getCellRow(String value);
 
   public void enterValue(int row, int column, String value);
+
+  public void selectRows(int... rows);
 
   public boolean cellExists(String text);
 

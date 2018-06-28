@@ -64,6 +64,10 @@ public class SwTable extends AElement {
     find().enterValue(row, col, value);
   }
 
+  public void selectRows(int... rows) {
+    find().selectRows(rows);
+  }
+
   public boolean cellExists(String value) {
     return find().cellExists(value);
   }

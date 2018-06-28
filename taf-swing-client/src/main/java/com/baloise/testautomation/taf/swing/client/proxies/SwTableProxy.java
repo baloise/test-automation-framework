@@ -95,6 +95,20 @@ public class SwTableProxy extends ASwElementProxy implements ISwTable<Long> {
   }
 
   @Override
+  public void selectRows(int... rows) {
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < rows.length; i++) {
+      builder.append(Integer.toString(rows[i]));
+      if (i < rows.length - 1) {
+        builder.append(',');
+      }
+    }
+    TafProperties props = new TafProperties();
+    props.putObject(paramSelectRows, builder.toString());
+    executeCommand(Command.selectrows.toString(), props);
+  }
+
+  @Override
   public boolean cellExists(String text) {
     TafProperties outputProps = executeCommand(Command.cellexists.toString(), getProperties(text));
     return outputProps.getBoolean(paramCellExists);
