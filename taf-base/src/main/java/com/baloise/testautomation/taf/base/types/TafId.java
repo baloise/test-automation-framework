@@ -34,6 +34,9 @@ public class TafId {
       if (parts.length > 1) {
         detail = parts[1].trim();
       }
+      if (parts.length > 2) {
+        vpId = parts[2].trim();
+      }
     }
   }
 

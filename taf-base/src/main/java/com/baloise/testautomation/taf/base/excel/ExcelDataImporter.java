@@ -153,7 +153,20 @@ public class ExcelDataImporter implements IDataImporter {
     if (t.isNotNull()) {
       detail = t.asString();
     }
-    return new TafId(mandant, id, detail);
+    String vpid = "";
+    Integer colIndex = columns.get(vpidColName.toLowerCase());
+    if (colIndex != null) {
+      t = get(row.getCell(colIndex));
+      if (t.isNotNull()) {
+        vpid = t.asString().trim();
+      }
+    }
+    if (vpid.isEmpty()) {
+      return new TafId(mandant, id, detail);
+    }
+    else {
+      return new TafId(mandant, id, detail, vpid);
+    }
   }
 
   @Override
