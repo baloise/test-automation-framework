@@ -46,6 +46,8 @@ public interface IType {
   public boolean isParameter();
 
   public boolean isSkip();
+  
+  public boolean isCustom();
 
   public void set(String s);
 
@@ -54,5 +56,7 @@ public interface IType {
   public void setIsSkip(boolean isEmpty);
 
   public void setParameterName(String parameterName);
+
+  public String getCustom();
 
 }

@@ -10,6 +10,7 @@ public abstract class TafType implements IType {
   public static final String TODAY = "{today}";
   public static final String SETMARKER = "{set}";
   public static final String GETMARKER = "{get}";
+  public static final String CUSTOM = "{custom}";
 
   public static String GetGetMarker() {
     return GETMARKER;
@@ -23,8 +24,24 @@ public abstract class TafType implements IType {
 
   protected boolean isEmpty = false;
   protected boolean isSkip = false;
+  protected boolean isCustom = false;
   protected Object value = null;
 
+  public static String getCustom(String value) {
+    if (value == null) {
+      return null;
+    }
+    if (value.trim().toLowerCase().startsWith(CUSTOM.toLowerCase())) {
+      return value.substring(CUSTOM.length(), value.length());
+    }
+    return null;
+  }
+  
+  @Override
+  public String getCustom() {
+    return TafType.getCustom(asString());
+  }
+  
   @Override
   public TafBoolean asTafBoolean() {
     TafBoolean result = TafBoolean.normalBoolean(asString());
@@ -106,6 +123,11 @@ public abstract class TafType implements IType {
   @Override
   public boolean isSkip() {
     return isSkip;
+  }
+
+  @Override
+  public boolean isCustom() {
+    return isCustom;
   }
 
   @Override

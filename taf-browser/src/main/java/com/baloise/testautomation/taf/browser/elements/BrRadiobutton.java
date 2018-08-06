@@ -19,6 +19,10 @@ public class BrRadiobutton extends ABrRadiobutton implements IData<TafBoolean> {
   @Override
   public void check() {
     if (checkValue != null) {
+      if (checkValue.isCustom()) {
+        checkCustom();
+        return;
+      }
       // TODO
     }
   }
@@ -26,6 +30,10 @@ public class BrRadiobutton extends ABrRadiobutton implements IData<TafBoolean> {
   @Override
   public void fill() {
     if (fillValue != null) {
+      if (fillValue.isCustom()) {
+        fillCustom();
+        return;
+      }
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
         if (fillValue.asBoolean()) {
           select();

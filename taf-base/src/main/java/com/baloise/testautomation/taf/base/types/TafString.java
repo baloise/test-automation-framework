@@ -27,6 +27,11 @@ public class TafString extends TafType implements IType {
     return new TafString(s);
   }
 
+  @Override
+  public boolean isCustom() {
+    return getCustom(asString()) != null;
+  }
+  
   public static TafString nullString() {
     return new TafString(null);
   }

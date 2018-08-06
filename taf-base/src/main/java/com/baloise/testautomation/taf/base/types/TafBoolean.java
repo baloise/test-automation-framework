@@ -44,7 +44,17 @@ public class TafBoolean extends TafType {
     if (value.trim().equalsIgnoreCase(FALSE)) {
       return normalBoolean(false);
     }
-    return nullBoolean();
+    return specialOrNullBoolean(getCustom(value));
+  }
+
+  public static TafBoolean specialOrNullBoolean(String value) {
+    if (value == null) {
+      return nullBoolean();
+    }
+    TafBoolean tafBoolean = new TafBoolean();
+    tafBoolean.value = value;
+    tafBoolean.isCustom = true;
+    return tafBoolean;
   }
 
   public static TafBoolean nullBoolean() {
@@ -87,9 +97,13 @@ public class TafBoolean extends TafType {
     }
   }
 
+  private boolean isNotBoolean() {
+    return isNull() | isEmpty() | isSkip() | isCustom();
+  }
+
   @Override
   public Boolean asBoolean() {
-    if (isNull() | isEmpty() | isSkip()) {
+    if (isNotBoolean()) {
       return null;
     }
     return (Boolean)value;
@@ -112,13 +126,7 @@ public class TafBoolean extends TafType {
 
   @Override
   public Integer asInteger() {
-    if (isNull()) {
-      return null;
-    }
-    if (isEmpty) {
-      return null;
-    }
-    if (isSkip()) {
+    if (isNotBoolean()) {
       return null;
     }
     if (((Boolean)value).booleanValue()) {
@@ -146,14 +154,27 @@ public class TafBoolean extends TafType {
   }
 
   @Override
+  public String getCustom() {
+    if (value == null) {
+      return null;
+    }
+    if (isCustom()) {
+      return value.toString();
+    }
+    return null;
+  }
+
+  @Override
   public String asString() {
-    if (isNull()) {
-      return null;
+    if (isCustom()) {
+      if (value != null) {
+        return value.toString();
+      }
+      else {
+        return null;
+      }
     }
-    if (isEmpty) {
-      return null;
-    }
-    if (isSkip()) {
+    if (isNotBoolean()) {
       return null;
     }
     if (((Boolean)value).booleanValue()) {
@@ -164,6 +185,10 @@ public class TafBoolean extends TafType {
 
   @Override
   public void basicSet(String s) {
+    TafBoolean tafBoolean = normalBoolean(s);
+    if (tafBoolean.isCustom) {
+      isCustom = true;
+    }
     value = normalBoolean(s).value;
   }
 
@@ -172,7 +197,7 @@ public class TafBoolean extends TafType {
   }
 
   public boolean isTrue() {
-    if (isNull() | isEmpty() | isSkip()) {
+    if (isNull() | isEmpty() | isSkip() | isCustom()) {
       return false;
     }
     return (Boolean)value;

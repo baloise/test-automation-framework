@@ -10,6 +10,7 @@ package com.baloise.testautomation.taf.browser.elements;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,8 +27,20 @@ public abstract class ABrInput extends AInput {
 
   private static final int MAX_RETRIES = 5;
 
+  public void checkCustom() {
+    Assert.fail("need to subclass and override 'checkCustom':" + getClass());
+  }
+  
+  public void fillCustom() {
+    Assert.fail("need to subclass and override 'fillCustom':" + getClass());
+  }
+  
   public void check() {
     if (checkValue != null) {
+      if (checkValue.isCustom()) {
+        checkCustom();
+        return;
+      }
       if (!checkValue.isSkip() && checkValue.isNotNull()) {
         String text = null;
         try {
@@ -73,6 +86,10 @@ public abstract class ABrInput extends AInput {
 
   public void fill() {
     if (fillValue != null) {
+      if (fillValue.isCustom()) {
+        fillCustom();
+        return;
+      }
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
         find().click();
         find().clear();
