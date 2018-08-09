@@ -26,6 +26,10 @@ public abstract class ATable extends ABase {
 
   @Override
   public void check() {
+    if (isCheckCustom()) {
+      checkCustom();
+      return;
+    }
     for (IDataRow data : checkDataRows) {
       setCheckFields(data);
       setCheckDataFields(data);
@@ -37,6 +41,10 @@ public abstract class ATable extends ABase {
 
   @Override
   public void fill() {
+    if (isFillCustom()) {
+      fillCustom();
+      return;
+    }
     for (IDataRow data : fillDataRows) {
       setFillFields(data);
       setFillDataFields(data);

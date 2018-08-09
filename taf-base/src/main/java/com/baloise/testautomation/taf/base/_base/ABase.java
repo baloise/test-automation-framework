@@ -46,7 +46,7 @@ public abstract class ABase implements IComponent {
   }
 
   @Override
-  public boolean isCustomCheck() {
+  public boolean isCheckCustom() {
     if (checkId == null) {
       return false;
     }
@@ -54,7 +54,7 @@ public abstract class ABase implements IComponent {
   }
   
   @Override
-  public boolean isCustomFill() {
+  public boolean isFillCustom() {
     if (fillId == null) {
       return false;
     }
@@ -144,7 +144,7 @@ public abstract class ABase implements IComponent {
 
   @Override
   public void check() {
-    if (isCustomCheck()) {
+    if (isCheckCustom()) {
       checkCustom();
       return;
     }
@@ -160,7 +160,7 @@ public abstract class ABase implements IComponent {
 
   @Override
   public void fill() {
-    if (isCustomFill()) {
+    if (isFillCustom()) {
       fillCustom();
       return;
     }
