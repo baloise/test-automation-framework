@@ -28,6 +28,8 @@ public interface ISwComboBox<R> extends ISwElement<R> {
     selectindexbymatchingdescription
   }
 
+  public static String separator = "|";
+  
   public static String paramItems = "items";
 
   public static String paramText = "text";

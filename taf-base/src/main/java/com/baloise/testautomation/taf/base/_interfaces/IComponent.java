@@ -8,6 +8,10 @@ public interface IComponent extends IFill, ICheck, IElement {
   public boolean canCheck();
 
   public boolean canFill();
+  
+  public boolean isCustomFill();
+  
+  public boolean isCustomCheck();
 
   @Override
   public void check();
