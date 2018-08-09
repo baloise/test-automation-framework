@@ -81,7 +81,7 @@ public class TafString extends TafType implements IType {
     }
     String custom = getCustom(s);
     if (custom != null) {
-      isCustom = true;
+      setIsCustom(true);
       s = custom;
     }
     value = s;

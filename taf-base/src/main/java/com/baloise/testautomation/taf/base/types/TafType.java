@@ -36,12 +36,12 @@ public abstract class TafType implements IType {
     }
     return null;
   }
-  
+
   @Override
   public String getCustom() {
     return TafType.getCustom(asString());
   }
-  
+
   @Override
   public TafBoolean asTafBoolean() {
     TafBoolean result = TafBoolean.normalBoolean(asString());
@@ -79,6 +79,7 @@ public abstract class TafType implements IType {
     TafString result = new TafString(asString());
     result.setIsEmpty(isEmpty());
     result.setIsSkip(isSkip());
+    result.setIsCustom(isCustom());
     return result;
   }
 
@@ -134,6 +135,7 @@ public abstract class TafType implements IType {
   public void set(String s) {
     setIsSkip(false);
     setIsEmpty(false);
+    setIsCustom(false);
     if (s == null) {
       value = s;
       return;
@@ -143,6 +145,11 @@ public abstract class TafType implements IType {
     }
     if (SKIP.equalsIgnoreCase(s)) {
       setIsSkip(true);
+    }
+    String custom = getCustom(s);
+    if (custom != null) {
+      setIsCustom(true);
+      s = custom;
     }
     basicSet(s);
   }
@@ -158,6 +165,11 @@ public abstract class TafType implements IType {
   }
 
   @Override
+  public void setIsCustom(boolean isCustom) {
+    this.isCustom = isCustom;
+  }
+
+  @Override
   public void setParameterName(String parameterName) {
     this.parameterName = parameterName;
   }
@@ -165,10 +177,11 @@ public abstract class TafType implements IType {
   @Override
   public String toString() {
     if (value != null) {
-      return ("IsNull = " + isNull() + ", IsEmpty = " + isEmpty() + ", IsSkip = " + isSkip() + ", Wert = " + value
-          .toString());
+      return ("IsNull = " + isNull() + ", IsEmpty = " + isEmpty() + ", IsSkip = " + isSkip() + ", IsCustom = "
+          + isCustom() + ", Wert = " + value.toString());
     }
-    return ("IsNull = " + isNull() + ", IsEmpty = " + isEmpty() + ", IsSkip = " + isSkip() + ", Wert = null");
+    return ("IsNull = " + isNull() + ", IsEmpty = " + isEmpty() + ", IsSkip = " + isSkip() + ", IsCustom = "
+        + isCustom() + ", Wert = null");
   }
 
 }

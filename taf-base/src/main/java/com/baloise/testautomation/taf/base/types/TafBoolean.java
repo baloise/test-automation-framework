@@ -53,7 +53,7 @@ public class TafBoolean extends TafType {
     }
     TafBoolean tafBoolean = new TafBoolean();
     tafBoolean.value = value;
-    tafBoolean.isCustom = true;
+    tafBoolean.setIsCustom(true);
     return tafBoolean;
   }
 
@@ -186,8 +186,8 @@ public class TafBoolean extends TafType {
   @Override
   public void basicSet(String s) {
     TafBoolean tafBoolean = normalBoolean(s);
-    if (tafBoolean.isCustom) {
-      isCustom = true;
+    if (tafBoolean.isCustom()) {
+      setIsCustom(true);
     }
     value = normalBoolean(s).value;
   }
