@@ -29,6 +29,9 @@ public class TafString extends TafType implements IType {
 
   @Override
   public boolean isCustom() {
+    if (isCustom) {
+      return true;
+    }
     return getCustom(asString()) != null;
   }
   
