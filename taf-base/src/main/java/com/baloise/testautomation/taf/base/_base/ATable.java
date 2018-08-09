@@ -50,6 +50,9 @@ public abstract class ATable extends ABase {
   public void setCheck(TafString id) {
     checkId = id;
     checkDataRows.clear();
+    if (id.isCustom()) {
+      return;
+    }
     if (!id.isSkip()) {
       checkDataRows.addAll(loadCheck(checkId.asString()));
       assertTrue("no data found: '" + id + "' --> " + this.getClass(), checkDataRows.size() > 0);
@@ -60,6 +63,9 @@ public abstract class ATable extends ABase {
   public void setFill(TafString id) {
     fillId = id;
     fillDataRows.clear();
+    if (id.isCustom()) {
+      return;
+    }
     if (!id.isSkip()) {
       fillDataRows.addAll(loadFill(fillId.asString()));
       assertTrue("no data found: '" + id + "' --> " + this.getClass(), fillDataRows.size() > 0);
