@@ -519,6 +519,9 @@ public abstract class ABase implements IComponent {
     if (id.isSkip()) {
       return;
     }
+    if (id.isCustom()) {
+      return;
+    }
     Vector<IDataRow> dataRows = new Vector<>(loadCheck(checkId.asString()));
     assertFalse("too much data found (" + TafId.GetGlobalMandant() + "): '" + id + "' --> " + this.getClass(),
         dataRows.size() > 1);
@@ -640,6 +643,9 @@ public abstract class ABase implements IComponent {
   public void setFill(TafString id) {
     fillId = id;
     if (id.isSkip()) {
+      return;
+    }
+    if (id.isCustom()) {
       return;
     }
     Vector<IDataRow> dataRows = new Vector<>(loadFill(fillId.asString()));
