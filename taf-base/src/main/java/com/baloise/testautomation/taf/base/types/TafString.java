@@ -76,6 +76,11 @@ public class TafString extends TafType implements IType {
       s = null;
       setIsSkip(true);
     }
+    String custom = getCustom(s);
+    if (custom != null) {
+      isCustom = true;
+      s = custom;
+    }
     value = s;
   }
 
