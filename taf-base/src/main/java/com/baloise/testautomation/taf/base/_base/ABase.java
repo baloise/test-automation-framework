@@ -8,6 +8,8 @@ import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.base.types.TafType;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
+
+import org.junit.Assert;
 import org.junit.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,22 @@ public abstract class ABase implements IComponent {
     initFields();
   }
 
+  @Override
+  public boolean isCustomCheck() {
+    if (checkId == null) {
+      return false;
+    }
+    return checkId.isCustom();
+  }
+  
+  @Override
+  public boolean isCustomFill() {
+    if (fillId == null) {
+      return false;
+    }
+    return fillId.isCustom();
+  }
+  
   public void basicCheck() {
     List<Field> fields = getCheckFields();
     for (Field f : fields) {
@@ -126,7 +144,15 @@ public abstract class ABase implements IComponent {
 
   @Override
   public void check() {
+    if (isCustomCheck()) {
+      checkCustom();
+      return;
+    }
     basicCheck();
+  }
+
+  public void checkCustom() {
+    Assert.fail("Must override method 'checkCustom()'");
   }
 
   @Override
@@ -134,7 +160,15 @@ public abstract class ABase implements IComponent {
 
   @Override
   public void fill() {
+    if (isCustomFill()) {
+      fillCustom();
+      return;
+    }
     basicFill();
+  }
+
+  public void fillCustom() {
+    Assert.fail("Must override method 'fillCustom()'");
   }
 
   private List<Field> getAllFields() {
