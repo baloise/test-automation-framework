@@ -31,6 +31,10 @@ public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> 
   @Override
   public void check() {
     if (checkValue != null) {
+      if (checkValue.isCustom()) {
+        checkCustom();
+        return;
+      }
       if (!checkValue.isSkip() && checkValue.isNotNull()) {
         WebElement we = find();
         Select s = new Select(we);
@@ -43,6 +47,10 @@ public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> 
   @Override
   public void fill() {
     if (fillValue != null) {
+      if (fillValue.isCustom()) {
+        fillCustom();
+        return;
+      }
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
         WebElement we = find();
         Select s = new Select(we);

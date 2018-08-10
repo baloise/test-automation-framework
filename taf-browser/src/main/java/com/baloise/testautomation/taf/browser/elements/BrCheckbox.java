@@ -26,6 +26,10 @@ public class BrCheckbox extends ABrCheckbox implements IData<TafBoolean> {
   @Override
   public void fill() {
     if (fillValue != null) {
+      if (fillValue.isCustom()) {
+        fillCustom();
+        return;
+      }
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
         select(fillValue.asBoolean());
       }
