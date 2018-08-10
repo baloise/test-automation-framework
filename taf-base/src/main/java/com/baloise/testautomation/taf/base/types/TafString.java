@@ -27,14 +27,6 @@ public class TafString extends TafType implements IType {
     return new TafString(s);
   }
 
-  @Override
-  public boolean isCustom() {
-    if (isCustom) {
-      return true;
-    }
-    return getCustom(asString()) != null;
-  }
-  
   public static TafString nullString() {
     return new TafString(null);
   }
@@ -95,7 +87,7 @@ public class TafString extends TafType implements IType {
   @Override
   public Boolean asBoolean() {
     TafBoolean b = TafBoolean.normalBoolean(asString());
-    if (b.isEmpty() || b.isSkip() || b.isNull()) {
+    if (b.isEmpty() || b.isSkip() || b.isNull() || isCustom()) {
       return null;
     }
     if (b.isNotNull()) {
@@ -107,7 +99,7 @@ public class TafString extends TafType implements IType {
   @Override
   public Date asDate() {
     TafDate d = TafDate.normalDate(asString());
-    if (d.isEmpty() || d.isSkip() || d.isNull()) {
+    if (d.isEmpty() || d.isSkip() || d.isNull() ||  isCustom()) {
       return null;
     }
     if (d.isNotNull()) {
@@ -145,13 +137,19 @@ public class TafString extends TafType implements IType {
 
   @Override
   public String asString() {
-    return (String)value;
+    if (value == null) {
+      return null;
+    }
+    String prefix = "";
+    if (isCustom()) {
+      prefix = CUSTOM;
+    }
+    return prefix + (String)value;
   }
 
   @Override
   public void basicSet(String s) {
     value = normalString(s).value;
-    isEmpty = "".equals(s);
   }
 
   public void setValue(String s) {

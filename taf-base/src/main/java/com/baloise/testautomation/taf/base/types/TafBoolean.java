@@ -44,10 +44,10 @@ public class TafBoolean extends TafType {
     if (value.trim().equalsIgnoreCase(FALSE)) {
       return normalBoolean(false);
     }
-    return specialOrNullBoolean(getCustom(value));
+    return customOrNullBoolean(getCustom(value));
   }
 
-  public static TafBoolean specialOrNullBoolean(String value) {
+  public static TafBoolean customOrNullBoolean(String value) {
     if (value == null) {
       return nullBoolean();
     }
@@ -168,10 +168,10 @@ public class TafBoolean extends TafType {
   public String asString() {
     if (isCustom()) {
       if (value != null) {
-        return value.toString();
+        return CUSTOM + value.toString();
       }
       else {
-        return null;
+        return CUSTOM;
       }
     }
     if (isNotBoolean()) {
@@ -185,10 +185,6 @@ public class TafBoolean extends TafType {
 
   @Override
   public void basicSet(String s) {
-    TafBoolean tafBoolean = normalBoolean(s);
-    if (tafBoolean.isCustom()) {
-      setIsCustom(true);
-    }
     value = normalBoolean(s).value;
   }
 

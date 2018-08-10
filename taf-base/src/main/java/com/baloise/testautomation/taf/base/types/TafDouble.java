@@ -44,9 +44,19 @@ public class TafDouble extends TafType implements IType {
       return normalDouble(d);
     }
     catch (Exception e) {}
-    return nullDouble();
+    return customOrNullDouble(value);
   }
 
+  public static TafDouble customOrNullDouble(String d) {
+    String custom = getCustom(d);
+    if (custom != null) {
+      TafDouble td = new TafDouble();
+      td.setIsCustom(true);
+      td.value = custom;
+      return td;
+    }
+    return nullDouble();
+  }
   public static TafDouble nullDouble() {
     return new TafDouble((Double)null);
   }
@@ -129,6 +139,9 @@ public class TafDouble extends TafType implements IType {
 
   @Override
   public Double asDouble() {
+    if (isCustom()) {
+      return null;
+    }
     if (value != null) {
       return (Double)value;
     }
@@ -137,6 +150,9 @@ public class TafDouble extends TafType implements IType {
 
   @Override
   public Integer asInteger() {
+    if (isCustom()) {
+      return null;
+    }
     if (value != null) {
       return ((Double)value).intValue();
     }
@@ -145,6 +161,9 @@ public class TafDouble extends TafType implements IType {
 
   @Override
   public Long asLong() {
+    if (isCustom()) {
+      return null;
+    }
     if (value != null) {
       return ((Double)value).longValue();
     }
@@ -153,6 +172,9 @@ public class TafDouble extends TafType implements IType {
 
   @Override
   public String asString() {
+    if (isCustom()) {
+      return CUSTOM + value;
+    }
     if (isEmpty()) {
       return "";
     }
@@ -160,6 +182,9 @@ public class TafDouble extends TafType implements IType {
   }
 
   public String asString(String decimalFormat) {
+    if (isCustom()) {
+      return null;
+    }
     if (value != null) {
       DecimalFormat resultFormat = new DecimalFormat(decimalFormat);
       String formattedString = resultFormat.format(value);

@@ -13,11 +13,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 import org.junit.Test;
 
+import com.baloise.testautomation.taf.base.types.TafBoolean;
 import com.baloise.testautomation.taf.base.types.TafComboString;
+import com.baloise.testautomation.taf.base.types.TafDouble;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.base.types.TafString;
 
@@ -63,7 +64,13 @@ public class TestTafTypes {
       fail();
     }
     catch (Throwable e) {}
-
+    i = TafInteger.normalInteger("{custom}{test}");
+    assertEquals(null, i.asInteger());
+    assertEquals(null, i.asLong());
+    assertEquals("{custom}{test}", i.asString());
+    assertEquals(true, i.isCustom());
+    assertEquals(true, i.asTafInteger().isCustom());
+    assertEquals("{custom}{test}", i.asTafString().asString());
   }
 
   @Test
@@ -86,5 +93,43 @@ public class TestTafTypes {
     s = new TafString("{sKip}");
     assertTrue(s.isSkip());
     assertEquals(null, s.asString());
+    s = TafString.normalString("{custom}{test}");
+    assertEquals("{test}", s.getCustom());
+    assertEquals("{custom}{test}", s.asString());
+    assertEquals("{test}", s.asTafString().getCustom());
+    s = TafString.normalString("{custom}");
+    assertEquals("", s.getCustom());
+    assertEquals("{custom}", s.asString());
+  }
+  
+  @Test
+  public void tafDouble() {
+    TafDouble d = TafDouble.normalDouble(2.2);
+    assertEquals(new Double(2.2), d.asDouble());
+    assertEquals(new Integer(2), d.asInteger());
+    d = TafDouble.normalDouble(2.6);
+    assertEquals(new Integer(2), d.asInteger());
+    d = TafDouble.normalDouble("{custom}{test}");
+    assertEquals("{custom}{test}", d.asString());
+    assertEquals("{test}", d.getCustom());
+    assertEquals("{custom}{test}", d.asTafString().asString());
+  }
+  
+  @Test
+  public void tafBoolean() {
+    TafBoolean b = TafBoolean.normalBoolean("{true}");
+    assertEquals(true, b.asBoolean());
+    assertEquals(true, b.asPrimitiveBoolean());
+    b = TafBoolean.normalBoolean("{false}");
+    assertEquals(false, b.asBoolean());
+    assertEquals(false, b.asPrimitiveBoolean());
+    b = TafBoolean.normalBoolean("{null}");
+    assertEquals(null, b.asBoolean());
+    b = TafBoolean.normalBoolean("{custom}{test}");
+    assertEquals(true, b.isCustom());
+    assertEquals(null, b.asBoolean());
+    assertEquals("{custom}{test}", b.asString());
+    assertEquals("{test}", b.getCustom());
+    assertEquals("{test}", b.asTafString().getCustom());
   }
 }

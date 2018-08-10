@@ -46,6 +46,17 @@ public class TafInteger extends TafType implements IType {
       return normalInteger(i);
     }
     catch (Exception e) {}
+    return customOrNullInteger(value);
+  }
+
+  private static TafInteger customOrNullInteger(String value) {
+    String custom = getCustom(value);
+    if (custom != null) {
+      TafInteger ti = new TafInteger();
+      ti.setIsCustom(true);
+      ti.value = custom;
+      return ti;
+    }
     return nullInteger();
   }
 
@@ -137,6 +148,9 @@ public class TafInteger extends TafType implements IType {
 
   @Override
   public Integer asInteger() {
+    if (isCustom()) {
+      return null;
+    }
     if (!isNull()) {
       return (Integer)value;
     }
@@ -162,6 +176,9 @@ public class TafInteger extends TafType implements IType {
       return null;
     }
     if (!isNull()) {
+      if (isCustom()) {
+        return CUSTOM + value;
+      }
       return ((Integer)value).toString();
     }
     return null;

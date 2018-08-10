@@ -45,9 +45,19 @@ public class TafDate extends TafType implements IType {
       return normalDate(d);
     }
     catch (Exception e) {}
-    return nullDate();
+    return customOrNullDate(date);
   }
 
+  public static TafDate customOrNullDate(String date) {
+    String custom = getCustom(date);
+    if (custom != null) {
+      TafDate d = new TafDate();
+      d.setIsCustom(true);
+      d.value = date;
+      return d;
+    }
+    return nullDate();
+  }
   public static TafDate nullDate() {
     return new TafDate((Date)null);
   }
@@ -85,6 +95,9 @@ public class TafDate extends TafType implements IType {
 
   @Override
   public Date asDate() {
+    if (isCustom()) {
+      return null;
+    }
     return (Date)value;
   }
 
@@ -113,6 +126,9 @@ public class TafDate extends TafType implements IType {
     }
     if (isSkip()) {
       return null;
+    }
+    if (isCustom()) {
+      return CUSTOM + value;
     }
     SimpleDateFormat df = new SimpleDateFormat(dateFormat);
     return df.format(value);

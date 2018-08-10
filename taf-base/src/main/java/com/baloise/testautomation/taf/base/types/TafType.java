@@ -42,48 +42,48 @@ public abstract class TafType implements IType {
     return TafType.getCustom(asString());
   }
 
+  private void setFlags(IType result) {
+    result.setIsEmpty(isEmpty());
+    result.setIsSkip(isSkip());
+    result.setIsCustom(isCustom());
+  }
+  
   @Override
   public TafBoolean asTafBoolean() {
     TafBoolean result = TafBoolean.normalBoolean(asString());
-    result.setIsEmpty(isEmpty());
-    result.setIsSkip(isSkip());
+    setFlags(result);
     return result;
   }
 
   @Override
   public TafDate asTafDate() {
     TafDate result = TafDate.normalDate(asString());
-    result.setIsEmpty(isEmpty());
-    result.setIsSkip(isSkip());
+    setFlags(result);
     return result;
   }
 
   @Override
   public TafDouble asTafDouble() {
     TafDouble result = TafDouble.normalDouble(asString());
-    result.setIsEmpty(isEmpty());
-    result.setIsSkip(isSkip());
+    setFlags(result);
     return result;
   }
 
   @Override
   public TafInteger asTafInteger() {
     TafInteger result = TafInteger.normalInteger(asString());
-    result.setIsEmpty(isEmpty());
-    result.setIsSkip(isSkip());
+    setFlags(result);
     return result;
   }
 
   @Override
   public TafString asTafString() {
     TafString result = new TafString(asString());
-    result.setIsEmpty(isEmpty());
-    result.setIsSkip(isSkip());
-    result.setIsCustom(isCustom());
+    setFlags(result);
     return result;
   }
 
-  public abstract void basicSet(String s);
+  protected abstract void basicSet(String s);
 
   @Override
   public String getParameterName() {
@@ -149,7 +149,8 @@ public abstract class TafType implements IType {
     String custom = getCustom(s);
     if (custom != null) {
       setIsCustom(true);
-      s = custom;
+      value = custom;
+      return;
     }
     basicSet(s);
   }
