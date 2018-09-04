@@ -3,6 +3,10 @@ pipeline {
         label 'common'
     }
 
+    parameters {
+        booleanParam(defaultValue: false, description: 'Flag whether a release should be created.', name: 'IS_RELEASE')
+    }
+
     tools {
         jdk 'JDK_1_8'
     }
@@ -31,7 +35,13 @@ pipeline {
 
         stage("Maven") {
             steps {
-                mavenbuild()
+                script {
+                    if (params.IS_RELEASE) {
+                        release()
+                    } else {
+                        mavenbuild()
+                    }
+                }
             }
         }
     }
