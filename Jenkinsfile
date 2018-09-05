@@ -22,7 +22,7 @@ pipeline {
         // at least once a day
         cron('H 12 * * *')
         // every sixty minutes
-        pollSCM('H/60 * * * *')
+        pollSCM('H/5 * * * *')
     }
 
     stages {
