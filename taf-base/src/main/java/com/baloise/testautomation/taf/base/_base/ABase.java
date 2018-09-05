@@ -52,7 +52,7 @@ public abstract class ABase implements IComponent {
     }
     return checkId.isCustom();
   }
-  
+
   @Override
   public boolean isFillCustom() {
     if (fillId == null) {
@@ -60,7 +60,7 @@ public abstract class ABase implements IComponent {
     }
     return fillId.isCustom();
   }
-  
+
   public void basicCheck() {
     List<Field> fields = getCheckFields();
     for (Field f : fields) {
@@ -396,6 +396,11 @@ public abstract class ABase implements IComponent {
             o = f.getType().newInstance();
             f.set(this, o);
           }
+          if (o instanceof ABase) {
+            if (!f.getName().equalsIgnoreCase("parent")) {
+              ((ABase)o).setComponent(this);
+            }
+          }
         }
         catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
           logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
@@ -570,6 +575,18 @@ public abstract class ABase implements IComponent {
   @Override
   public void setComponent(IComponent parent) {
     this.parent = parent;
+  }
+
+  public IComponent findFirstParent(Class<? extends IComponent> clazz) {
+    if (parent == null) {
+      return null;
+    }
+    if (clazz.isInstance(parent)) {
+      return parent;
+    }
+    else {
+      return parent.findFirstParent(clazz);
+    }
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})

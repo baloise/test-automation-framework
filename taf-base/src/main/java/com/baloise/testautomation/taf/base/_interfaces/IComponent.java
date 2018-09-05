@@ -9,15 +9,13 @@ public interface IComponent extends IFill, ICheck, IElement {
 
   public boolean canFill();
   
-  public boolean isFillCustom();
-  
-  public boolean isCheckCustom();
-
   @Override
   public void check();
-
+  
   @Override
   public void fill();
+
+  public IComponent findFirstParent(Class<? extends IComponent> clazz);
 
   public IFinder<?> getBrowserFinder();
 
@@ -27,6 +25,10 @@ public interface IComponent extends IFill, ICheck, IElement {
 
   public IFinder<?> getSwingFinder();
 
+  public boolean isCheckCustom();
+
+  public boolean isFillCustom();
+
   public void setCheck(String id);
 
   public void setCheck(TafString id);
@@ -34,5 +36,5 @@ public interface IComponent extends IFill, ICheck, IElement {
   public void setFill(String id);
 
   public void setFill(TafString id);
-
+  
 }
