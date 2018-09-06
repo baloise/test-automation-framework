@@ -4,7 +4,7 @@ pipeline {
     }
 
     parameters {
-        booleanParam(defaultValue: false, description: 'Flag whether a release should be created.', name: 'IS_RELEASE')
+        booleanParam(defaultValue: false, description: 'Flag whether a release should be created.', name: 'CREATE_RELEASE')
     }
 
     tools {
@@ -36,7 +36,7 @@ pipeline {
         stage("Maven") {
             steps {
                 script {
-                    if (params.IS_RELEASE) {
+                    if (params.CREATE_RELEASE) {
                         release()
                     } else {
                         mavenbuild()
