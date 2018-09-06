@@ -20,7 +20,7 @@ pipeline {
 
     triggers {
         // at least once a day
-        cron('H 12 * * *')
+        cron('H H(0-7) * * *')
         // every sixty minutes
         pollSCM('H/5 * * * *')
     }
@@ -39,9 +39,21 @@ pipeline {
                     if (params.CREATE_RELEASE) {
                         release()
                     } else {
-                        mavenbuild()
+                        mavenbuild mavenArgs: "dependency:copy-dependencies"
                     }
                 }
+            }
+        }
+        
+        stage("Nexus Lifecycle") {
+            when {
+                expression { return !params.CREATE_RELEASE }
+            }
+
+            steps {
+                nexusPolicyEvaluation iqApplication: 'com.baloise.testing.framework.taf', 
+                                  iqScanPatterns: [[scanPattern: '**/target/dependency/*.jar']], 
+                                  iqStage: 'build'
             }
         }
     }
