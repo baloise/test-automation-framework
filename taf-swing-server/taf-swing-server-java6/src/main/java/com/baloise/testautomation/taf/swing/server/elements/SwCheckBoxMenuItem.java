@@ -37,7 +37,7 @@ public class SwCheckBoxMenuItem extends ASwElement implements ISwCheckBoxMenuIte
     }
     return props;
 	}
-
+	/** not required */
 	public void clear() {}
 
   public void click() {
