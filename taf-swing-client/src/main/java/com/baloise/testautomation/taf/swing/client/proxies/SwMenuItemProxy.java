@@ -32,4 +32,14 @@ public class SwMenuItemProxy extends ASwElementProxy implements ISwMenuItem<Long
     return props.getBoolean(paramIsEnabled);
   }
 
+  public String[] getSubElements() {
+    TafProperties props = executeCommand(Command.getsubelements.toString());
+    String elementsAsString = props.getString(paramGetSubElements);
+    String[] elements = getSplitElements(elementsAsString);
+    return elements;
+  }
+  
+  protected String[] getSplitElements(String elementsAsString) {
+    return elementsAsString.split("\\" + separator, -1);
+  }
 }

@@ -28,4 +28,8 @@ public class SwMenuItem extends AElement {
   public ISwMenuItem<?> find() {
     return (ISwMenuItem<?>)swFind(ISwMenuItem.type);
   }
+  
+  public String[] getSubElements() {
+    return find().getSubElements();
+  }
 }

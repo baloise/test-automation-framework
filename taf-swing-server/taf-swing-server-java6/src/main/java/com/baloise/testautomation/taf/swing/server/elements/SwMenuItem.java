@@ -11,8 +11,10 @@ package com.baloise.testautomation.taf.swing.server.elements;
 import java.awt.Component;
 
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import org.assertj.swing.fixture.JMenuItemFixture;
+import org.assertj.swing.fixture.JPopupMenuFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
@@ -42,6 +44,11 @@ public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
         props.clear();
         props.putObject(paramIsEnabled, isEnabled());
         break;
+      case getsubelements:
+        props.clear();
+        String[] allMenuElements = getSubElements();
+        String elements = serializeElements(allMenuElements);
+        props.putObject(paramGetSubElements, elements);
       default:
         throw new IllegalArgumentException("command not implemented: " + c);
     }
@@ -73,5 +80,18 @@ public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
   public String getType() {
     return ISwMenuItem.type;
   }
+  
+  public String[] getSubElements() {
+    JPopupMenuFixture jPopupMenuFixture = new JPopupMenuFixture(getRobot(), (JPopupMenu) component);
+    return jPopupMenuFixture.menuLabels();
+  }
 
+  protected String serializeElements(String[] allMenuElements) {
+    String items = "";
+    for (String menuElement : allMenuElements) {
+      items += menuElement;
+      items += separator;
+    }
+    return items.substring(0, items.length() - separator.length());
+  }
 }
