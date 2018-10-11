@@ -7,7 +7,6 @@
 	</parent>
 
 	<artifactId>taf-robot</artifactId>
-	<!-- <version>0.0.3-SNAPSHOT</version> -->
 
 	<name>Test Automation Framework - Robot</name>
 
@@ -32,7 +31,7 @@
 		<dependency>
 			<groupId>com.sikulix</groupId>
 			<artifactId>sikulixapi</artifactId>
-			<version>1.1.0</version>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.baloise.testing.framework</groupId>
