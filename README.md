@@ -4,25 +4,27 @@
 
 ## circle ci [![CircleCI Status](https://circleci.com/gh/baloise/test-automation-framework.svg?style=svg)](https://circleci.com/gh/baloise/test-automation-framework)
 
-TAF is a test automation framework based on JUnit and Selenium. 
-
+# TAF is a test automation framework based on JUnit and Selenium. 
+```
 for...
  Java
     Swing
     HTML
+```
 
-improve efficiency in test automation
-minimize manual intervention 
-maximize robustness
-reusability of code
+## goals
+- improve efficiency in test automation
+- minimize manual intervention 
+- maximize robustness
+- reusability of code
 
+## benefits
+- Tests can be executed with multiple data sets.
+- Multiple scenarios can be tested quickly by varying the data, thereby reducing the number of scripts needed.
+- Hard-coding data can be avoided so any changes to the test scripts do not affect the data being used and vice versa.
+- You’ll save time by executing more tests faster.
 
-■Tests can be executed with multiple data sets.
-■Multiple scenarios can be tested quickly by varying the data, thereby reducing the number of scripts needed.
-■Hard-coding data can be avoided so any changes to the test scripts do not affect the data being used and vice versa.
-■You’ll save time by executing more tests faster.
-
-
+## key ideas
 separation of test data from the code - use same code or script for different combinations of test input data
 Tests can be executed with multiple data sets. 
 store test data in external data sources such as Excel etc. (do we cover additional sources yet?)
@@ -51,9 +53,9 @@ id
 labels
 xpath
 
-
+## build upon
 Selenium
-before after
+JUnit before after
 
 interface to Jira -> reporting of test case status
 
