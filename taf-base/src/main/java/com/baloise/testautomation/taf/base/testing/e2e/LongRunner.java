@@ -356,13 +356,6 @@ public class LongRunner extends OrderedRunner {
       }
     }
 
-    private static Double parseDouble(String d) {
-      if (d.trim().isEmpty()) {
-        return null;
-      }
-      return Double.parseDouble(d);
-    }
-
     public static void print(FileWriter fileWriter, Collection<LongRunnerMethodInfo> methods) throws IOException {
       CSVPrinter csvPrinter = new CSVPrinter(fileWriter, getCSVFormat());
       csvPrinter.printRecord(getHeaders());

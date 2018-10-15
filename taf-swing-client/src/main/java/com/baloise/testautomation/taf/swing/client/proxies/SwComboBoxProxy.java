@@ -8,7 +8,6 @@
  */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 
 /**
- * 
+ *
  */
 public class SwComboBoxProxy extends ASwElementProxy implements ISwComboBox<Long> {
 

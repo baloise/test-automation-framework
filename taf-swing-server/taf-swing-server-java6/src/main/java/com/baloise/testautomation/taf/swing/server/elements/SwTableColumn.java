@@ -18,15 +18,12 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTableColumn;
 
 /**
- * 
+ *
  */
 public class SwTableColumn extends ASwElement implements ISwTableColumn<Component> {
 
-  private int column;
-
   public SwTableColumn(long tid, int column, JTable c) {
     super(tid, c);
-    this.column = column;
   }
 
   @Override

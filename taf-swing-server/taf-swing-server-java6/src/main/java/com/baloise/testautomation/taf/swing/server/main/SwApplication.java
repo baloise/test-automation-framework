@@ -8,7 +8,6 @@
  */
 package com.baloise.testautomation.taf.swing.server.main;
 
-import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedString;
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
 
 import java.awt.Component;
@@ -30,7 +29,6 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -82,7 +80,7 @@ import com.baloise.testautomation.taf.swing.server.elements.SwUnsupportedElement
 import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
 /**
- * 
+ *
  */
 public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
@@ -237,32 +235,8 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     }
   }
 
-  // private int level = 0;
-
-  private String asEscaped(String s) {
-    return asEscapedString(s);
-  }
-
   private String asEscapedXml(String s) {
     return asEscapedXmlString(s);
-  }
-
-  private void debugRoot() {
-    if (root instanceof JFrame) {
-      // FrameFixture ff = new FrameFixture(robot, (JFrame)root);
-      // System.out.println(ff);
-    }
-
-    // FrameFixture ff = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
-    // @Override
-    // protected boolean isMatching(JFrame frame) {
-    // if (frame.getTitle() != null) {
-    // return "Login".equals(frame.getTitle());
-    // }
-    // return false;
-    // }
-    // }).using(robot);
-    // System.out.println("FrameFixtrure: " + ff.toString());
   }
 
   private TafProperties execApplicationCommand(TafProperties props) {
@@ -640,10 +614,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   private String toFullXML() {
     setRoot();
     return allComponentsToXML(root);
-  }
-
-  private String toMappedXML() {
-    return toFullXML();
   }
 
   @Override

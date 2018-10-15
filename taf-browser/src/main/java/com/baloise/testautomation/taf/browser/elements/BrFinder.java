@@ -15,14 +15,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.*;
 import org.openqa.selenium.*;
 
 
 public class BrFinder implements IBrowserFinder<WebElement> {
 
-  private Map<Class<? extends Annotation>, WebElementFinder> supportedBys;
   protected WebDriver driver = null;
 
   protected int timeoutInSeconds = 10;

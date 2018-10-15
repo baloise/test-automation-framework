@@ -36,7 +36,7 @@ import com.baloise.testautomation.taf.swing.server.utils.ChecksumHelper;
 import com.baloise.testautomation.taf.swing.server.utils.Logger;
 
 /**
- * 
+ *
  */
 public class SwStarter {
 
@@ -109,7 +109,7 @@ public class SwStarter {
   }
 
   /**
-   * 
+   *
    */
   private void debugSystemProperties() {
     Properties props = System.getProperties();
@@ -165,14 +165,6 @@ public class SwStarter {
     return "c:/db/test";
   }
 
-  private Long getLong(String s) {
-    try {
-      return Long.parseLong(s);
-    }
-    catch (Exception e) {}
-    return null;
-  }
-
   private SwCommand getNextCommand() {
     try {
       List<SwCommand> commands = SwCommand.getReadyCommandsForId(swApplication.id);
@@ -206,7 +198,7 @@ public class SwStarter {
 
   private boolean needsInfo = false;
   private long pollingInfoIntervall = 10; // seconds
-  
+
   public void poll() {
     long time = System.currentTimeMillis();
     try {

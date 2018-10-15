@@ -21,20 +21,18 @@ import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
 
 /**
- * 
+ *
  */
 public abstract class ABrInput extends AInput {
-
-  private static final int MAX_RETRIES = 5;
 
   public void checkCustom() {
     Assert.fail("need to subclass and override 'checkCustom':" + getClass());
   }
-  
+
   public void fillCustom() {
     Assert.fail("need to subclass and override 'fillCustom':" + getClass());
   }
-  
+
   public void check() {
     if (checkValue != null) {
       if (checkValue.isCustom()) {

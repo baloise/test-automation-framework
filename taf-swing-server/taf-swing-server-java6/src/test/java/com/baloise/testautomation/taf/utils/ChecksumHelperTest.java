@@ -1,7 +1,6 @@
 package com.baloise.testautomation.taf.utils;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class ChecksumHelperTest {
   @Test(expected = NoSuchAlgorithmException.class)
   public void testNoSuchChecksumAlgorithm() throws IOException, NoSuchAlgorithmException {
     ChecksumHelper checksumHelper = new ChecksumHelper();
-    String checksum = checksumHelper.getChecksum(new ByteArrayInputStream("".getBytes()), "bogus");
+    checksumHelper.getChecksum(new ByteArrayInputStream("".getBytes()), "bogus");
   }
 
 }

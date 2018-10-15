@@ -8,8 +8,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class ChecksumHelper {
 
-  private static Logger logger = new Logger();
-
   public String getChecksum(InputStream input, String algorithm) throws NoSuchAlgorithmException, IOException {
     StringBuilder stringBuilder = new StringBuilder();
     MessageDigest digest;
