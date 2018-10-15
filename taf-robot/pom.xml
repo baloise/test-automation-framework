@@ -29,11 +29,6 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.sikulix</groupId>
-			<artifactId>sikulixapi</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-		<dependency>
 			<groupId>com.baloise.testing.framework</groupId>
 			<artifactId>taf-base</artifactId>
 			<version>${project.version}</version>
