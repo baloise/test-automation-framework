@@ -3,10 +3,6 @@ pipeline {
         label 'common'
     }
 
-    parameters {
-        booleanParam(defaultValue: false, description: 'Flag whether a release should be created.', name: 'CREATE_RELEASE')
-    }
-
     tools {
         jdk 'JDK_1_8'
     }
@@ -36,20 +32,12 @@ pipeline {
         stage("Maven") {
             steps {
                 script {
-                    if (params.CREATE_RELEASE) {
-                        release()
-                    } else {
-                        mavenbuild mavenArgs: "dependency:copy-dependencies"
-                    }
+                    mavenbuild mavenArgs: "dependency:copy-dependencies"
                 }
             }
         }
         
         stage("Nexus Lifecycle") {
-            when {
-                expression { return !params.CREATE_RELEASE }
-            }
-
             steps {
                 nexusPolicyEvaluation iqApplication: 'com.baloise.testing.framework.taf', 
                                   iqScanPatterns: [[scanPattern: '**/target/dependency/*.jar']], 
