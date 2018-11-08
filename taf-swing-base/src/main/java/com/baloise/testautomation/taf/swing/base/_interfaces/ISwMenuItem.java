@@ -19,8 +19,6 @@ public interface ISwMenuItem<R> extends ISwElement<R> {
     click, isenabled, getsubelements
   }
 
-  public static String separator = "|";
-  
   public final String type = "menuitem";
 
   public final String paramIsEnabled = "isenabled";

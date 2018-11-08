@@ -15,6 +15,8 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
  */
 public interface ISwElement<R> {
 
+  public static String separator = "|";
+
   public final String type = "element";
 
   public TafProperties getProperties();
