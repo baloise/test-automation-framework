@@ -103,25 +103,29 @@ public abstract class ABrInput extends AInput {
   }
 
   private void fillIE() {
-    // TODO
-    // could be optimized, but hoping for IEDriver to be fixed
-    // so a simple implementation will do for the moment
-    if (fillValueAsString().contains("@")) {
-      for (Character c : fillValueAsString().toCharArray()) {
-        Character character = new Character(c);
-        WebElement we = find();
-        if (character.equals('@')) {
-          we.sendKeys(Keys.chord(Keys.ALT, Keys.CONTROL, "2"));
-        }
-        else {
-          we.sendKeys(character.toString());
-        }
-      }
-    }
-    else {
-      find().sendKeys(fillValueAsString());
-    }
+    find().sendKeys(fillValueAsString());
     find().sendKeys(Keys.TAB);
+
+    // TODO previous version when IE driver had a problem. Can be removed if standard solution proves to be good
+    
+//    // could be optimized, but hoping for IEDriver to be fixed
+//    // so a simple implementation will do for the moment
+//    if (fillValueAsString().contains("@")) {
+//      for (Character c : fillValueAsString().toCharArray()) {
+//        Character character = new Character(c);
+//        WebElement we = find();
+//        if (character.equals('@')) {
+//          we.sendKeys(Keys.chord(Keys.ALT, Keys.CONTROL, "2"));
+//        }
+//        else {
+//          we.sendKeys(character.toString());
+//        }
+//      }
+//    }
+//    else {
+//      find().sendKeys(fillValueAsString());
+//    }
+//    find().sendKeys(Keys.TAB);
   }
 
   public WebDriver getDriver() {
