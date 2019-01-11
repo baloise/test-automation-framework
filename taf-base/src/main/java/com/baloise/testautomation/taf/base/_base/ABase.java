@@ -1,18 +1,9 @@
 package com.baloise.testautomation.taf.base._base;
 
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.*;
-import com.baloise.testautomation.taf.base._interfaces.*;
-import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
-import com.baloise.testautomation.taf.base.excel.ExcelDataImporter;
-import com.baloise.testautomation.taf.base.types.TafId;
-import com.baloise.testautomation.taf.base.types.TafString;
-import com.baloise.testautomation.taf.base.types.TafType;
-import com.baloise.testautomation.taf.common.interfaces.IFinder;
-
-import org.junit.Assert;
-import org.junit.Rule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.InputStream;
@@ -20,22 +11,61 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Vector;
 
-import static org.junit.Assert.*;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.CheckData;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.DataProvider;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Excel;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Fill;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.PreserveNull;
+import com.baloise.testautomation.taf.base._interfaces.ICheck;
+import com.baloise.testautomation.taf.base._interfaces.IComponent;
+import com.baloise.testautomation.taf.base._interfaces.IData;
+import com.baloise.testautomation.taf.base._interfaces.IDataProvider;
+import com.baloise.testautomation.taf.base._interfaces.IDataRow;
+import com.baloise.testautomation.taf.base._interfaces.IElement;
+import com.baloise.testautomation.taf.base._interfaces.IFill;
+import com.baloise.testautomation.taf.base._interfaces.IType;
+import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
+import com.baloise.testautomation.taf.base.excel.ExcelDataImporter;
+import com.baloise.testautomation.taf.base.types.TafId;
+import com.baloise.testautomation.taf.base.types.TafString;
+import com.baloise.testautomation.taf.base.types.TafType;
+import com.baloise.testautomation.taf.common.interfaces.IFinder;
 
 public abstract class ABase implements IComponent {
 
   public static Logger logger = LoggerFactory.getLogger("TAF");
 
+  private static final String separator = "|";
+
   protected TafString fillId = TafString.emptyString();
 
   protected TafString checkId = TafString.emptyString();
-
   public IComponent parent = null;
-  public String name = "";
 
+  public String name = "";
   public Annotation by = null;
+
   public Annotation check = null;
 
   private Collection<Class<? extends Annotation>> supportedBys;
@@ -43,22 +73,6 @@ public abstract class ABase implements IComponent {
   public ABase() {
     supportedBys = createSupportedBys();
     initFields();
-  }
-
-  @Override
-  public boolean isCheckCustom() {
-    if (checkId == null) {
-      return false;
-    }
-    return checkId.isCustom();
-  }
-
-  @Override
-  public boolean isFillCustom() {
-    if (fillId == null) {
-      return false;
-    }
-    return fillId.isCustom();
   }
 
   public void basicCheck() {
@@ -158,6 +172,19 @@ public abstract class ABase implements IComponent {
   @Override
   public void click() {}
 
+  private Collection<Class<? extends Annotation>> createSupportedBys() {
+    Collection<Class<? extends Annotation>> supportedBys = new ArrayList<>();
+    supportedBys.add(ById.class);
+    supportedBys.add(ByText.class);
+    supportedBys.add(ByName.class);
+    supportedBys.add(ByXpath.class);
+    supportedBys.add(ByCssSelector.class);
+    supportedBys.add(ByCustom.class);
+    supportedBys.add(ByLeftLabel.class);
+    supportedBys.addAll(getAdditionalSupportedBys());
+    return supportedBys;
+  }
+
   @Override
   public void fill() {
     if (isFillCustom()) {
@@ -169,6 +196,22 @@ public abstract class ABase implements IComponent {
 
   public void fillCustom() {
     Assert.fail("Must override method 'fillCustom()'");
+  }
+
+  public IComponent findFirstParent(Class<? extends IComponent> clazz) {
+    if (parent == null) {
+      return null;
+    }
+    if (clazz.isInstance(parent)) {
+      return parent;
+    }
+    else {
+      return parent.findFirstParent(clazz);
+    }
+  }
+
+  protected Collection<Class<? extends Annotation>> getAdditionalSupportedBys() {
+    return Collections.emptyList();
   }
 
   private List<Field> getAllFields() {
@@ -285,6 +328,10 @@ public abstract class ABase implements IComponent {
     return klass;
   }
 
+  private String getFilename(Class<?> klass, String qualifierIdAndDetail, String suffix, String extension) {
+    return klass.getSimpleName() + suffix + getQualifier(qualifierIdAndDetail) + extension;
+  }
+
   @Override
   public TafString getFill() {
     return fillId;
@@ -312,6 +359,14 @@ public abstract class ABase implements IComponent {
     return getMethod("fill", f);
   }
 
+  private String getIdAndDetail(String qualifierAndIdAndDetail) {
+    String[] parts = qualifierAndIdAndDetail.split("\\" + separator);
+    if (parts.length == 0) {
+      return "";
+    }
+    return parts[parts.length - 1];
+  }
+
   private Method getMethod(String prefix, Field f) {
     for (Method m : getClass().getMethods()) {
       if (m.getName().equalsIgnoreCase(prefix + f.getName())) {
@@ -321,6 +376,14 @@ public abstract class ABase implements IComponent {
       }
     }
     return null;
+  }
+
+  private String getQualifier(String qualifierAndIdAndDetail) {
+    String[] parts = qualifierAndIdAndDetail.split("\\" + separator);
+    if (parts.length > 1) {
+      return "-" + parts[0];
+    }
+    return "";
   }
 
   public Collection<Class<? extends Annotation>> getSupportedBys() {
@@ -357,8 +420,9 @@ public abstract class ABase implements IComponent {
         }
       }
       catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
-        fail("error initializing 'by' fields (must be declared as public): " + f.getName() + " --> " + getClass());
         e.printStackTrace();
+        fail("error initializing 'by' fields (must be declared as public and need an no-arg-constructor): "
+            + f.getName() + " --> " + getClass());
       }
     }
   }
@@ -409,18 +473,34 @@ public abstract class ABase implements IComponent {
     }
   }
 
+  @Override
+  public boolean isCheckCustom() {
+    if (checkId == null) {
+      return false;
+    }
+    return checkId.isCustom();
+  }
+
+  @Override
+  public boolean isFillCustom() {
+    if (fillId == null) {
+      return false;
+    }
+    return fillId.isCustom();
+  }
+
   public Collection<IDataRow> loadCheck(String idAndDetail) {
     Class<?> dataProviderClass = getDataProviderClass();
     if (dataProviderClass.isAnnotationPresent(Excel.class)) {
-      return loadExcel(dataProviderClass, idAndDetail, "Check.xls");
+      return loadExcel(dataProviderClass, idAndDetail, "Check");
     }
     if (dataProviderClass.isAnnotationPresent(DataProvider.class)) {
       DataProvider dataprovider = dataProviderClass.getAnnotation(DataProvider.class);
       switch (dataprovider.value()) {
         case EXCEL:
-          return loadExcel(dataProviderClass, idAndDetail, "Check.xls");
+          return loadExcel(dataProviderClass, idAndDetail, "Check");
         case CSV:
-          return loadCsv(dataProviderClass, idAndDetail, "Check.csv");
+          return loadCsv(dataProviderClass, idAndDetail, "Check");
         case SELF:
           if (this instanceof IDataProvider) {
             return ((IDataProvider)this).loadCheckData(idAndDetail);
@@ -436,8 +516,10 @@ public abstract class ABase implements IComponent {
     return null;
   }
 
-  public Collection<IDataRow> loadCsv(Class<?> klass, String idAndDetail, String suffix) {
-    String path = ResourceHelper.getResource(klass, this.getClass().getSimpleName() + suffix).getPath();
+  public Collection<IDataRow> loadCsv(Class<?> klass, String pathAndIdAndDetail, String suffix) {
+    String filename = getFilename(klass, pathAndIdAndDetail, suffix, ".csv");
+    String idAndDetail = getIdAndDetail(pathAndIdAndDetail);
+    String path = ResourceHelper.getResource(klass, filename).getPath();
     File f = new File(path);
     return loadCsvFrom(f, idAndDetail);
   }
@@ -448,12 +530,14 @@ public abstract class ABase implements IComponent {
     return dataRows;
   }
 
-  public Collection<IDataRow> loadExcel(Class<?> klass, String idAndDetail, String suffix) {
-    try (InputStream is = ResourceHelper.getResource(klass, klass.getSimpleName() + suffix).openStream()) {
+  public Collection<IDataRow> loadExcel(Class<?> klass, String qualifierAndIdAndDetail, String suffix) {
+    String filename = getFilename(klass, qualifierAndIdAndDetail, suffix, ".xls");
+    String idAndDetail = getIdAndDetail(qualifierAndIdAndDetail);
+    try (InputStream is = ResourceHelper.getResource(klass, filename).openStream()) {
       return loadExcelFrom(is, idAndDetail);
     }
     catch (Exception e) {}
-    fail("excel file with data NOT found for suffix = " + suffix + " --> " + klass.getSimpleName());
+    fail("excel file with data NOT found: " + filename + " --> " + idAndDetail);
     return null;
   }
 
@@ -469,16 +553,16 @@ public abstract class ABase implements IComponent {
   public Collection<IDataRow> loadFill(String idAndDetail) {
     Class<?> dataProviderClass = getDataProviderClass();
     if (dataProviderClass.isAnnotationPresent(Excel.class)) {
-      return loadExcel(dataProviderClass, idAndDetail, "Fill.xls");
+      return loadExcel(dataProviderClass, idAndDetail, "Fill");
     }
 
     if (dataProviderClass.isAnnotationPresent(DataProvider.class)) {
       DataProvider dataprovider = dataProviderClass.getAnnotation(DataProvider.class);
       switch (dataprovider.value()) {
         case EXCEL:
-          return loadExcel(dataProviderClass, idAndDetail, "Fill.xls");
+          return loadExcel(dataProviderClass, idAndDetail, "Fill");
         case CSV:
-          return loadCsv(dataProviderClass, idAndDetail, "Fill.csv");
+          return loadCsv(dataProviderClass, idAndDetail, "Fill");
         case SELF:
           if (this instanceof IDataProvider) {
             return ((IDataProvider)this).loadFillData(idAndDetail);
@@ -575,18 +659,6 @@ public abstract class ABase implements IComponent {
   @Override
   public void setComponent(IComponent parent) {
     this.parent = parent;
-  }
-
-  public IComponent findFirstParent(Class<? extends IComponent> clazz) {
-    if (parent == null) {
-      return null;
-    }
-    if (clazz.isInstance(parent)) {
-      return parent;
-    }
-    else {
-      return parent.findFirstParent(clazz);
-    }
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
@@ -717,23 +789,6 @@ public abstract class ABase implements IComponent {
       Thread.sleep(new Double(seconds * 1000).longValue());
     }
     catch (Exception e) {}
-  }
-
-  private Collection<Class<? extends Annotation>> createSupportedBys() {
-    Collection<Class<? extends Annotation>> supportedBys = new ArrayList<>();
-    supportedBys.add(ById.class);
-    supportedBys.add(ByText.class);
-    supportedBys.add(ByName.class);
-    supportedBys.add(ByXpath.class);
-    supportedBys.add(ByCssSelector.class);
-    supportedBys.add(ByCustom.class);
-    supportedBys.add(ByLeftLabel.class);
-    supportedBys.addAll(getAdditionalSupportedBys());
-    return supportedBys;
-  }
-
-  protected Collection<Class<? extends Annotation>> getAdditionalSupportedBys() {
-    return Collections.emptyList();
   }
 
 }
