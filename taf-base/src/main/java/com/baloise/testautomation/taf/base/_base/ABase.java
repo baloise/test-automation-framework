@@ -145,7 +145,7 @@ public abstract class ABase implements IComponent {
     if (checkId == null) {
       return false;
     }
-    return !checkId.isSkip();
+    return !(checkId.isSkip() || checkId.isEmpty());
   }
 
   @Override
@@ -153,11 +153,15 @@ public abstract class ABase implements IComponent {
     if (fillId == null) {
       return false;
     }
-    return !fillId.isSkip();
+    return !(fillId.isSkip() || fillId.isEmpty());
   }
 
   @Override
   public void check() {
+    if (!canCheck()) {
+      logger.warn("could not execeute check method, because checkId is either {skip} or {empty}");
+      return;
+    }
     if (isCheckCustom()) {
       checkCustom();
       return;
@@ -187,6 +191,10 @@ public abstract class ABase implements IComponent {
 
   @Override
   public void fill() {
+    if (!canFill()) {
+      logger.warn("could not execeute check method, because checkId is either {skip} or {empty}");
+      return;
+    }
     if (isFillCustom()) {
       fillCustom();
       return;
