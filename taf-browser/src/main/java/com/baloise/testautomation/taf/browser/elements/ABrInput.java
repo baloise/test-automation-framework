@@ -8,9 +8,6 @@
  */
 package com.baloise.testautomation.taf.browser.elements;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,17 +17,20 @@ import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
 
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
+
 /**
  *
  */
 public abstract class ABrInput extends AInput {
 
   public void checkCustom() {
-    Assert.fail("need to subclass and override 'checkCustom':" + getClass());
+    fail("need to subclass and override 'checkCustom':" + getClass());
   }
 
   public void fillCustom() {
-    Assert.fail("need to subclass and override 'fillCustom':" + getClass());
+    fail("need to subclass and override 'fillCustom':" + getClass());
   }
 
   public void check() {

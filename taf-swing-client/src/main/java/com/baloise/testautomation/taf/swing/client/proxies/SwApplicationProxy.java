@@ -1,7 +1,5 @@
 package com.baloise.testautomation.taf.swing.client.proxies;
 
-import static org.junit.Assert.fail;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +7,6 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +33,9 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
 import com.baloise.testautomation.taf.swing.base.client.interaction.InteractionController;
 import com.baloise.testautomation.taf.swing.base.client.interaction.MockInteractionController;
 import com.baloise.testautomation.taf.swing.base.client.interaction.RealInteractionController;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>> {
 
@@ -70,7 +70,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   @SuppressWarnings("unchecked")
   public ISwElement<Long> createElement(String type) {
     Class<?> c = supportedElements().get(type.toLowerCase());
-    Assert.assertNotNull("type not supported: " + type, c);
+    assertNotNull("type not supported: " + type, c);
     ISwElement<Long> element = null;
     try {
       element = (ISwElement<Long>)c.newInstance();
@@ -265,7 +265,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     // startCommandAndWait(0, props);
     props = interactionController.getTafPropertiesForId(0);
     if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
-      Assert.fail("application is not instrumented: " + getReference());
+      fail("application is not instrumented: " + getReference());
     }
     deleteFor(0);
   }
@@ -292,7 +292,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     // startCommandAndWait(0, props);
     props = interactionController.getTafPropertiesForId(0);
     if (!valueStarted.equalsIgnoreCase(props.getString(paramStatus))) {
-      Assert.fail("application is not instrumented: " + getReference());
+      fail("application is not instrumented: " + getReference());
     }
     deleteFor(0);
   }

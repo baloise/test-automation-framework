@@ -8,10 +8,10 @@
  */
 package com.baloise.testautomation.taf.swing.client.elements;
 
-import static org.junit.Assert.assertEquals;
-
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 
 /**
  * 

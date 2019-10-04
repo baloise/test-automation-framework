@@ -1,22 +1,34 @@
 package com.baloise.testautomation.taf.browser.elements;
 
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.*;
-import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import static org.junit.Assume.assumeNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.assertNotNull;
-import com.baloise.testautomation.taf.browser.elements.BrElementFinder.*;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
+import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByCssSelectorFinder;
+import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByIdFinder;
+import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByNameFinder;
+import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByTextFinder;
+import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByXpathFinder;
+import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
 
 
 public class BrFinder implements IBrowserFinder<WebElement> {
@@ -64,12 +76,20 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     return Collections.emptyList();
   }
 
-  protected void assertDriverAssigned() {
-    assertNotNull("WebDriver not initialized", driver);
+  protected boolean isDriverAssigned() {
+    return driver != null;
   }
 
+//  TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
+  protected void assertDriverAssigned() {
+//    assertNotNull("WebDriver not initialized", driver);
+    assertTrue("WebDriver not initialized", isDriverAssigned());
+  }
+
+//  TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
   public void assumeDriverAssigned() {
-    assumeNotNull("WebDriver not initialized", driver);
+//    assumeNotNull("WebDriver not initialized", driver);
+    assertDriverAssigned();
   }
 
   @Override

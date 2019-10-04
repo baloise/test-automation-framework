@@ -8,37 +8,8 @@
  */
 package com.baloise.testautomation.taf.base.excel;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.formula.atp.AnalysisToolPak;
-import org.apache.poi.ss.formula.eval.FunctionEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
-import org.apache.poi.ss.formula.functions.EDate;
-import org.apache.poi.ss.formula.functions.FreeRefFunction;
-import org.apache.poi.ss.formula.functions.Function;
-import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
-import org.apache.poi.ss.formula.udf.DefaultUDFFinder;
-import org.apache.poi.ss.formula.udf.UDFFinder;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.junit.Assert;
-
 import com.baloise.testautomation.taf.base._base.DataRow;
+import com.baloise.testautomation.taf.base._base.TafAssert;
 import com.baloise.testautomation.taf.base._interfaces.IDataImporter;
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base._interfaces.IType;
@@ -48,6 +19,31 @@ import com.baloise.testautomation.taf.base.types.TafDouble;
 import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.base.types.TafString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.atp.AnalysisToolPak;
+import org.apache.poi.ss.formula.functions.EDate;
+import org.apache.poi.ss.formula.functions.FreeRefFunction;
+import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
+import org.apache.poi.ss.formula.udf.DefaultUDFFinder;
+import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 /**
  * 
@@ -109,7 +105,7 @@ public class ExcelDataImporter implements IDataImporter {
         evaluator.evaluateInCell(cell);
       }
       catch (Exception e) {
-        Assert.fail("Problems evaluation cell: " + cell.getCellFormula() + " -> " + e.getMessage());
+        TafAssert.fail("Problems evaluation cell: " + cell.getCellFormula() + " -> " + e.getMessage());
       }
     }
     if (cell.getCellTypeEnum() == CellType.BLANK) {

@@ -3,10 +3,11 @@ package com.baloise.testautomation.taf.browser.patchedfirefox;
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
 
-import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public class PatchedWebElement extends RemoteWebElement {
 
@@ -21,7 +22,7 @@ public class PatchedWebElement extends RemoteWebElement {
       }
       catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
         e.printStackTrace();
-        Assert.fail("could not create patched web element");
+        fail("could not create patched web element");
       }
     }
   }

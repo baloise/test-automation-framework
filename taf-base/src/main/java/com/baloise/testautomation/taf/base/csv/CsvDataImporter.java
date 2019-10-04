@@ -8,7 +8,7 @@
  */
 package com.baloise.testautomation.taf.base.csv;
 
-import static org.junit.Assert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
 
 import java.io.File;
 import java.io.FileReader;

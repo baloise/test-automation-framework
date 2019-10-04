@@ -8,12 +8,13 @@
  */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 /**
  * 
@@ -32,7 +33,7 @@ public abstract class ASwElementProxy implements ISwElement<Long> {
 
   protected final TafProperties executeCommand(String command, TafProperties props) {
     if (application == null) {
-      Assert.fail("client is not set --> use ASwWElementElement.setApplication(yourApplication)");
+      fail("client is not set --> use ASwWElementElement.setApplication(yourApplication)");
     }
     
     if (props == null) {

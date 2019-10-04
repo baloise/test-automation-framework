@@ -10,9 +10,11 @@ package com.baloise.testautomation.taf.base._base;
 
 import java.io.File;
 import java.net.URL;
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 
 /**
  * 
@@ -66,16 +68,15 @@ public class ResourceHelper {
   }
 
   public static void setDataRootPath(String dataRootPath) {
-    Assert.assertNotNull("data root cannot be null, use an empty string instead", dataRootPath);
+    assertNotNull("data root cannot be null, use an empty string instead", dataRootPath);
     if (!dataRootPath.isEmpty()) {
-      Assert
-          .assertTrue("data root must end with '\' or '/'", dataRootPath.endsWith("\\") || dataRootPath.endsWith("/"));
+      assertTrue("data root must end with '\' or '/'", dataRootPath.endsWith("\\") || dataRootPath.endsWith("/"));
     }
     ResourceHelper.dataRootPath = dataRootPath;
   }
 
   public static void setResourcePrefix(String resourcePrefix) {
-    Assert.assertNotNull("resource prefix cannot be null, use an empty string instead", resourcePrefix);
+    assertNotNull("resource prefix cannot be null, use an empty string instead", resourcePrefix);
     ResourceHelper.resourcePrefix = resourcePrefix;
   }
 

@@ -8,8 +8,6 @@
  */
 package com.baloise.testautomation.taf.browser.elements;
 
-import static org.junit.Assert.assertEquals;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -17,6 +15,8 @@ import com.baloise.testautomation.taf.base._interfaces.ICombobox;
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 
 /**
  * 

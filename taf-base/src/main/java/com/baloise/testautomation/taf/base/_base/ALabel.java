@@ -8,13 +8,13 @@
  */
 package com.baloise.testautomation.taf.base._base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 /**
  * 

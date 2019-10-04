@@ -8,13 +8,13 @@
  */
 package com.baloise.testautomation.taf.base._base;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 import java.util.Vector;
 
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base.types.TafString;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 
 /**
  * 

@@ -8,13 +8,7 @@
  */
 package com.baloise.testautomation.taf.base._base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import java.lang.annotation.Annotation;
-
-import org.junit.Assert;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
@@ -22,6 +16,10 @@ import com.baloise.testautomation.taf.base._interfaces.IComponent;
 import com.baloise.testautomation.taf.base._interfaces.IElement;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 /**
  * 
@@ -53,7 +51,7 @@ public abstract class AElement implements IElement {
     }
     catch (Throwable t) {}
     if (brFinder != null && swFinder != null) {
-      Assert.fail("more than one finder declared on component --> cannot decide which one to use --> fail");
+      fail("more than one finder declared on component --> cannot decide which one to use --> fail");
     }
     if (brFinder != null) {
       return brFinder;
@@ -61,7 +59,7 @@ public abstract class AElement implements IElement {
     if (swFinder != null) {
       return swFinder;
     }
-    Assert.fail("no finder declared on component --> fail");
+    fail("no finder declared on component --> fail");
     return null;
   }
 
@@ -90,7 +88,7 @@ public abstract class AElement implements IElement {
         return;
       }
     }
-    Assert.fail("element after " + seconds + " seconds not found: " + name);
+    fail("element after " + seconds + " seconds not found: " + name);
   }
   
   public abstract Object find();

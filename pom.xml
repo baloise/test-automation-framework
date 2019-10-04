@@ -75,6 +75,8 @@
 
     <modules>
         <module>taf-base</module>
+        <module>taf-base-junit4-extensions</module>
+        <module>taf-browser-junit4-extensions</module>
         <module>taf-browser</module>
         <module>taf-common</module>
         <module>taf-robot</module>

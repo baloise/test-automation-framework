@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
 
 public class JsonDataImporter implements IDataImporter {
 

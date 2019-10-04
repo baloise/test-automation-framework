@@ -8,7 +8,7 @@
  */
 package com.baloise.testautomation.taf.base.excel;
 
-import static org.junit.Assert.fail;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 import com.baloise.testautomation.taf.base._interfaces.IDataExporter;
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;

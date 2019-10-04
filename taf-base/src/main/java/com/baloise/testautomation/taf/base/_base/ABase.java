@@ -1,28 +1,5 @@
 package com.baloise.testautomation.taf.base._base;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
-
-import org.junit.Assert;
-import org.junit.Rule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
@@ -51,6 +28,26 @@ import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.base.types.TafType;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Vector;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertFalse;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public abstract class ABase implements IComponent {
 
@@ -95,8 +92,7 @@ public abstract class ABase implements IComponent {
         }
       }
       catch (InvocationTargetException e1) {
-        fail(
-            "error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
+        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
       }
       catch (IllegalArgumentException e) {
         e.printStackTrace();
@@ -170,7 +166,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void checkCustom() {
-    Assert.fail("Must override method 'checkCustom()'");
+    fail("Must override method 'checkCustom()'");
   }
 
   @Override
@@ -203,7 +199,7 @@ public abstract class ABase implements IComponent {
   }
 
   public void fillCustom() {
-    Assert.fail("Must override method 'fillCustom()'");
+    fail("Must override method 'fillCustom()'");
   }
 
   public IComponent findFirstParent(Class<? extends IComponent> clazz) {
@@ -430,7 +426,7 @@ public abstract class ABase implements IComponent {
       catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
         e.printStackTrace();
         fail("error initializing 'by' fields (must be declared as public and need an no-arg-constructor): "
-            + f.getName() + " --> " + getClass());
+                + f.getName() + " --> " + getClass());
       }
     }
   }
@@ -446,7 +442,7 @@ public abstract class ABase implements IComponent {
       }
       catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
         fail("error initializing data fields (field must be declared as public, and '" + f.getType()
-            + "' must have a no-argument constructor): " + f.getName());
+                + "' must have a no-argument constructor): " + f.getName());
         e.printStackTrace();
       }
     }
@@ -461,24 +457,24 @@ public abstract class ABase implements IComponent {
   public void initOtherFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
     for (Field f : fields) {
-      if (f.getAnnotation(Rule.class) == null) {
-        try {
-          Object o = f.get(this);
-          if (o == null) {
-            o = f.getType().newInstance();
-            f.set(this, o);
-          }
-          if (o instanceof ABase) {
-            if (!f.getName().equalsIgnoreCase("parent")) {
-              ((ABase)o).setComponent(this);
-            }
+      // TODO: why is this needed?
+      // if (f.getAnnotation(Rule.class) == null) {
+      try {
+        Object o = f.get(this);
+        if (o == null) {
+          o = f.getType().newInstance();
+          f.set(this, o);
+        }
+        if (o instanceof ABase) {
+          if (!f.getName().equalsIgnoreCase("parent")) {
+            ((ABase) o).setComponent(this);
           }
         }
-        catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
-          logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
-        }
+      } catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+        logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
       }
     }
+    // }
   }
 
   @Override
@@ -514,7 +510,7 @@ public abstract class ABase implements IComponent {
             return ((IDataProvider)this).loadCheckData(idAndDetail);
           }
           fail(dataProviderClass.getSimpleName()
-              + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
+                    + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
         default:
           fail("loading check data FAILED, unknown dataprovider.type found : " + dataprovider.value());
       }
@@ -576,7 +572,7 @@ public abstract class ABase implements IComponent {
             return ((IDataProvider)this).loadFillData(idAndDetail);
           }
           fail(dataProviderClass.getSimpleName()
-              + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
+                    + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
         default:
           fail("loading fill data FAILED, unknown dataprovider.type found : " + dataprovider.value());
       }
@@ -697,7 +693,7 @@ public abstract class ABase implements IComponent {
       }
       catch (InstantiationException | IllegalAccessException e) {
         fail("setElementFill NOT successful, may the no-argument constructor is missing for datatype of: "
-            + o.getClass());
+                + o.getClass());
       }
       return;
     }
@@ -719,7 +715,7 @@ public abstract class ABase implements IComponent {
         }
         else {
           fail("data annotated with @Data or @CheckData must be an instance of IType: " + f.getName() + " --> "
-              + getClass());
+                    + getClass());
         }
       }
       catch (IllegalArgumentException e) {
@@ -782,7 +778,8 @@ public abstract class ABase implements IComponent {
         }
       }
       catch (IllegalArgumentException | IllegalAccessException e) {
-        fail("instantiating field has FAILED (must be declared as public): " + f.getName() + " --> " + getClass());
+        fail(
+                "instantiating field has FAILED (must be declared as public): " + f.getName() + " --> " + getClass());
       }
     }
   }

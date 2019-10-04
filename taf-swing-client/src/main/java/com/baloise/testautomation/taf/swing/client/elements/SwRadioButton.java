@@ -1,15 +1,14 @@
 package com.baloise.testautomation.taf.swing.client.elements;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Assert;
-
 import com.baloise.testautomation.taf.base._base.AInput;
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafBoolean;
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwRadioButton;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public class SwRadioButton extends AInput implements IData<TafBoolean> {
 
@@ -30,7 +29,7 @@ public class SwRadioButton extends AInput implements IData<TafBoolean> {
 
   @Override
   public void click() {
-    Assert.fail("Click for Radiobuttons not implemented. Use check or uncheck instead.");
+    fail("Click for Radiobuttons not implemented. Use check or uncheck instead.");
   }
 
   public void fill() {

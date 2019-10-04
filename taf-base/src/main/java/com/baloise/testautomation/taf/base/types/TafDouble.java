@@ -7,9 +7,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 
-import org.junit.Assert;
-
 import com.baloise.testautomation.taf.base._interfaces.IType;
+
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public class TafDouble extends TafType implements IType {
 
@@ -110,7 +110,7 @@ public class TafDouble extends TafType implements IType {
       value = new Double(n.doubleValue());
     }
     catch (ParseException e) {
-      Assert.fail("illegal number format");
+      fail("illegal number format");
       value = null;
     }
   }
