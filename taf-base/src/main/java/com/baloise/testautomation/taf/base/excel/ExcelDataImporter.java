@@ -29,6 +29,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.junit.Assert;
 
 import com.baloise.testautomation.taf.base._base.DataRow;
 import com.baloise.testautomation.taf.base._interfaces.IDataImporter;
@@ -94,8 +95,7 @@ public class ExcelDataImporter implements IDataImporter {
         evaluator.evaluateInCell(cell);
       }
       catch (Exception e) {
-        cellFormula = cellFormula.replace("EDATE", "EDATUM");
-        evaluator.evaluateInCell(cell);
+        Assert.fail("Problems evaluation cell: " + cellFormula + " -> " + e.getMessage());
       }
     }
     if (cell.getCellTypeEnum() == CellType.BLANK) {
