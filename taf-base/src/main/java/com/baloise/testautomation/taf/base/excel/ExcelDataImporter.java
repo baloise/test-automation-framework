@@ -90,7 +90,13 @@ public class ExcelDataImporter implements IDataImporter {
       cellFormula = cellFormula.replace("EDATUM", "EDATE");
       cell.setCellFormula(cellFormula);
       FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
-      evaluator.evaluateInCell(cell);
+      try {
+        evaluator.evaluateInCell(cell);
+      }
+      catch (Exception e) {
+        cellFormula = cellFormula.replace("EDATE", "EDATUM");
+        evaluator.evaluateInCell(cell);
+      }
     }
     if (cell.getCellTypeEnum() == CellType.BLANK) {
       return TafString.emptyString();
