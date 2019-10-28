@@ -24,7 +24,14 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
+import org.apache.poi.ss.formula.eval.FunctionEval;
+import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.functions.EDate;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
+import org.apache.poi.ss.formula.functions.Function;
+import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
+import org.apache.poi.ss.formula.udf.DefaultUDFFinder;
+import org.apache.poi.ss.formula.udf.UDFFinder;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -60,6 +67,16 @@ public class ExcelDataImporter implements IDataImporter {
   private String sheetName = null;
   private int sheetIndex = -1;
 
+  private static UDFFinder finder;
+  private static UDFFinder toolpack;
+
+  {
+    String[] functionNames = {"EDATUM"};
+    FreeRefFunction[] functionImpls = {EDate.instance};
+    finder = new DefaultUDFFinder(functionNames, functionImpls);
+    toolpack = new AggregatingUDFFinder(finder);
+  }
+
   public ExcelDataImporter(File f, int sheetIndex) {
     this.sheetIndex = sheetIndex;
     initWith(f);
@@ -87,15 +104,12 @@ public class ExcelDataImporter implements IDataImporter {
       return TafString.nullString();
     }
     if (cell.getCellTypeEnum() == CellType.FORMULA) {
-      String cellFormula = cell.getCellFormula();
-      cellFormula = cellFormula.replace("EDATUM", "EDATE");
-      cell.setCellFormula(cellFormula);
       FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
       try {
         evaluator.evaluateInCell(cell);
       }
       catch (Exception e) {
-        Assert.fail("Problems evaluation cell: " + cellFormula + " -> " + e.getMessage());
+        Assert.fail("Problems evaluation cell: " + cell.getCellFormula() + " -> " + e.getMessage());
       }
     }
     if (cell.getCellTypeEnum() == CellType.BLANK) {
@@ -213,6 +227,7 @@ public class ExcelDataImporter implements IDataImporter {
   private void initSheet(InputStream is) {
     try {
       workBook = new HSSFWorkbook(is);
+      workBook.addToolPack(toolpack);
       if (sheetName != null) {
         sheet = workBook.getSheet(sheetName);
         return;
