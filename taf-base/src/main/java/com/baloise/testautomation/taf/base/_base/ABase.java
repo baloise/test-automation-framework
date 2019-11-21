@@ -1,12 +1,6 @@
 package com.baloise.testautomation.taf.base._base;
 
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByName;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.CheckData;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
@@ -65,10 +59,7 @@ public abstract class ABase implements IComponent {
 
   public Annotation check = null;
 
-  private Collection<Class<? extends Annotation>> supportedBys;
-
   public ABase() {
-    supportedBys = createSupportedBys();
     initFields();
   }
 
@@ -172,19 +163,6 @@ public abstract class ABase implements IComponent {
   @Override
   public void click() {}
 
-  private Collection<Class<? extends Annotation>> createSupportedBys() {
-    Collection<Class<? extends Annotation>> supportedBys = new ArrayList<>();
-    supportedBys.add(ById.class);
-    supportedBys.add(ByText.class);
-    supportedBys.add(ByName.class);
-    supportedBys.add(ByXpath.class);
-    supportedBys.add(ByCssSelector.class);
-    supportedBys.add(ByCustom.class);
-    supportedBys.add(ByLeftLabel.class);
-    supportedBys.addAll(getAdditionalSupportedBys());
-    return supportedBys;
-  }
-
   @Override
   public void fill() {
     if (!canFill()) {
@@ -212,10 +190,6 @@ public abstract class ABase implements IComponent {
     else {
       return parent.findFirstParent(clazz);
     }
-  }
-
-  protected Collection<Class<? extends Annotation>> getAdditionalSupportedBys() {
-    return Collections.emptyList();
   }
 
   private List<Field> getAllFields() {
@@ -247,7 +221,7 @@ public abstract class ABase implements IComponent {
   public Annotation getByAnnotation(Field f) {
     Annotation[] annotations = f.getAnnotations();
     for (Annotation annotation : annotations) {
-      if (getSupportedBys().contains(annotation.annotationType())) {
+      if (annotation.annotationType().isAnnotationPresent(IAnnotations.By.class)) {
         return annotation;
       }
     }
@@ -390,10 +364,6 @@ public abstract class ABase implements IComponent {
     return "";
   }
 
-  public Collection<Class<? extends Annotation>> getSupportedBys() {
-    return supportedBys;
-  }
-
   @Override
   public IFinder<?> getSwingFinder() {
     fail("method getSwingFinder must be overridden (if it is used)");
@@ -457,24 +427,32 @@ public abstract class ABase implements IComponent {
   public void initOtherFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
     for (Field f : fields) {
-      // TODO: why is this needed?
-      // if (f.getAnnotation(Rule.class) == null) {
-      try {
-        Object o = f.get(this);
-        if (o == null) {
-          o = f.getType().newInstance();
-          f.set(this, o);
-        }
-        if (o instanceof ABase) {
-          if (!f.getName().equalsIgnoreCase("parent")) {
-            ((ABase) o).setComponent(this);
+      if (!f.isAnnotationPresent(PreserveNull.class) && !isFieldRuleAnnotated(f)) {
+        try {
+          Object o = f.get(this);
+          if (o == null) {
+            o = f.getType().newInstance();
+            f.set(this, o);
           }
+          if (o instanceof ABase) {
+            if (!f.getName().equalsIgnoreCase("parent")) {
+              ((ABase) o).setComponent(this);
+            }
+          }
+        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+          logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
         }
-      } catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
-        logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
       }
     }
-    // }
+  }
+
+  private boolean isFieldRuleAnnotated(Field f) {
+    for (Annotation annotation : f.getAnnotations()) {
+      if (annotation.annotationType().getName().equals("org.junit.Rule")) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override

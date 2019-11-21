@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.baloise.testing.framework</groupId>
 		<artifactId>taf</artifactId>
-		<version>0.0.8-SNAPSHOT</version>
+		<version>0.0.9-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>taf-browser-junit4-extensions</artifactId>
@@ -20,16 +20,6 @@
 				<directory>src/test/resources</directory>
 			</testResource>
 		</testResources>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 	<dependencies>
 		<dependency>

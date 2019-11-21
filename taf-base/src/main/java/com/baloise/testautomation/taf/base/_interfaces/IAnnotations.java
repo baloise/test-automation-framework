@@ -14,12 +14,21 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
+ *
  */
 public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  public @interface InitByTaf {}
+
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target({ElementType.TYPE, ElementType.FIELD})
+  public @interface By {}
+
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ByCssSelector {
     public int index() default 0;
 
@@ -28,6 +37,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ByCustom {
     public int index() default 0;
 
@@ -36,6 +46,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ById {
     public int index() default 0;
 
@@ -44,6 +55,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ByLeftLabel {
     public int index() default 0;
 
@@ -54,6 +66,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ByName {
     public int index() default 0;
 
@@ -62,6 +75,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ByText {
     public int index() default 0;
 
@@ -70,6 +84,7 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
+  @By
   public @interface ByXpath {
     public int index() default 0;
 
