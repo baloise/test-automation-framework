@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -405,6 +406,16 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   @Override
   public void setDefaultTimeoutInMsecs() {
     serverTimeoutInMsecs = 50000;
+  }
+
+  @Override
+  public void safeInvoke(Runnable runnable) {
+    throw new RuntimeException("should NOT come here --> safeInvoke");
+  }
+
+  @Override
+  public <T> T safeInvoke(Callable<T> callable) {
+    throw new RuntimeException("should NOT come here --> safeInvoke");
   }
 
 }

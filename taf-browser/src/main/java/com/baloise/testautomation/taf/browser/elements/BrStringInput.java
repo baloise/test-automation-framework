@@ -13,7 +13,7 @@ public class BrStringInput extends ABrInput implements IData<TafString> {
 
   @Override
   public TafString get() {
-    String text = find().getAttribute("value");
+    String text = getFinder().safeInvoke(() -> find().getAttribute("value"));
     return new TafString(text);
   }
 

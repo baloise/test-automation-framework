@@ -12,7 +12,7 @@ public class BrLabel extends ALabel {
 
   @Override
   public void click() {
-    find().click();
+    getFinder().safeInvoke(() -> find().click());
   }
 
   // @Override
@@ -22,7 +22,7 @@ public class BrLabel extends ALabel {
 
   @Override
   public TafString get() {
-    String text = find().getText();
+    String text = getFinder().safeInvoke(() -> find().getText());
     return new TafString(text);
   }
 }

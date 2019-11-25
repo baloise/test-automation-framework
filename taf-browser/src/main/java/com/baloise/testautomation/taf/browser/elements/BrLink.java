@@ -10,14 +10,16 @@ public class BrLink extends AElement {
 
   @Override
   public void click() {
-    find().click();
+    getFinder().safeInvoke(() -> find().click());
   }
 
   // @Override
   public WebElement find() {
-    WebElement link = (WebElement)brFind();
-    assertTrue("", "a".equalsIgnoreCase(link.getTagName()));
-    return link;
+    return getFinder().safeInvoke(() -> {
+      WebElement link = (WebElement) brFind();
+      assertTrue("", "a".equalsIgnoreCase(link.getTagName()));
+      return link;
+    });
   }
 
 }

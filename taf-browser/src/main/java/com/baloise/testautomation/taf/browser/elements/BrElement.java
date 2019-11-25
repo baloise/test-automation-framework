@@ -8,16 +8,15 @@ public class BrElement extends AElement {
 
   @Override
   public void click() {
-    find().click();
+    getFinder().safeInvoke(() -> find().click());
   }
 
   public String getText() {
-    return find().getText();
+    return getFinder().safeInvoke(() -> find().getText());
   }
   
   public WebElement find() {
-    WebElement div = (WebElement)brFind();
-    return div;
+    return (WebElement)brFind();
   }
 
 }

@@ -27,7 +27,7 @@ public class BrCheckbox extends ABrCheckbox implements IData<TafBoolean> {
 
   @Override
   public TafBoolean get() {
-    return new TafBoolean(find().isSelected());
+    return new TafBoolean(getFinder().safeInvoke(() -> find().isSelected()));
   }
 
   @Override

@@ -24,7 +24,7 @@ public abstract class ABrCheckbox extends ABrInput implements ICheckbox {
 
   @Override
   public boolean isSelected() {
-    return find().isSelected();
+    return getFinder().safeInvoke(() -> find().isSelected());
   }
 
   @Override

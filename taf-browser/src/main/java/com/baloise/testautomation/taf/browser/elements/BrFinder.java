@@ -8,9 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientCall;
+import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientRun;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.SearchContext;
@@ -278,5 +281,15 @@ public class BrFinder implements IBrowserFinder<WebElement> {
 
   @Override
   public void waitUntilLoadingComplete() {}
+
+  @Override
+  public void safeInvoke(Runnable runnable) {
+    new StaleElementResilientRun(getTimeoutInMsecs()).invoke(runnable);
+  }
+
+  @Override
+  public <T> T safeInvoke(Callable<T> callable) {
+    return new StaleElementResilientCall<T>(getTimeoutInMsecs()).invoke(callable);
+  }
 
 }

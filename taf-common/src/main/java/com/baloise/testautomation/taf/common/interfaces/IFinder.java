@@ -1,6 +1,7 @@
 package com.baloise.testautomation.taf.common.interfaces;
 
 import java.lang.annotation.Annotation;
+import java.util.concurrent.Callable;
 
 public interface IFinder<Element> {
 
@@ -13,5 +14,9 @@ public interface IFinder<Element> {
   public Long getTimeoutInMsecs();
 
   public void setDefaultTimeoutInMsecs();
+
+  void safeInvoke(Runnable runnable);
+
+  <T> T safeInvoke(Callable<T> callable);
 
 }

@@ -13,7 +13,7 @@ public class BrDoubleInput extends ABrInput implements IData<TafDouble> {
 
   @Override
   public TafDouble get() {
-    String text = find().getAttribute("value");
+    String text = getFinder().safeInvoke(() -> find().getAttribute("value"));
     return new TafDouble(text);
   }
 

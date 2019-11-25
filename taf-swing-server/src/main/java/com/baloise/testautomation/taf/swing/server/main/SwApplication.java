@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.Callable;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -645,6 +646,17 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   @Override
   public void setDefaultTimeoutInMsecs() {
     info("should NOT come here --> setDefaultTimeoutInMsecs");
+  }
+
+  @Override
+  public void safeInvoke(Runnable runnable) {
+    info("should NOT come here --> safeInvoke");
+  }
+
+  @Override
+  public <T> T safeInvoke(Callable<T> callable) {
+    info("should NOT come here --> safeInvoke");
+    return null;
   }
 
 }

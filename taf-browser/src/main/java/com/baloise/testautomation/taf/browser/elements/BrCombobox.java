@@ -1,12 +1,11 @@
 package com.baloise.testautomation.taf.browser.elements;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
-
 import com.baloise.testautomation.taf.base._interfaces.ICombobox;
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 
@@ -25,9 +24,11 @@ public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> 
         return;
       }
       if (!checkValue.isSkip() && checkValue.isNotNull()) {
-        WebElement we = find();
-        Select s = new Select(we);
-        String text = s.getFirstSelectedOption().getText();
+        String text = getFinder().safeInvoke(() -> {
+          WebElement we = find();
+          Select s = new Select(we);
+          return s.getFirstSelectedOption().getText();
+        });
         assertEquals("value does NOT match: " + name, checkValue.asString(), text);
       }
     }
@@ -41,18 +42,22 @@ public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> 
         return;
       }
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
-        WebElement we = find();
-        Select s = new Select(we);
-        s.selectByVisibleText(fillValue.asString());
+        getFinder().safeInvoke(() -> {
+          WebElement we = find();
+          Select s = new Select(we);
+          s.selectByVisibleText(fillValue.asString());
+        });
       }
     }
   }
 
   @Override
   public TafString get() {
-    WebElement we = find();
-    Select s = new Select(we);
-    return TafString.normalString(s.getFirstSelectedOption().getText());
+    return getFinder().safeInvoke(() -> {
+      WebElement we = find();
+      Select s = new Select(we);
+      return TafString.normalString(s.getFirstSelectedOption().getText());
+    });
   }
 
   @Override

@@ -13,7 +13,7 @@ public class BrDateInput extends ABrInput implements IData<TafDate> {
 
   @Override
   public TafDate get() {
-    String text = find().getAttribute("value");
+    String text = getFinder().safeInvoke(() -> find().getAttribute("value"));
     return new TafDate(text);
   }
 

@@ -36,10 +36,10 @@ public abstract class ABrInput extends AInput {
             long time = System.currentTimeMillis();
             while (System.currentTimeMillis() < time + timeout) {
               // If element is an input field, then value is needed
-              String tempText = find().getAttribute("value");
+              String tempText = getFinder().safeInvoke(() ->  find().getAttribute("value"));
               // maybe it's just another element (e.g. a <div>) --> try simple getText()
               if (tempText == null) {
-                tempText = find().getText();
+                tempText = getFinder().safeInvoke(() -> find().getText());
               }
               if (checkValue.asString().equals(tempText)) {
                 text = tempText;
@@ -51,11 +51,11 @@ public abstract class ABrInput extends AInput {
         catch (Exception e) {}
         // find for non-timeout-case --> if it's an input --> value is needed
         if (text == null) {
-          text = find().getAttribute("value");
+          text = getFinder().safeInvoke(() -> find().getAttribute("value"));
         }
         // not found? Maybe it's another element --> try simple getText()
         if (text == null) {
-          text = find().getText();
+          text = getFinder().safeInvoke(() -> find().getText());
         }
         check(checkValue.asString(), text);
       }
@@ -68,7 +68,7 @@ public abstract class ABrInput extends AInput {
 
   @Override
   public void click() {
-    find().click();
+    getFinder().safeInvoke(() -> find().click());
   }
 
   public void fill() {
@@ -78,22 +78,22 @@ public abstract class ABrInput extends AInput {
         return;
       }
       if (!fillValue.isSkip() && fillValue.isNotNull()) {
-        find().click();
-        find().clear();
+        getFinder().safeInvoke(() -> find().click());
+        getFinder().safeInvoke(() -> find().clear());
         if (getDriver() instanceof InternetExplorerDriver) {
           fillIE();
         }
         else {
-          find().sendKeys(fillValueAsString());
-          find().sendKeys(Keys.TAB);
+          getFinder().safeInvoke(() -> find().sendKeys(fillValueAsString()));
+          getFinder().safeInvoke(() -> find().sendKeys(Keys.TAB));
         }
       }
     }
   }
 
   private void fillIE() {
-    find().sendKeys(fillValueAsString());
-    find().sendKeys(Keys.TAB);
+    getFinder().safeInvoke(() -> find().sendKeys(fillValueAsString()));
+    getFinder().safeInvoke(() -> find().sendKeys(Keys.TAB));
 
     // TODO previous version when IE driver had a problem. Can be removed if standard solution proves to be good
     
