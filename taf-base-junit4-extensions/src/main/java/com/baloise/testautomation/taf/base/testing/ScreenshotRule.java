@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base.testing;
 
 import java.awt.Dimension;
@@ -22,9 +14,6 @@ import org.junit.runner.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 
- */
 public class ScreenshotRule extends TestWatcher {
 
   public static Logger logger = LoggerFactory.getLogger("ScreenshotOnFailed");

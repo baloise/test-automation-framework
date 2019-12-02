@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base.csv;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;

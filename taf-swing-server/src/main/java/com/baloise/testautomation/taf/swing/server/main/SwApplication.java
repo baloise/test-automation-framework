@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.main;
 
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
@@ -79,14 +71,8 @@ import com.baloise.testautomation.taf.swing.server.elements.SwTree;
 import com.baloise.testautomation.taf.swing.server.elements.SwUnsupportedElement;
 import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
-/**
- *
- */
 public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
-  /**
-   * @param windowTitle
-   */
   public static boolean waitForWindowWithTitle(String windowTitle) {
     ISwElement<Component> element = new SwApplication().findElementByXpath(null, "//*[@title='" + windowTitle + "']");
     return element != null;

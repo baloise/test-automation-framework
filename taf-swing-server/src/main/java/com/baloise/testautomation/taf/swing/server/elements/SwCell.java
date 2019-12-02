@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import javax.swing.JTable;
@@ -14,9 +6,6 @@ import org.assertj.swing.fixture.JTableFixture;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 
-/**
- *
- */
 public class SwCell extends ASwElement {
 
 

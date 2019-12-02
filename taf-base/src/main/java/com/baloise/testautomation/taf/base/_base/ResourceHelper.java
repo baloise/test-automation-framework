@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base._base;
 
 import java.io.File;
@@ -16,9 +8,6 @@ import org.slf4j.LoggerFactory;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 
-/**
- * 
- */
 public class ResourceHelper {
 
   public static boolean tryWithAndWithoutPrefix = true;

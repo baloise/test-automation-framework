@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.browser.testing;
 
 import java.io.File;
@@ -15,9 +7,6 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.WebDriver;
 
-/**
- * 
- */
 public class HtmlOnFailed extends TestWatcher {
 
   private static WebDriver driver;

@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.main;
 
 import static com.baloise.testautomation.taf.common.interfaces.ISwApplication.paramCommand;
@@ -35,9 +27,6 @@ import com.baloise.testautomation.taf.swing.base.db.SwError;
 import com.baloise.testautomation.taf.swing.server.utils.ChecksumHelper;
 import com.baloise.testautomation.taf.swing.server.utils.Logger;
 
-/**
- *
- */
 public class SwStarter {
 
   private static Logger logger = new Logger();

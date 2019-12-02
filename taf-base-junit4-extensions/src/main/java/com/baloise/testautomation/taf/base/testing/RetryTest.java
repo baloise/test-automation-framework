@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base.testing;
 
 import java.util.Hashtable;
@@ -17,9 +9,6 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 
- */
 public class RetryTest implements TestRule {
 
   private static Hashtable<String, Integer> retriedMethods = new Hashtable<String, Integer>();

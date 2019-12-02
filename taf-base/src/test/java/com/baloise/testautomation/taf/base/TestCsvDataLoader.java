@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base;
 
 import static org.junit.Assert.assertEquals;
@@ -27,9 +19,6 @@ import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
 import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
 
-/**
- * 
- */
 public class TestCsvDataLoader {
 
   public static File file;

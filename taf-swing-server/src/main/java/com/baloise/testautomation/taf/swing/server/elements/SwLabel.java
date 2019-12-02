@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -17,15 +9,8 @@ import org.assertj.swing.fixture.JLabelFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
 
-/**
- * 
- */
 public class SwLabel extends ASwElement implements ISwLabel<Component> {
 
-  /**
-   * @param tid
-   * @param component
-   */
   public SwLabel(long tid, JLabel component) {
     super(tid, component);
   }

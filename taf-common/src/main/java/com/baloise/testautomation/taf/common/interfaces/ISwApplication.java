@@ -1,20 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.common.interfaces;
 
 import java.util.List;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
-
-/**
- * 
- */
 
 @SuppressWarnings("hiding")
 public interface ISwApplication<ISwElement> extends IFinder<ISwElement> {

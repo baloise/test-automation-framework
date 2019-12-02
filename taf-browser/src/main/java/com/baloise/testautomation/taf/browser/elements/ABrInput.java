@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.browser.elements;
 
 import org.openqa.selenium.Keys;
@@ -20,9 +12,6 @@ import com.baloise.testautomation.taf.common.interfaces.IFinder;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
-/**
- *
- */
 public abstract class ABrInput extends AInput {
 
   public void checkCustom() {

@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTextComponent;
 
-/**
- * 
- */
 public abstract class ASwTextComponentProxy extends ASwElementProxy implements ISwTextComponent<Long> {
 
   @Override

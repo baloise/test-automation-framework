@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package tests;
 
 import org.junit.AfterClass;
@@ -18,9 +10,6 @@ import eclipse.jubula.auts.SimpleAdder;
 
 import com.baloise.testautomation.taf.base.types.TafId;
 
-/**
- * Example Tests for AUT: SimpleAdder
- */
 public class SimpleAdderTest {
   @AfterClass
   public static void done() {

@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.elements;
 
 import com.baloise.testautomation.taf.base._base.AInput;
@@ -16,9 +8,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwTextArea;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 
-/**
- * 
- */
 public class SwTextArea extends AInput implements IData<TafString> {
 
   public void check() {

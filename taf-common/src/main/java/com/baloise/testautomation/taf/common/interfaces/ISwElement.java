@@ -1,18 +1,7 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.common.interfaces;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 
-/**
- * 
- */
 public interface ISwElement<R> {
 
   public static String separator = "|";

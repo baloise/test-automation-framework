@@ -1,20 +1,9 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.elements;
 
 import com.baloise.testautomation.taf.base._base.AElement;
 import com.baloise.testautomation.taf.common.interfaces.ITableData;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 
-/**
- * 
- */
 public class SwTable extends AElement {
 
   @Override

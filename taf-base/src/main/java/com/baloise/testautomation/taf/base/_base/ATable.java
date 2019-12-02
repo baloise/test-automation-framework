@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base._base;
 
 import java.util.List;
@@ -16,9 +8,6 @@ import com.baloise.testautomation.taf.base.types.TafString;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 
-/**
- * 
- */
 public abstract class ATable extends ABase {
 
   public List<IDataRow> fillDataRows = new Vector<IDataRow>();

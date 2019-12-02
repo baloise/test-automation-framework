@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -17,15 +9,8 @@ import org.assertj.swing.fixture.JCheckBoxFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
 
-/**
- * 
- */
 public class SwCheckBox extends ASwElement implements ISwCheckBox<Component> {
 
-  /**
-   * @param tid
-   * @param component
-   */
   public SwCheckBox(long tid, JCheckBox component) {
     super(tid, component);
   }

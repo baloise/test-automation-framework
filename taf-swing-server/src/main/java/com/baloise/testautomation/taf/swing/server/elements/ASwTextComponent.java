@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -19,9 +11,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwTextComponent;
 import com.baloise.testautomation.taf.swing.server.utils.LabelFinder;
 import com.baloise.testautomation.taf.swing.server.utils.SwRobotFactory;
 
-/**
- * 
- */
 public abstract class ASwTextComponent extends ASwElement implements ISwTextComponent<Component> {
 
   public ASwTextComponent(long tid, JTextComponent c) {

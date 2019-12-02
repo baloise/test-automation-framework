@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package tests;
 
 import org.junit.AfterClass;
@@ -18,9 +10,6 @@ import base.TBEFinders;
 import com.baloise.testautomation.taf.base.types.TafId;
 import components.web.bing.Bing;
 
-/**
- * 
- */
 public class BingTest {
 
   @AfterClass

@@ -5,18 +5,6 @@ import org.junit.Test;
 
 import com.baloise.testautomation.taf.swing.server.main.SwApplication;
 
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
-
-/**
- * 
- */
 public class SwApplicationTest {
 
   @Test

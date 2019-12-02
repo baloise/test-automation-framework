@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base._base;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
@@ -16,9 +8,6 @@ import com.baloise.testautomation.taf.base.types.TafString;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
-/**
- * 
- */
 public abstract class ALabel extends AElement implements IData<TafString> {
 
   protected IType checkValue = null;

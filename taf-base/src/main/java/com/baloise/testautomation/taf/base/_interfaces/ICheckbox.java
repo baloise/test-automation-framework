@@ -1,16 +1,5 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base._interfaces;
 
-/**
- * 
- */
 public interface ICheckbox extends IElement {
 
   public boolean isSelected();

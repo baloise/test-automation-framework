@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package components.web.bing;
 
 import static org.junit.Assert.assertNotNull;
@@ -20,9 +12,6 @@ import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.browser.elements.BrButton;
 import com.baloise.testautomation.taf.browser.elements.BrStringInput;
 
-/**
- * 
- */
 @DataProvider(DataProviderType.EXCEL)
 public class Bing extends ATBEComponent {
 

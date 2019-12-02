@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.elements;
 
 import java.util.List;
@@ -18,9 +10,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 
-/**
- * 
- */
 public class SwComboBox extends AInput implements IData<TafString> {
 
   @Override

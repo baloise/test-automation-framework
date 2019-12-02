@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -23,9 +15,6 @@ import com.baloise.testautomation.taf.common.interfaces.ITableData;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
 
-/**
- * 
- */
 public class SwTable extends ASwElement implements ISwTable<Component> {
 
   public SwTable(long tid, JTable c) {

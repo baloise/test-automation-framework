@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.utils;
 
 import java.util.Arrays;
@@ -13,9 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringEscapeUtils;
 
-/**
- * 
- */
 public class Encoder {
 
   public final static String ESCAPE_CHARS = "<>&\"\'";

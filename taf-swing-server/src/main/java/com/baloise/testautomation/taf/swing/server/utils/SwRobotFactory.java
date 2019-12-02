@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.utils;
 
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.Robot;
 
-/**
- * 
- */
 public class SwRobotFactory {
 
   private static Robot robot = null;

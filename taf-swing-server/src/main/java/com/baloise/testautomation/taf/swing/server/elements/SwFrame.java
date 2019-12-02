@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -16,9 +8,6 @@ import org.assertj.swing.fixture.FrameFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwFrame;
 
-/**
- * 
- */
 public class SwFrame extends ASwElement implements ISwFrame<Component> {
 
   public SwFrame(long tid, Component component) {

@@ -10,15 +10,8 @@ import org.assertj.swing.fixture.JInternalFrameFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwInternalFrame;
 
-/**
- * 
- */
 public class SwInternalFrame extends ASwElement implements ISwInternalFrame<Component> {
 
-  /**
-   * @param tid
-   * @param component
-   */
   public SwInternalFrame(long tid, JInternalFrame component) {
     super(tid, component);
   }

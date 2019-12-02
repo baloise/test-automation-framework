@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.browser.elements;
 
 import org.openqa.selenium.WebElement;
@@ -18,9 +10,6 @@ import com.baloise.testautomation.taf.base.types.TafString;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 
-/**
- * 
- */
 public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> {
 
   @Override

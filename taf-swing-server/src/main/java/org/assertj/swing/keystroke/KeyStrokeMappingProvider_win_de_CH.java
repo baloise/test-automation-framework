@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package org.assertj.swing.keystroke;
 
 import static java.awt.event.InputEvent.SHIFT_MASK;
@@ -60,9 +52,6 @@ import java.util.List;
 
 import org.assertj.swing.dependency.jsr305.Nonnull;
 
-/**
- * 
- */
 public class KeyStrokeMappingProvider_win_de_CH implements KeyStrokeMappingProvider {
   // Thread-safe, lazy-loading singleton.
   private static class SingletonHolder {

@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.browser.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base.types.TafBoolean;
 
-/**
- * 
- */
 public class BrCheckbox extends ABrCheckbox implements IData<TafBoolean> {
 
   @Override

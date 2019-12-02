@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package base;
 
 import static org.junit.Assert.assertNotNull;
@@ -15,9 +7,6 @@ import org.openqa.selenium.WebDriver;
 
 import com.baloise.testautomation.taf.browser.elements.BrFinder;
 
-/**
- * 
- */
 public class TBEBrFinder extends BrFinder {
 
   public TBEBrFinder(WebDriver driver) {

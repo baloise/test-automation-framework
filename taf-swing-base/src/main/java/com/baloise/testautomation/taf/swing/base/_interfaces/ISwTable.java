@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.base._interfaces;
 
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.interfaces.ITableData;
 
-/**
- * 
- */
 public interface ISwTable<R> extends ISwElement<R> {
 
   public enum Command {

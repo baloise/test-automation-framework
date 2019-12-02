@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -17,9 +9,6 @@ import org.assertj.swing.fixture.JTableHeaderFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTableColumn;
 
-/**
- *
- */
 public class SwTableColumn extends ASwElement implements ISwTableColumn<Component> {
 
   public SwTableColumn(long tid, int column, JTable c) {

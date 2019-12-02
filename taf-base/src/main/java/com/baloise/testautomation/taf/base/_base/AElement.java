@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base._base;
 
 import java.lang.annotation.Annotation;
@@ -21,9 +13,6 @@ import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
-/**
- * 
- */
 public abstract class AElement implements IElement {
 
   protected Annotation by = null;

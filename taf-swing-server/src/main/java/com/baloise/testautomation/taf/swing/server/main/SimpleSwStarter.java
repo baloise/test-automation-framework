@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.main;
 
 import java.io.File;
 import java.io.IOException;
 
-/**
- * 
- */
 public class SimpleSwStarter {
 
   public SimpleSwStarter() {

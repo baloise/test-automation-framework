@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
 
-/**
- * 
- */
 public class SwTabbedPaneProxy extends ASwElementProxy implements ISwTabbedPane<Long> {
 
   @Override

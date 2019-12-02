@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base;
 
 import static org.junit.Assert.assertEquals;
@@ -31,9 +23,6 @@ import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.base.types.TafString;
 
-/**
- * 
- */
 public class TestExcelDataLoader {
 
   @Test

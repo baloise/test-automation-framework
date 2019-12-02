@@ -1,19 +1,8 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
 
-/**
- * 
- */
 public class SwTreeProxy extends ASwElementProxy implements ISwTree<Long> {
 
   @Override

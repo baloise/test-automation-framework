@@ -1,20 +1,9 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.browser.elements;
 
 import com.baloise.testautomation.taf.base._interfaces.IRadiobutton;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafBoolean;
 
-/**
- * 
- */
 public abstract class ABrRadiobutton extends ABrInput implements IRadiobutton {
 
   @Override

@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base.excel;
 
 import com.baloise.testautomation.taf.base._base.DataRow;
@@ -45,9 +37,6 @@ import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
-/**
- * 
- */
 public class ExcelDataImporter implements IDataImporter {
 
   private static String mandantColName = "_mandant";

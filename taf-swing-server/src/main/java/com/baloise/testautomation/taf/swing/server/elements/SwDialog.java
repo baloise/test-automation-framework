@@ -9,15 +9,8 @@ import org.assertj.swing.fixture.DialogFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwDialog;
 
-/**
- * 
- */
 public class SwDialog extends ASwElement implements ISwDialog<Component> {
 
-  /**
-   * @param tid
-   * @param component
-   */
   public SwDialog(long tid, Dialog component) {
     super(tid, component);
   }

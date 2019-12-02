@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -18,9 +10,6 @@ import org.assertj.swing.fixture.JListFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwList;
 
-/**
- * 
- */
 public class SwList extends ASwElement implements ISwList<Component> {
 
   public SwList(long tid, JList component) {

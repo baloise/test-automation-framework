@@ -1,20 +1,9 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.browser.elements;
 
 import org.openqa.selenium.WebElement;
 
 import com.baloise.testautomation.taf.base._base.AElement;
 
-/**
- * 
- */
 public class BrElement extends AElement {
 
   @Override

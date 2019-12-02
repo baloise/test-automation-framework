@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package base;
 
 import java.io.File;
@@ -16,9 +8,6 @@ import org.openqa.selenium.WebDriver.Options;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
-/**
- * 
- */
 public class TBEFinders {
 
   public static TBEBrFinder tafBrowserExampleWebElementFinder = null;

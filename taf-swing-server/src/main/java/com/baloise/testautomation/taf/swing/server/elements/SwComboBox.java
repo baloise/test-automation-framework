@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -20,9 +12,6 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
 import com.baloise.testautomation.taf.swing.server.utils.LabelFinder;
 
-/**
- * 
- */
 public class SwComboBox extends ASwElement implements ISwComboBox<Component> {
 
   public SwComboBox(long tid, JComboBox component) {

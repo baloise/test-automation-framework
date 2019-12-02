@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.elements;
 
 import com.baloise.testautomation.taf.base._base.AInput;
@@ -18,9 +10,6 @@ import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
-/**
- * 
- */
 public class SwCheckBox extends AInput implements IData<TafBoolean> {
 
   @Override

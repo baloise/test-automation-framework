@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.utils;
 
 import java.awt.Component;
@@ -13,9 +5,6 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
-/**
- * 
- */
 public class LabelFinder {
 
   private Component component;

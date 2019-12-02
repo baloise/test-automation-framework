@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.client.proxies;
 
 import org.slf4j.Logger;
@@ -16,9 +8,6 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
-/**
- * 
- */
 public abstract class ASwElementProxy implements ISwElement<Long> {
 
   protected final Logger logger = LoggerFactory.getLogger(getClass());

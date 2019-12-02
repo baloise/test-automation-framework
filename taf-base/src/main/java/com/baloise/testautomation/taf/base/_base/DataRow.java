@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.base._base;
 
 import java.util.Hashtable;
@@ -14,9 +6,6 @@ import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafId;
 
-/**
- * 
- */
 public class DataRow implements IDataRow {
 
   private TafId id = null;

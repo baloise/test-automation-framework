@@ -1,11 +1,3 @@
-/*
- ===========================================================================
- @    $Author$
- @  $Revision$
- @      $Date$
- @
- ===========================================================================
- */
 package com.baloise.testautomation.taf.swing.server.elements;
 
 import java.awt.Component;
@@ -19,15 +11,8 @@ import org.assertj.swing.fixture.JPopupMenuFixture;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
 import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
 
-/**
- * 
- */
 public class SwMenuItem extends ASwElement implements ISwMenuItem<Component> {
 
-  /**
-   * @param tid
-   * @param component
-   */
   public SwMenuItem(long tid, JMenuItem component) {
     super(tid, component);
   }
