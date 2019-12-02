@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.baloise.testing.framework</groupId>
 		<artifactId>taf</artifactId>
-		<version>0.0.8-SNAPSHOT</version>
+		<version>0.0.8</version>
 	</parent>
 
 	<artifactId>taf-swing-base</artifactId>
