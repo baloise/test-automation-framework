@@ -1,8 +1,8 @@
 package com.baloise.testautomation.taf.base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -11,26 +11,25 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base.json.JsonDataImporter;
 import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestJsonDataLoader {
 
     private static File file;
     private JsonDataImporter jsonDataImporter;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws URISyntaxException {
         file = new File(TestJsonDataLoader.class.getResource("TestJsonDataLoader.json").toURI());
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         jsonDataImporter = new JsonDataImporter(file);
     }

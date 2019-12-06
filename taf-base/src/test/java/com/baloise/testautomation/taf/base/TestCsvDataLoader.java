@@ -1,9 +1,5 @@
 package com.baloise.testautomation.taf.base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -11,19 +7,22 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
 import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestCsvDataLoader {
 
   public static File file;
 
-  @BeforeClass
+  @BeforeAll
   public static void init() throws URISyntaxException {
     file = new File(TestCsvDataLoader.class.getResource("TestCsvDataLoader.csv").toURI());
   }

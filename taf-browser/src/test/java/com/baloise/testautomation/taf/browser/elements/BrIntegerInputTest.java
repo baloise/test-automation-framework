@@ -3,10 +3,10 @@ package com.baloise.testautomation.taf.browser.elements;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.browser.TafBrowserTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BrIntegerInputTest extends TafBrowserTest {
 
@@ -15,11 +15,14 @@ public class BrIntegerInputTest extends TafBrowserTest {
 
   @Test
   public void test() {
-    assertNull(integerInput.get().asInteger());
+    assertNull(integerInput.get()
+                           .asInteger());
     Integer expected = 12345;
     integerInput.setFill(new TafInteger(expected).asString());
     integerInput.fill();
-    assertEquals(expected, integerInput.get().asInteger());
+    assertEquals(expected,
+                 integerInput.get()
+                             .asInteger());
   }
 
   @Test

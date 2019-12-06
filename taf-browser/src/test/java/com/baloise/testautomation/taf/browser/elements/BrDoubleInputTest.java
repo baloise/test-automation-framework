@@ -3,10 +3,10 @@ package com.baloise.testautomation.taf.browser.elements;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
 import com.baloise.testautomation.taf.base.types.TafDouble;
 import com.baloise.testautomation.taf.browser.TafBrowserTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BrDoubleInputTest extends TafBrowserTest {
 
@@ -15,11 +15,14 @@ public class BrDoubleInputTest extends TafBrowserTest {
 
   @Test
   public void test() {
-    assertNull(doubleInput.get().asDouble());
+    assertNull(doubleInput.get()
+                          .asDouble());
     Double expected = 0.123D;
     doubleInput.setFill(new TafDouble(expected).asString());
     doubleInput.fill();
-    assertEquals(expected, doubleInput.get().asDouble());
+    assertEquals(expected,
+                 doubleInput.get()
+                            .asDouble());
   }
 
   @Test

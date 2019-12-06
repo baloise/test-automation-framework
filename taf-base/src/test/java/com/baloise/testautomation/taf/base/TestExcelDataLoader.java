@@ -1,8 +1,8 @@
 package com.baloise.testautomation.taf.base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,8 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.junit.Test;
-
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base.excel.ExcelDataImporter;
 import com.baloise.testautomation.taf.base.types.TafBoolean;
@@ -22,6 +20,7 @@ import com.baloise.testautomation.taf.base.types.TafDouble;
 import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.base.types.TafString;
+import org.junit.jupiter.api.Test;
 
 public class TestExcelDataLoader {
 

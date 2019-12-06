@@ -3,14 +3,15 @@ package com.baloise.testautomation.taf.browser;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
 import com.baloise.testautomation.taf.browser.elements.BrButton;
 import org.awaitility.Awaitility;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StaleElementTest extends TafBrowserTest {
 
@@ -22,7 +23,7 @@ public class StaleElementTest extends TafBrowserTest {
 
   private WebElement originalButtonElement;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     originalButtonElement = buttonBeingReplaced.find();
   }
@@ -30,15 +31,15 @@ public class StaleElementTest extends TafBrowserTest {
   @Test
   public void safeClickTest() {
     buttonBeingReplaced.safeClick(this);
-    assertEquals(
-        "Expecting the first invocation to fail, the safe invocation to retry, then the second invocation to be successful",
-        2,
-        buttonBeingReplaced.getFindInvocationCount());
+    assertEquals(2,
+                 buttonBeingReplaced.getFindInvocationCount(),
+                 "Expecting the first invocation to fail, the safe invocation to retry, then the second invocation " +
+                 "to be successful");
   }
 
-  @Test(expected = StaleElementReferenceException.class)
+  @Test
   public void unsafeClickTest() {
-    buttonBeingReplaced.unsafeClick(this);
+    assertThrows(StaleElementReferenceException.class, () -> buttonBeingReplaced.unsafeClick(this));
   }
 
   /**
@@ -48,7 +49,8 @@ public class StaleElementTest extends TafBrowserTest {
     replaceButton.click();
     Awaitility.await()
               .atMost(10L, TimeUnit.SECONDS)
-              .until(() -> !buttonBeingReplaced.find().equals(originalButtonElement));
+              .until(() -> !buttonBeingReplaced.find()
+                                               .equals(originalButtonElement));
   }
 
 }

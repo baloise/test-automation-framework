@@ -1,18 +1,17 @@
 package com.baloise.testautomation.taf.base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.DecimalFormatSymbols;
-
-import org.junit.Test;
 
 import com.baloise.testautomation.taf.base.types.TafBoolean;
 import com.baloise.testautomation.taf.base.types.TafComboString;
 import com.baloise.testautomation.taf.base.types.TafDouble;
 import com.baloise.testautomation.taf.base.types.TafInteger;
 import com.baloise.testautomation.taf.base.types.TafString;
+import org.junit.jupiter.api.Test;
 
 public class TestTafTypes {
 

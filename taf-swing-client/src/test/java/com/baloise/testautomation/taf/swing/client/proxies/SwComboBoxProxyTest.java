@@ -1,8 +1,8 @@
 package com.baloise.testautomation.taf.swing.client.proxies;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SwComboBoxProxyTest {
 
@@ -15,4 +15,5 @@ public class SwComboBoxProxyTest {
     assertEquals("männlich", splittedItems[1]);
     assertEquals("weiblich", splittedItems[2]);
   }
+
 }
