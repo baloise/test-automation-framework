@@ -5,43 +5,64 @@ import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
 import com.baloise.testautomation.taf.browser.elements.BrButton;
 import com.baloise.testautomation.taf.browser.elements.BrFinder;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
+import org.awaitility.Awaitility;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@Ignore("Unstable: used to try to reproduce a race condition")
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertEquals;
+
 public class StaleElementTest extends ABase {
-
-  private static final Logger logger = LoggerFactory.getLogger(StaleElementTest.class);
 
   private final HtmlUnitDriver webDriver = new HtmlUnitDriver(true);
   private final BrFinder brFinder = new BrFinder(webDriver);
 
-  @IAnnotations.ById("Button")
-  private BrButton button;
+  @IAnnotations.ById("ReplaceButton")
+  private BrButton replaceButton;
+
+  @IAnnotations.ById("ButtonBeingReplaced")
+  private MockBrButton buttonBeingReplaced;
+
+  private WebElement originalButtonElement;
 
   @Before
   public void setUp() {
-    String pathToHtmlFile = this.getClass()
-        .getResource("/StaleElementTestPage.html")
-        .getPath();
+    String pathToHtmlFile = this.getClass().getResource("/testPages/browser/StaleElementTestPage.html").getPath();
     webDriver.get("file://" + pathToHtmlFile);
+    originalButtonElement = buttonBeingReplaced.find();
   }
 
   @Test
-  public void test() {
-    for (int i = 0; i < 10000; i++) {
-      logger.debug(Integer.toString(i));
-      button.click();
-    }
+  public void safeClickTest() throws InterruptedException {
+    buttonBeingReplaced.safeClick(this);
+    assertEquals(
+        "Expecting the first invocation to fail, the safe invocation to retry, then the second invocation to be successful",
+        2,
+        buttonBeingReplaced.getFindInvocationCount());
+  }
+
+  @Test(expected = StaleElementReferenceException.class)
+  public void unsafeClickTest() {
+    buttonBeingReplaced.unsafeClick(this);
   }
 
   @Override
   public IFinder<?> getBrowserFinder() {
     return brFinder;
+  }
+
+  /**
+   * Replace the button in the DOM, making previously acquired WebElement references stale.
+   */
+  public void makeButtonWebElementStale() {
+    replaceButton.click();
+    Awaitility.await()
+              .atMost(10L, TimeUnit.SECONDS)
+              .until(() -> !buttonBeingReplaced.find().equals(originalButtonElement));
   }
 
 }

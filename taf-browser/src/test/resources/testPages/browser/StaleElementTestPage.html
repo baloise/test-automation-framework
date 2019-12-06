@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="Parent">
+    <button type="button" id="ReplaceButton" onclick="replaceButton()">Replace Button</button>
+    <button type="button" id="ButtonBeingReplaced">Button Being Replaced</button>
+</div>
+
+<script>
+    let currentButtonBeingReplaced = document.getElementById("ButtonBeingReplaced");
+    let newButton = null;
+
+    function replaceButton() {
+        newButton = currentButtonBeingReplaced.cloneNode(true);
+        document.getElementById("Parent").replaceChild(newButton, currentButtonBeingReplaced);
+        currentButtonBeingReplaced = newButton;
+        console.log("Button replaced.");
+    }
+</script>
+
+</body>
+</html>
