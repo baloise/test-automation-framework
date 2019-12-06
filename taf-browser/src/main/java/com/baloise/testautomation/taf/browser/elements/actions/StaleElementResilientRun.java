@@ -17,7 +17,7 @@ public class StaleElementResilientRun {
     Awaitility.await()
         .atMost(timeoutInMsecs, TimeUnit.MILLISECONDS)
         .pollDelay(0L, TimeUnit.MILLISECONDS)
-        .pollInterval(0L, TimeUnit.MILLISECONDS)
+        .pollInterval(10L, TimeUnit.MILLISECONDS)
         .until(() -> safeRun(runnable));
   }
 

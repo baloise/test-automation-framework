@@ -20,7 +20,7 @@ public class StaleElementResilientCall<T> {
     Awaitility.await()
         .atMost(timeoutInMsecs, TimeUnit.MILLISECONDS)
         .pollDelay(0L, TimeUnit.MILLISECONDS)
-        .pollInterval(0L, TimeUnit.MILLISECONDS)
+        .pollInterval(10L, TimeUnit.MILLISECONDS)
         .until(() -> safeCall(callable));
     return callResult;
   }
