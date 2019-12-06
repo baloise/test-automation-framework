@@ -1,25 +1,18 @@
 package com.baloise.testautomation.taf.browser;
 
-import com.baloise.testautomation.taf.base._base.ABase;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
 import com.baloise.testautomation.taf.browser.elements.BrButton;
-import com.baloise.testautomation.taf.browser.elements.BrFinder;
-import com.baloise.testautomation.taf.common.interfaces.IFinder;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
-public class StaleElementTest extends ABase {
-
-  private final HtmlUnitDriver webDriver = new HtmlUnitDriver(true);
-  private final BrFinder brFinder = new BrFinder(webDriver);
+public class StaleElementTest extends TafBrowserTest {
 
   @IAnnotations.ById("ReplaceButton")
   private BrButton replaceButton;
@@ -31,13 +24,11 @@ public class StaleElementTest extends ABase {
 
   @Before
   public void setUp() {
-    String pathToHtmlFile = this.getClass().getResource("/testPages/browser/StaleElementTestPage.html").getPath();
-    webDriver.get("file://" + pathToHtmlFile);
     originalButtonElement = buttonBeingReplaced.find();
   }
 
   @Test
-  public void safeClickTest() throws InterruptedException {
+  public void safeClickTest() {
     buttonBeingReplaced.safeClick(this);
     assertEquals(
         "Expecting the first invocation to fail, the safe invocation to retry, then the second invocation to be successful",
@@ -50,15 +41,10 @@ public class StaleElementTest extends ABase {
     buttonBeingReplaced.unsafeClick(this);
   }
 
-  @Override
-  public IFinder<?> getBrowserFinder() {
-    return brFinder;
-  }
-
   /**
    * Replace the button in the DOM, making previously acquired WebElement references stale.
    */
-  public void makeButtonWebElementStale() {
+  void makeButtonWebElementStale() {
     replaceButton.click();
     Awaitility.await()
               .atMost(10L, TimeUnit.SECONDS)
