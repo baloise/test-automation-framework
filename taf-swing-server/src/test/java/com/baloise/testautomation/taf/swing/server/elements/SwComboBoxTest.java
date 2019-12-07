@@ -1,13 +1,13 @@
 package com.baloise.testautomation.taf.swing.server.elements;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
-
-import org.junit.Test;
 
 public class SwComboBoxTest {
 

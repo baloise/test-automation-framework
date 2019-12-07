@@ -1,9 +1,10 @@
 package com.baloise.testautomation.taf.server;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.baloise.testautomation.taf.swing.server.main.SwApplication;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SwApplicationTest {
 
@@ -11,7 +12,7 @@ public class SwApplicationTest {
   public void formattedXMLToScreen() {
     SwApplication app = new SwApplication();
     String xml = app.storeFormatted("<frame><another>hello</another></frame>", null);
-    Assert.assertEquals(true, !xml.isEmpty());
+    assertEquals(true, !xml.isEmpty());
   }
 
   // @Test

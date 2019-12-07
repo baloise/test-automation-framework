@@ -1,14 +1,14 @@
 package com.baloise.testautomation.taf.utils;
 
-import static org.junit.Assert.assertEquals;
+import com.baloise.testautomation.taf.swing.server.utils.ChecksumHelper;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import org.junit.Test;
-
-import com.baloise.testautomation.taf.swing.server.utils.ChecksumHelper;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ChecksumHelperTest {
 
@@ -26,10 +26,11 @@ public class ChecksumHelperTest {
     assertEquals("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3", checksum);
   }
 
-  @Test(expected = NoSuchAlgorithmException.class)
-  public void testNoSuchChecksumAlgorithm() throws IOException, NoSuchAlgorithmException {
+  @Test
+  public void testNoSuchChecksumAlgorithm() {
     ChecksumHelper checksumHelper = new ChecksumHelper();
-    checksumHelper.getChecksum(new ByteArrayInputStream("".getBytes()), "bogus");
+    assertThrows(NoSuchAlgorithmException.class,
+                 () -> checksumHelper.getChecksum(new ByteArrayInputStream("".getBytes()), "bogus"));
   }
 
 }
