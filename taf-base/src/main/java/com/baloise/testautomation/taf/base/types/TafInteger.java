@@ -45,7 +45,9 @@ public class TafInteger extends TafType implements IType {
       Integer i = Integer.parseInt(value);
       return normalInteger(i);
     }
-    catch (Exception e) {}
+    catch (Exception e) {
+      // ignore Exception
+    }
     return customOrNullInteger(value);
   }
 
@@ -110,7 +112,7 @@ public class TafInteger extends TafType implements IType {
     Number n;
     try {
       n = format.parse(text);
-      value = new Integer(Math.round(n.floatValue()));
+      value = Math.round(n.floatValue());
     }
     catch (ParseException e) {
       fail("illegal number format");
@@ -141,7 +143,8 @@ public class TafInteger extends TafType implements IType {
   @Override
   public Double asDouble() {
     if (!isNull()) {
-      return new Double((Integer)value);
+      Integer intValue = (Integer)value;
+      return Double.parseDouble(String.valueOf(intValue));
     }
     return null;
   }
@@ -160,7 +163,7 @@ public class TafInteger extends TafType implements IType {
   @Override
   public Long asLong() {
     try {
-      return new Long(asInteger());
+      return Long.parseLong(String.valueOf(asInteger()));
     }
     catch (Exception e) {
       return null;

@@ -1,39 +1,24 @@
 package com.baloise.testautomation.taf.swing.client.proxies;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByLeftLabel;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByText;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByXpath;
 import com.baloise.testautomation.taf.common.interfaces.ISwApplication;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
 import com.baloise.testautomation.taf.common.utils.TafProperties;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwButton;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwCheckBox;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwComboBox;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwDialog;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwInput;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwInternalFrame;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwLabel;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwList;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwMenuItem;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwRadioButton;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwTabbedPane;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwTable;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwTextArea;
-import com.baloise.testautomation.taf.swing.base._interfaces.ISwTree;
+import com.baloise.testautomation.taf.swing.base._interfaces.*;
 import com.baloise.testautomation.taf.swing.base.client.interaction.InteractionController;
 import com.baloise.testautomation.taf.swing.base.client.interaction.MockInteractionController;
 import com.baloise.testautomation.taf.swing.base.client.interaction.RealInteractionController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
 import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
@@ -44,7 +29,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
 
   private static InteractionController interactionController = RealInteractionController.withoutJournal();
 
-  private Long id = 0l;
+  private Long id;
 
   public int serverTimeoutInMsecs = 50000;
 
@@ -122,7 +107,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     if (root == null) {
       return basicFind(null, annotation);
     }
-    return basicFind((Long)root.getReference(), annotation);
+    return basicFind(root.getReference(), annotation);
   }
 
   public ISwElement<Long> findByLeftLabel(Long root, ByLeftLabel annotation) {
@@ -161,7 +146,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   private TafProperties execApplicationCommand(Long root, String xpath, Command command) {
-    return execApplicationCommand(root, xpath, command, new Long(serverTimeoutInMsecs));
+    return execApplicationCommand(root, xpath, command, (long) serverTimeoutInMsecs);
   }
 
   @Override
@@ -178,7 +163,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
 
   @Override
   public List<ISwElement<Long>> findElementsByXpath(Long root, String xpath) {
-    List<ISwElement<Long>> result = new ArrayList<ISwElement<Long>>();
+    List<ISwElement<Long>> result = new ArrayList<>();
     TafProperties props = execApplicationCommand(root, xpath, Command.findelementsbyxpath);
     for (String key : props.keySet()) {
       ISwElement<Long> element = getElement(props, key);
@@ -188,15 +173,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     }
 
     // Order elements according to their TID, to fit ordering in swing hierarchy
-    Comparator<ISwElement<Long>> comparator = new Comparator<ISwElement<Long>>() {
-
-      @Override
-      public int compare(ISwElement<Long> element1, ISwElement<Long> element2) {
-        return (element1.getReference().intValue() - element2.getReference().intValue());
-      }
-
-    };
-    Collections.sort(result, comparator);
+    result.sort(Comparator.comparingInt(element -> element.getReference().intValue()));
     return result;
   }
 
@@ -205,10 +182,12 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     ISwElement<Long> element = createElement(props.getString(key));
     if (element != null) {
       try {
-        element.setReference(new Long(Long.parseLong(key)));
+        element.setReference(Long.parseLong(key));
         return element;
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+        // ignore exception
+      }
     }
     return null;
   }
@@ -400,7 +379,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
 
   @Override
   public Long getTimeoutInMsecs() {
-    return new Long(serverTimeoutInMsecs);
+    return (long) serverTimeoutInMsecs;
   }
 
   @Override

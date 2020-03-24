@@ -1,21 +1,7 @@
 package com.baloise.testautomation.taf.base._base;
 
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.CheckData;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.DataProvider;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Excel;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Fill;
-import com.baloise.testautomation.taf.base._interfaces.IAnnotations.PreserveNull;
-import com.baloise.testautomation.taf.base._interfaces.ICheck;
-import com.baloise.testautomation.taf.base._interfaces.IComponent;
-import com.baloise.testautomation.taf.base._interfaces.IData;
-import com.baloise.testautomation.taf.base._interfaces.IDataProvider;
-import com.baloise.testautomation.taf.base._interfaces.IDataRow;
-import com.baloise.testautomation.taf.base._interfaces.IElement;
-import com.baloise.testautomation.taf.base._interfaces.IFill;
-import com.baloise.testautomation.taf.base._interfaces.IType;
+import com.baloise.testautomation.taf.base._interfaces.*;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.*;
 import com.baloise.testautomation.taf.base.csv.CsvDataImporter;
 import com.baloise.testautomation.taf.base.excel.ExcelDataImporter;
 import com.baloise.testautomation.taf.base.types.TafId;
@@ -31,17 +17,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertFalse;
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
-import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
+import static com.baloise.testautomation.taf.base._base.TafAssert.*;
 
 public abstract class ABase implements IComponent {
 
@@ -85,10 +63,7 @@ public abstract class ABase implements IComponent {
       catch (InvocationTargetException e1) {
         fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
       }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
+      catch (IllegalArgumentException | IllegalAccessException e) {
         e.printStackTrace();
       }
     }
@@ -118,10 +93,7 @@ public abstract class ABase implements IComponent {
       catch (InvocationTargetException e1) {
         fail("error in field-fill-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
       }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
+      catch (IllegalArgumentException | IllegalAccessException e) {
         e.printStackTrace();
       }
     }
@@ -245,7 +217,7 @@ public abstract class ABase implements IComponent {
 
   public List<Field> getCheckDataFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
-    List<Field> result = new ArrayList<Field>();
+    List<Field> result = new ArrayList<>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(CheckData.class)) {
         result.add(field);
@@ -256,19 +228,13 @@ public abstract class ABase implements IComponent {
 
   public List<Field> getCheckFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
-    List<Field> result = new ArrayList<Field>();
+    List<Field> result = new ArrayList<>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(Check.class)) {
         result.add(field);
       }
     }
-    Collections.sort(result, new Comparator<Field>() {
-      @Override
-      public int compare(Field f1, Field f2) {
-        return new Integer(f1.getAnnotation(Check.class).value())
-            .compareTo(new Integer(f2.getAnnotation(Check.class).value()));
-      }
-    });
+    result.sort(Comparator.comparingInt(f -> f.getAnnotation(Check.class).value()));
     return result;
   }
 
@@ -278,7 +244,7 @@ public abstract class ABase implements IComponent {
 
   public List<Field> getDataFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
-    List<Field> result = new ArrayList<Field>();
+    List<Field> result = new ArrayList<>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(Data.class)) {
         result.add(field);
@@ -317,19 +283,13 @@ public abstract class ABase implements IComponent {
 
   public List<Field> getFillFields() {
     List<Field> fields = makeFieldsAccessible(getAllFields());
-    List<Field> result = new ArrayList<Field>();
+    List<Field> result = new ArrayList<>();
     for (Field field : fields) {
       if (field.isAnnotationPresent(Fill.class)) {
         result.add(field);
       }
     }
-    Collections.sort(result, new Comparator<Field>() {
-      @Override
-      public int compare(Field f1, Field f2) {
-        return new Integer(f1.getAnnotation(Fill.class).value())
-            .compareTo(new Integer(f2.getAnnotation(Fill.class).value()));
-      }
-    });
+    result.sort(Comparator.comparingInt(f -> f.getAnnotation(Fill.class).value()));
     return result;
   }
 
@@ -508,8 +468,7 @@ public abstract class ABase implements IComponent {
 
   private Collection<IDataRow> loadCsvFrom(File f, String idAndDetail) {
     CsvDataImporter csvImporter = new CsvDataImporter(f);
-    Collection<IDataRow> dataRows = csvImporter.getWith(new TafId(idAndDetail));
-    return dataRows;
+    return csvImporter.getWith(new TafId(idAndDetail));
   }
 
   public Collection<IDataRow> loadExcel(Class<?> klass, String qualifierAndIdAndDetail, String suffix) {
@@ -518,15 +477,16 @@ public abstract class ABase implements IComponent {
     try (InputStream is = ResourceHelper.getResource(klass, filename).openStream()) {
       return loadExcelFrom(is, idAndDetail);
     }
-    catch (Exception e) {}
+    catch (Exception e) {
+      // ignore Exception
+    }
     fail("excel file with data NOT found: " + filename + " --> " + idAndDetail);
     return null;
   }
 
   public Collection<IDataRow> loadExcelFrom(InputStream is, String idAndDetail) {
     ExcelDataImporter edl = new ExcelDataImporter(is, 0);
-    Collection<IDataRow> dataRows = edl.getWith(new TafId(idAndDetail));
-    return dataRows;
+    return edl.getWith(new TafId(idAndDetail));
     // Vector<IDataRow> tempData = new Vector<IDataRow>();
     // tempData.addAll(dataRows);
     // return tempData.get(0);
@@ -629,10 +589,7 @@ public abstract class ABase implements IComponent {
           }
         }
       }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
+      catch (IllegalArgumentException | IllegalAccessException e) {
         e.printStackTrace();
       }
     }
@@ -696,10 +653,7 @@ public abstract class ABase implements IComponent {
                     + getClass());
         }
       }
-      catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      }
-      catch (IllegalAccessException e) {
+      catch (IllegalArgumentException | IllegalAccessException e) {
         e.printStackTrace();
       }
     }
@@ -769,9 +723,11 @@ public abstract class ABase implements IComponent {
 
   public void sleep(double seconds) {
     try {
-      Thread.sleep(new Double(seconds * 1000).longValue());
+      Thread.sleep(Double.valueOf(seconds * 1000).longValue());
     }
-    catch (Exception e) {}
+    catch (Exception e) {
+      // ignore exception
+    }
   }
 
 }

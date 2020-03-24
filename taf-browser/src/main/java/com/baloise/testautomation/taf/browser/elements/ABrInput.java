@@ -31,7 +31,7 @@ public abstract class ABrInput extends AInput {
       if (!checkValue.isSkip() && checkValue.isNotNull()) {
         String text = null;
         try {
-          int timeout = new Double(((Check)check).timeout() * 1000).intValue();
+          int timeout = Double.valueOf(((Check) check).timeout() * 1000).intValue();
           if (timeout > 0) {
             long time = System.currentTimeMillis();
             while (System.currentTimeMillis() < time + timeout) {
@@ -48,7 +48,9 @@ public abstract class ABrInput extends AInput {
             }
           }
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+          // ignore exception
+        }
         // find for non-timeout-case --> if it's an input --> value is needed
         if (text == null) {
           text = getFinder().safeInvoke(() -> find().getAttribute("value"));

@@ -2,11 +2,7 @@ package com.baloise.testautomation.taf.swing.server.main;
 
 import static com.baloise.testautomation.taf.swing.server.utils.Encoder.asEscapedXmlString;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -14,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -94,8 +91,13 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   public void allCellsToXML(StringBuilder xml, JTable table) {
     info("Adding cells for: " + table);
     for (int c = 0; c < table.getColumnCount(); c++) {
-      xml.append("<header tid = \"" + counter + "\" col = \"" + c + "\" value = \""
-          + asEscapedXml(table.getColumnModel().getColumn(c).getHeaderValue().toString()) + "\"></header>");
+      xml.append("<header tid = \"")
+              .append(counter)
+              .append("\" col = \"")
+              .append(c)
+              .append("\" value = \"")
+              .append(asEscapedXml(table.getColumnModel().getColumn(c).getHeaderValue().toString()))
+              .append("\"></header>");
       components.put(counter, new SwTableColumn(counter, c, table));
       counter++;
     }
@@ -108,8 +110,15 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         catch (Exception e) {
           info("cellText is null: row = " + r + ", column = " + c);
         }
-        xml.append("<cell tid = \"" + counter + "\" row = \"" + r + "\" col = \"" + c + "\" value = \""
-            + asEscapedXml(cellText) + "\"></cell>");
+        xml.append("<cell tid = \"")
+                .append(counter)
+                .append("\" row = \"")
+                .append(r)
+                .append("\" col = \"")
+                .append(c)
+                .append("\" value = \"")
+                .append(asEscapedXml(cellText))
+                .append("\"></cell>");
         components.put(counter, new SwCell(counter, r, c, table));
         counter++;
       }
@@ -118,7 +127,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public String allComponentsToXML(Component c) {
     xml = new StringBuilder();
-    components = new Hashtable<Long, ISwElement<Component>>();
+    components = new Hashtable<>();
     counter = 0;
     allComponentsToXML(xml, c);
     return xml.toString();
@@ -182,9 +191,6 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         }
       }
     }
-    else {
-      // System.out.println(c.toString());
-    }
     // level--;
     xml.append("</");
     xml.append(se.getType());
@@ -194,12 +200,12 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public void allListItemsToXML(StringBuilder xml, JList list) {
     for (int i = 0; i < list.getModel().getSize(); i++) {
-      String s = "";
+      String s;
       try {
         String text = list.getModel().getElementAt(i).toString();
         s = "<!-- " + text + " -->";
-        s = s + System.getProperty("line.separator");
-        s = s + "<listitem index=\"" + i + "\">" + asEscapedXml(text) + "</listitem>";
+        s += System.getProperty("line.separator");
+        s += "<listitem index=\"" + i + "\">" + asEscapedXml(text) + "</listitem>";
       }
       catch (Exception e) {
         s = "<listitem index=\"-1\">" + e.getMessage() + "</listitem>";
@@ -214,11 +220,12 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       if (title.isEmpty()) {
         title = "untitled-" + i;
       }
-      xml.append("<tab title=\"" + title + "\">");
-      xml.append(System.getProperty("line.separator"));
+      xml.append("<tab title=\"")
+              .append(title).append("\">")
+              .append(System.getProperty("line.separator"));
       allComponentsToXML(xml, tabbedPane.getComponentAt(i));
-      xml.append("</tab>");
-      xml.append(System.getProperty("line.separator"));
+      xml.append("</tab>")
+              .append(System.getProperty("line.separator"));
     }
   }
 
@@ -236,35 +243,43 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     if (Command.findelementbyxpath.toString().equalsIgnoreCase(command)) {
       try {
         ASwElement element = (ASwElement)findElementByXpath(props.getLong(paramRoot), props.getString(paramXPath));
-        result.putObject(new Long(element.getTID()).toString(), element.getType());
+        result.putObject(Long.toString(element.getTID()), element.getType());
         return result;
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+        // ignore exception
+      }
     }
     if (Command.findelementsbyxpath.toString().equalsIgnoreCase(command)) {
       try {
         List<ISwElement<Component>> elements = findElementsByXpath(props.getLong(paramRoot),
             props.getString(paramXPath));
         for (ISwElement<Component> element : elements) {
-          result.putObject(new Long(((ASwElement)element).getTID()).toString(), element.getType());
+          result.putObject(Long.toString(((ASwElement) element).getTID()), element.getType());
         }
         return result;
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+        // ignore exception
+      }
     }
     if (Command.sendkeys.toString().equalsIgnoreCase(command)) {
       try {
         sendKeys(props.getString(paramKeys));
         return result;
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+        // ignore exception
+      }
     }
     if (Command.storehierarchy.toString().equalsIgnoreCase(command)) {
       try {
         storeHierarchy(props.getString(paramPath));
         return result;
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+        // ignore exception
+      }
     }
     Command c = getCommand(Command.class, command);
     switch (c) {
@@ -302,7 +317,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       try {
         return Enum.valueOf(c, command.trim().toLowerCase());
       }
-      catch (IllegalArgumentException e) {}
+      catch (IllegalArgumentException e) {
+        // ignore exception
+      }
     }
     return null;
   }
@@ -377,9 +394,8 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         return null;
       }
       // System.out.println("XML: " + xml);
-      NodeList result = (NodeList)expression.evaluate(new org.xml.sax.InputSource(new StringReader(xml)),
+      return (NodeList)expression.evaluate(new InputSource(new StringReader(xml)),
           XPathConstants.NODESET);
-      return result;
     }
     catch (XPathExpressionException e) {
       e.printStackTrace();
@@ -406,7 +422,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
         setRoot();
         NodeList nl = findAllByXpath(root, s);
         if (nl.getLength() > 0) {
-          Vector<ISwElement<Component>> result = new Vector<ISwElement<Component>>();
+          Vector<ISwElement<Component>> result = new Vector<>();
           for (int i = 0; i < nl.getLength(); i++) {
             try {
               String l = nl.item(i).getAttributes().getNamedItem("tid").getNodeValue();
@@ -415,7 +431,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
               System.out.println(nl.item(i));
               result.add(components.get(Long.parseLong(l)));
             }
-            catch (Exception e) {}
+            catch (Exception e) {
+              // ignore exception
+            }
           }
           return result;
         }
@@ -423,14 +441,18 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
           try {
             Thread.sleep(100);
           }
-          catch (Exception e2) {}
+          catch (Exception e2) {
+            // ignore exception
+          }
         }
       }
       catch (Exception e) {
         try {
           Thread.sleep(100);
         }
-        catch (Exception e2) {}
+        catch (Exception e2) {
+          // ignore exception
+        }
         // e.printStackTrace();
       }
       if (System.currentTimeMillis() > time + timeoutInMsecs) {
@@ -438,7 +460,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       }
     }
     info("timed out");
-    return new Vector<ISwElement<Component>>();
+    return new Vector<>();
   }
 
   public ISwElement<Component> get(long tid) {
@@ -454,7 +476,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public ISwElement<Component> getSwElement(long tid, Component c) {
     if (c instanceof Frame) {
-      return new SwFrame(tid, (Frame)c);
+      return new SwFrame(tid, c);
     }
     if (c instanceof JInternalFrame) {
       return new SwInternalFrame(tid, (JInternalFrame)c);
@@ -559,7 +581,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       }
       else {
         try {
-          Writer fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"));
+          Writer fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8));
           fw.write(xmlAsString);
           fw.close();
         }
