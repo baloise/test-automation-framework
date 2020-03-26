@@ -4,9 +4,7 @@
 
 [![gitpod-IDE](https://img.shields.io/badge/open--IDE-as--gitpod-blue.svg?style=flat&label=openIDE)](https://gitpod.io#https://github.com/baloise/test-automation-framework)
 
-## travis [![Travis Status](https://travis-ci.org/baloise/test-automation-framework.svg?branch=master)](https://travis-ci.org/baloise/test-automation-framework) 
-
-## circle ci [![CircleCI Status](https://circleci.com/gh/baloise/test-automation-framework.svg?style=svg)](https://circleci.com/gh/baloise/test-automation-framework)
+![CI](https://github.com/baloise/test-automation-framework/workflows/CI/badge.svg)
 
 # TAF is a test automation framework based on JUnit and Selenium 
 ```
