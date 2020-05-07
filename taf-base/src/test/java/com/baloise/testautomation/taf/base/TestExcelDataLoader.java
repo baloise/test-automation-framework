@@ -59,8 +59,7 @@ public class TestExcelDataLoader {
         new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("int", "TEst", "1"));
     assertEquals(1, data.size());
-    Vector<IDataRow> vData = new Vector<>();
-    vData.addAll(data);
+    Vector<IDataRow> vData = new Vector<>(data);
     assertEquals(TafInteger.class, vData.get(0).get("INTEGER").getClass());
     assertEquals(TafDouble.class, vData.get(0).get("double").getClass());
     assertEquals(TafDate.class, vData.get(0).get("date").getClass());
@@ -74,10 +73,9 @@ public class TestExcelDataLoader {
         new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("int", "TEst", "2"));
     assertEquals(1, data.size());
-    Vector<IDataRow> vData = new Vector<>();
-    vData.addAll(data);
+    Vector<IDataRow> vData = new Vector<>(data);
     assertEquals(2, vData.get(0).get("INTEGER").asInteger().intValue());
-    assertEquals(new Double(2.2), vData.get(0).get("Double").asDouble());
+    assertEquals(Double.valueOf(2.2), vData.get(0).get("Double").asDouble());
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     try {
       assertEquals(sdf.parse("02.02.2000"), vData.get(0).get("date").asDate());
@@ -95,8 +93,7 @@ public class TestExcelDataLoader {
         new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("test", "othertest", ""));
     assertEquals(1, data.size());
-    Vector<IDataRow> vData = new Vector<>();
-    vData.addAll(data);
+    Vector<IDataRow> vData = new Vector<>(data);
     assertTrue(vData.get(0).get("INTEGER").isNull());
     assertTrue(vData.get(0).get("double").isSkip());
     assertTrue(vData.get(0).get("date").isEmpty());
@@ -111,8 +108,7 @@ public class TestExcelDataLoader {
         new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("test", "string", ""));
     assertEquals(1, data.size());
-    Vector<IDataRow> vData = new Vector<>();
-    vData.addAll(data);
+    Vector<IDataRow> vData = new Vector<>(data);
     assertTrue(vData.get(0).get("INTEGER") instanceof TafString);
     assertTrue(vData.get(0).get("double") instanceof TafString);
 
@@ -124,8 +120,7 @@ public class TestExcelDataLoader {
         new File(getClass().getResource("TestExcelDataLoader.xls").toURI()), 0);
     Collection<IDataRow> data = edl.getWith(new TafId("int", "TEst", ""));
     assertEquals(2, data.size());
-    Vector<IDataRow> vData = new Vector<>();
-    vData.addAll(data);
+    Vector<IDataRow> vData = new Vector<>(data);
     assertTrue(vData.get(0).getId().asIdDetailString().equalsIgnoreCase("test-1"));
     assertTrue(vData.get(1).getId().asIdDetailString().equalsIgnoreCase("test-2"));
   }

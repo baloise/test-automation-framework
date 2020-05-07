@@ -90,7 +90,7 @@ public class TafBoolean extends TafType {
   public BigDecimal asBigDecimal() {
     Long l = asLong();
     if (l != null) {
-      return BigDecimal.valueOf(l.longValue());
+      return BigDecimal.valueOf(l);
     }
     else {
       return null;
@@ -117,7 +117,7 @@ public class TafBoolean extends TafType {
   @Override
   public Double asDouble() {
     try {
-      return new Double(asInteger());
+      return Double.parseDouble(String.valueOf(asInteger()));
     }
     catch (Exception e) {
       return null;
@@ -129,7 +129,7 @@ public class TafBoolean extends TafType {
     if (isNotBoolean()) {
       return null;
     }
-    if (((Boolean)value).booleanValue()) {
+    if ((Boolean) value) {
       return 1;
     }
     return 0;
@@ -138,7 +138,7 @@ public class TafBoolean extends TafType {
   @Override
   public Long asLong() {
     try {
-      return new Long(asInteger());
+      return Long.parseLong(String.valueOf(asInteger()));
     }
     catch (Exception e) {
       return null;
@@ -150,7 +150,7 @@ public class TafBoolean extends TafType {
     if (result == null) {
       return false;
     }
-    return result.booleanValue();
+    return result;
   }
 
   @Override
@@ -177,7 +177,7 @@ public class TafBoolean extends TafType {
     if (isNotBoolean()) {
       return null;
     }
-    if (((Boolean)value).booleanValue()) {
+    if ((Boolean) value) {
       return TRUE;
     }
     return FALSE;

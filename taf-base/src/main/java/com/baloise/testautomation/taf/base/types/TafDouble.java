@@ -43,7 +43,9 @@ public class TafDouble extends TafType implements IType {
       Double d = Double.parseDouble(value);
       return normalDouble(d);
     }
-    catch (Exception e) {}
+    catch (Exception e) {
+      //ignore exception
+    }
     return customOrNullDouble(value);
   }
 
@@ -107,7 +109,7 @@ public class TafDouble extends TafType implements IType {
     Number n;
     try {
       n = format.parse(text);
-      value = new Double(n.doubleValue());
+      value = Double.parseDouble(String.valueOf(n.doubleValue()));
     }
     catch (ParseException e) {
       fail("illegal number format");
@@ -119,7 +121,7 @@ public class TafDouble extends TafType implements IType {
   public BigDecimal asBigDecimal() {
     Double d = asDouble();
     if (d != null) {
-      return BigDecimal.valueOf(d.doubleValue());
+      return BigDecimal.valueOf(d);
     }
     else {
       return null;
@@ -187,8 +189,7 @@ public class TafDouble extends TafType implements IType {
     }
     if (value != null) {
       DecimalFormat resultFormat = new DecimalFormat(decimalFormat);
-      String formattedString = resultFormat.format(value);
-      return formattedString;
+      return resultFormat.format(value);
     }
     return null;
   }

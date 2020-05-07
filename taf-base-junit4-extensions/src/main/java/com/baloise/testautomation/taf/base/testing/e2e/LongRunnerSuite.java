@@ -1,9 +1,5 @@
 package com.baloise.testautomation.taf.base.testing.e2e;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,6 +17,8 @@ import org.junit.runners.model.InitializationError;
 
 import com.baloise.testautomation.taf.base.testing.e2e.LongRunner.LongRunnerInfo;
 
+import static org.junit.Assert.*;
+
 public class LongRunnerSuite extends Suite {
 
   @Retention(RetentionPolicy.RUNTIME)
@@ -28,7 +26,7 @@ public class LongRunnerSuite extends Suite {
   public @interface LongRunnerInit {
   }
 
-  private static Vector<LongRunnerInfo> longRunnerInfo = new Vector<LongRunnerInfo>();
+  private static Vector<LongRunnerInfo> longRunnerInfo = new Vector<>();
   private static int currentIndex = 0;
 
   public static void addLongRunnerInfosFor(Class<?>... testClasses) {
@@ -48,10 +46,10 @@ public class LongRunnerSuite extends Suite {
     for (Method method : methods) {
       if (method.isAnnotationPresent(LongRunnerInit.class)) {
         try {
-          method.invoke(testClass, new Object[] {});
+          method.invoke(testClass);
         }
         catch (Exception e) {
-          assertNull("Mit 'LongRunnerInit' annotierte Methode konnte nicht ausgeführt werden. Muss 'static' sein.", e);
+          fail("Mit 'LongRunnerInit' annotierte Methode konnte nicht ausgeführt werden. Muss 'static' sein.");
         }
       }
     }

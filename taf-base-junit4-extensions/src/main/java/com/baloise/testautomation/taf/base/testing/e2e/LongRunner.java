@@ -50,11 +50,11 @@ public class LongRunner extends OrderedRunner {
 
     public LongRunnerClassInfo() {
       testClass = null;
-      methods = new Vector<LongRunnerMethodInfo>();
+      methods = new Vector<>();
     }
 
     public LongRunnerClassInfo(Class<?> aTestClass) {
-      this(aTestClass, new Vector<LongRunnerMethodInfo>());
+      this(aTestClass, new Vector<>());
     }
 
     public LongRunnerClassInfo(Class<?> aTestClass, Collection<LongRunnerMethodInfo> methods) {
@@ -114,7 +114,7 @@ public class LongRunner extends OrderedRunner {
     }
 
     private Field[] getFields() {
-      List<Field> dataFields = new ArrayList<Field>();
+      List<Field> dataFields = new ArrayList<>();
       Field[] fields = testClass.getFields();
       for (Field field : fields) {
         if (field.isAnnotationPresent(Data.class)) {
@@ -160,9 +160,7 @@ public class LongRunner extends OrderedRunner {
     }
 
     public void loadData() {
-      FileReader fileReader = null;
-      try {
-        fileReader = new FileReader(getDataFileName(false));
+      try (FileReader fileReader = new FileReader(getDataFileName(false))) {
         Properties data = getData();
         data.load(fileReader);
         for (Object key : data.keySet()) {
@@ -194,35 +192,20 @@ public class LongRunner extends OrderedRunner {
             }
           }
           catch (Exception e) {
-            assertTrue("Some error occurred when trying to set variable " + key + " to " + data.get(key), false);
+            fail("Some error occurred when trying to set variable " + key + " to " + data.get(key));
           }
         }
       }
       catch (IOException e) {
         fail("store of test data has NOT been correctly done");
       }
-      finally {
-        try {
-          fileReader.close();
-        }
-        catch (Exception e) {}
-      }
     }
 
     public void loadProcess() {
-      FileReader fileReader = null;
-      try {
-        fileReader = new FileReader(getProcessFileName(false));
+      try (FileReader fileReader = new FileReader(getProcessFileName(false))) {
         methods = LongRunnerMethodInfo.loadWith(fileReader);
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         fail("load of test state information has NOT been correctly done");
-      }
-      finally {
-        try {
-          fileReader.close();
-        }
-        catch (Exception e) {}
       }
     }
 
@@ -237,37 +220,19 @@ public class LongRunner extends OrderedRunner {
     }
 
     public void storeData() {
-      FileWriter fileWriter = null;
-      try {
-        fileWriter = new FileWriter(getDataFileName(false));
+      try (FileWriter fileWriter = new FileWriter(getDataFileName(false))) {
         Properties data = getData();
         data.store(fileWriter, "Data for long running JUnit test");
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         fail("store of test data has NOT been correctly done");
-      }
-      finally {
-        try {
-          fileWriter.close();
-        }
-        catch (Exception e) {}
       }
     }
 
     public void storeProcess() {
-      FileWriter fileWriter = null;
-      try {
-        fileWriter = new FileWriter(getProcessFileName(false));
+      try (FileWriter fileWriter = new FileWriter(getProcessFileName(false))) {
         LongRunnerMethodInfo.print(fileWriter, methods);
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         fail("store of test state information has NOT been correctly done");
-      }
-      finally {
-        try {
-          fileWriter.close();
-        }
-        catch (Exception e) {}
       }
     }
 
@@ -288,7 +253,7 @@ public class LongRunner extends OrderedRunner {
     public int compareTo(Object o) {
       if (o instanceof LongRunnerInfo) {
         LongRunnerInfo lri = (LongRunnerInfo)o;
-        return new Long(id).compareTo(new Long(lri.id));
+        return Long.compare(id, lri.id);
       }
       return 0;
     }
@@ -306,7 +271,6 @@ public class LongRunner extends OrderedRunner {
       if (colIndex >= 0) {
         return line.get(colIndex);
       }
-      ;
       return "";
     }
 
@@ -324,7 +288,7 @@ public class LongRunner extends OrderedRunner {
 
     public static Collection<LongRunnerMethodInfo> loadWith(FileReader fileReader) throws IOException {
       CSVParser csvParser = new CSVParser(fileReader, getCSVFormat());
-      Vector<LongRunnerMethodInfo> result = new Vector<LongRunnerMethodInfo>();
+      Vector<LongRunnerMethodInfo> result = new Vector<>();
       List<CSVRecord> records = csvParser.getRecords();
       CSVRecord header = null;
       for (int i = 0; i < records.size(); i++) {
@@ -369,11 +333,11 @@ public class LongRunner extends OrderedRunner {
 
     private TestStatus lastStatus = TestStatus.unknown;
 
-    private Date modified = null;
+    private Date modified;
 
-    private Date nextTry = null;
+    private Date nextTry;
 
-    private Date lastTry = null;
+    private Date lastTry;
 
     public LongRunnerMethodInfo(String aMethodName, TestStatus aLastStatus, Date aModified, Date aNextTry, Date aLastTry) {
       methodName = aMethodName;
@@ -470,9 +434,9 @@ public class LongRunner extends OrderedRunner {
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.METHOD)
   public @interface Suspend {
-    public double firstTryAfterHours() default 0.01;
+    double firstTryAfterHours() default 0.01;
 
-    public double maxHours() default 1.0;
+    double maxHours() default 1.0;
   }
 
   public enum TestStatus {
@@ -484,19 +448,14 @@ public class LongRunner extends OrderedRunner {
   private static String path = "";
 
   public static Collection<LongRunnerInfo> getFor(Class<?> testClass) {
-    Vector<LongRunnerInfo> result = new Vector<LongRunner.LongRunnerInfo>();
+    Vector<LongRunnerInfo> result = new Vector<>();
     // TODO korrekte Prüfung
     assertTrue("Test class must be annotated with a Runner that is a LongRunner or a subclass of it", true);
 
     final String testClassName = testClass.getName();
-    FilenameFilter fnf = new FilenameFilter() {
-      @Override
-      public boolean accept(File dir, String name) {
-        return name.startsWith(testClassName) && name.endsWith(".csv");
-      }
-    };
+    FilenameFilter fnf = (dir, name) -> name.startsWith(testClassName) && name.endsWith(".csv");
     File dir;
-    if (path == null | path.isEmpty()) {
+    if (path == null || path.isEmpty()) {
       dir = new File(".");
     }
     else {
@@ -504,10 +463,11 @@ public class LongRunner extends OrderedRunner {
     }
     final File[] files = dir.listFiles(fnf);
 
-    for (File file : files) {
-      final String id = file.getName().replace(testClassName, "").replace(".csv", "").replace(".", "");
-      Long l = Long.parseLong(id);
-      result.add(new LongRunnerInfo(testClass, l));
+    if (files != null) {
+      for (File file : files) {
+        final String id = file.getName().replace(testClassName, "").replace(".csv", "").replace(".", "");
+        result.add(new LongRunnerInfo(testClass, Long.parseLong(id)));
+      }
     }
     return result;
   }
@@ -562,7 +522,7 @@ public class LongRunner extends OrderedRunner {
     if (lrmi.isPassed()) {
       return new Statement() {
         @Override
-        public void evaluate() throws Throwable {
+        public void evaluate() {
           m.getName();
           info(m.getName() + " has passed in a previous test");
         }
@@ -571,7 +531,7 @@ public class LongRunner extends OrderedRunner {
     if (lrmi.isFailed()) {
       return new Statement() {
         @Override
-        public void evaluate() throws Throwable {
+        public void evaluate() {
           Assert.fail(m.getName() + "has failed in a previous test run");
         }
       };
@@ -580,7 +540,7 @@ public class LongRunner extends OrderedRunner {
       if (lrmi.cantResumeAnymore()) {
         return new Statement() {
           @Override
-          public void evaluate() throws Throwable {
+          public void evaluate() {
             Assert.fail(m.getName() + " has timeout and cannot be resumed anymore");
           }
         };
@@ -593,7 +553,7 @@ public class LongRunner extends OrderedRunner {
           LongRunnerMethodInfo lrmi = aLrmi;
 
           @Override
-          public void evaluate() throws Throwable {
+          public void evaluate() {
             try {
               superStatement.evaluate();
               lrmi.setToPassed();

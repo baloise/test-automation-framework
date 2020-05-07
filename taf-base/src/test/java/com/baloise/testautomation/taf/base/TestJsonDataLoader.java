@@ -51,8 +51,7 @@ public class TestJsonDataLoader {
     public void rowContents1() {
         Collection<IDataRow> data = jsonDataImporter.getWith(new TafId("int", "TEst", "1"));
         assertEquals(1, data.size());
-        Vector<IDataRow> vData = new Vector<>();
-        vData.addAll(data);
+        Vector<IDataRow> vData = new Vector<>(data);
         assertEquals(TafString.class, vData.get(0).get("INTEGER").getClass());
         assertEquals(TafString.class, vData.get(0).get("double").getClass());
         assertEquals(TafString.class, vData.get(0).get("date").getClass());
@@ -64,10 +63,9 @@ public class TestJsonDataLoader {
     public void rowContents2() {
         Collection<IDataRow> data = jsonDataImporter.getWith(new TafId("int", "TEst", "2"));
         assertEquals(1, data.size());
-        Vector<IDataRow> vData = new Vector<>();
-        vData.addAll(data);
+        Vector<IDataRow> vData = new Vector<>(data);
         assertEquals(2, vData.get(0).get("INTEGER").asInteger().intValue());
-        assertEquals(new Double(2.2), vData.get(0).get("Double").asDouble());
+        assertEquals(Double.valueOf(2.2), vData.get(0).get("Double").asDouble());
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         try {
             System.out.println(vData.get(0).get("date").asDate());
@@ -81,11 +79,10 @@ public class TestJsonDataLoader {
     }
 
     @Test
-    public void rowContents3() throws URISyntaxException {
+    public void rowContents3() {
         Collection<IDataRow> data = jsonDataImporter.getWith(new TafId("test", "othertest", ""));
         assertEquals(1, data.size());
-        Vector<IDataRow> vData = new Vector<>();
-        vData.addAll(data);
+        Vector<IDataRow> vData = new Vector<>(data);
         assertTrue(vData.get(0).get("INTEGER").isNull());
         assertTrue(vData.get(0).get("double").isSkip());
         assertTrue(vData.get(0).get("date").isEmpty());
@@ -98,8 +95,7 @@ public class TestJsonDataLoader {
     public void rowContents4() {
         Collection<IDataRow> data = jsonDataImporter.getWith(new TafId("test", "string", ""));
         assertEquals(1, data.size());
-        Vector<IDataRow> vData = new Vector<>();
-        vData.addAll(data);
+        Vector<IDataRow> vData = new Vector<>(data);
         assertTrue(vData.get(0).get("INTEGER") instanceof TafString);
         assertTrue(vData.get(0).get("double") instanceof TafString);
 
@@ -109,8 +105,7 @@ public class TestJsonDataLoader {
     public void rowTafId() {
         Collection<IDataRow> data = jsonDataImporter.getWith(new TafId("int", "TEst", ""));
         assertEquals(2, data.size());
-        Vector<IDataRow> vData = new Vector<>();
-        vData.addAll(data);
+        Vector<IDataRow> vData = new Vector<>(data);
         System.out.println(vData.get(0).getId().asIdDetailString());
         assertTrue(vData.get(0).getId().asIdDetailString().equalsIgnoreCase("test-1"));
         assertTrue(vData.get(1).getId().asIdDetailString().equalsIgnoreCase("test-2"));

@@ -36,9 +36,9 @@ import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
 
 public class BrFinder implements IBrowserFinder<WebElement> {
 
-  protected WebDriver driver = null;
+  protected WebDriver driver;
 
-  protected int timeoutInSeconds = 10;
+  protected int timeoutInSeconds;
 
   private Map<Class<? extends Annotation>, WebElementFinder> supportedFinders = new HashMap<>();
 
@@ -87,12 +87,6 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   protected void assertDriverAssigned() {
 //    assertNotNull("WebDriver not initialized", driver);
     assertTrue("WebDriver not initialized", isDriverAssigned());
-  }
-
-//  TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
-  public void assumeDriverAssigned() {
-//    assumeNotNull("WebDriver not initialized", driver);
-    assertDriverAssigned();
   }
 
   @Override
@@ -265,7 +259,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   public void setTimeoutInMsecs(Long msecs) {
     currentTimeout = msecs;
     if (driver != null) {
-      driver.manage().timeouts().implicitlyWait(new Double(currentTimeout).intValue(), TimeUnit.MILLISECONDS);
+      driver.manage().timeouts().implicitlyWait(currentTimeout, TimeUnit.MILLISECONDS);
     }
   }
 
