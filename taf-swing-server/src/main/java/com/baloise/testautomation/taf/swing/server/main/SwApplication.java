@@ -545,6 +545,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   public String storeFormatted(Document xml, String path) throws Exception {
     TransformerFactory tf = TransformerFactory.newInstance();
+    tf.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
     tf.setAttribute("indent-number", 2);
     Transformer t = tf.newTransformer();
     t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
