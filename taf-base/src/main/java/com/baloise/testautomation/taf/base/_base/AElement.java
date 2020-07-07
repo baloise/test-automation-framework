@@ -1,5 +1,9 @@
 package com.baloise.testautomation.taf.base._base;
 
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
+
 import java.lang.annotation.Annotation;
 
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
@@ -8,10 +12,6 @@ import com.baloise.testautomation.taf.base._interfaces.IComponent;
 import com.baloise.testautomation.taf.base._interfaces.IElement;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
 import com.baloise.testautomation.taf.common.interfaces.ISwElement;
-
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
-import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public abstract class AElement implements IElement {
 
@@ -51,7 +51,11 @@ public abstract class AElement implements IElement {
     fail("no finder declared on component --> fail");
     return null;
   }
-
+  
+  public String getName() {
+    return name;
+  }
+  
   public boolean exists(double secsToWait) {
     Long timeoutInMsecs = getFinder().getTimeoutInMsecs();
     boolean result = false;

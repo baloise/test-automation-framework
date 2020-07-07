@@ -12,14 +12,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientCall;
-import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientRun;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.baloise.testautomation.taf.base._base.TafException;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
@@ -31,8 +30,9 @@ import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByIdFinde
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByNameFinder;
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByTextFinder;
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByXpathFinder;
+import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientCall;
+import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientRun;
 import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
-
 
 public class BrFinder implements IBrowserFinder<WebElement> {
 
@@ -57,7 +57,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   }
 
   private void registerAdditionalFinders(Collection<WebElementFinder<? extends Annotation>> finders) {
-//    finders.stream().forEach(finder -> registerFinder(finder));
+    // finders.stream().forEach(finder -> registerFinder(finder));
     for (WebElementFinder<? extends Annotation> finder : finders) {
       registerFinder(finder);
     }
@@ -83,15 +83,15 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     return driver != null;
   }
 
-//  TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
+  // TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
   protected void assertDriverAssigned() {
-//    assertNotNull("WebDriver not initialized", driver);
+    // assertNotNull("WebDriver not initialized", driver);
     assertTrue("WebDriver not initialized", isDriverAssigned());
   }
 
-//  TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
+  // TODO: this needs to be removed. The user can call isDriverAssigned and act upon it accordingly
   public void assumeDriverAssigned() {
-//    assumeNotNull("WebDriver not initialized", driver);
+    // assumeNotNull("WebDriver not initialized", driver);
     assertDriverAssigned();
   }
 
@@ -108,12 +108,13 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     WebElementFinder finder = supportedFinders.get(annotation.annotationType());
     if (finder == null) {
       return findByDefault(root, annotation);
-    } else {
+    }
+    else {
       // DO NOT directly access driver - use getDriver() instead --> ajaxWaiting will be done correctly
       return finder.findElement(annotation, root == null ? getDriver() : root);
     }
-//    fail("annotation not yet supported: " + annotation.annotationType());
-//    return null;
+    // fail("annotation not yet supported: " + annotation.annotationType());
+    // return null;
   }
 
   private WebElement findByDefault(WebElement root, Annotation annotation) {
@@ -121,11 +122,12 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     String id;
     if (name.startsWith("By")) {
       id = name.substring(2);
-    } else {
+    }
+    else {
       id = name;
     }
-    Logger.getGlobal().warning("could not find WebElementFinder for Annotation " + name
-            + " trying to find ById(" + id + ") or ByName(" + id + ")");
+    Logger.getGlobal().warning("could not find WebElementFinder for Annotation " + name + " trying to find ById(" + id
+        + ") or ByName(" + id + ")");
     // DO NOT directly access driver - use getDriver() instead --> ajaxWaiting will be done correctly
     SearchContext searchContext = root == null ? getDriver() : root;
     WebElement element = exists(By.id(id), searchContext);
@@ -141,9 +143,11 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     setTimeoutInMsecs(100L);
     try {
       result = searchContext.findElement(by);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       // do nothing
-    } finally {
+    }
+    finally {
       setTimeoutInMsecs(timeout);
     }
     return result;
@@ -283,13 +287,43 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   public void waitUntilLoadingComplete() {}
 
   @Override
+  public void safeInvoke(RuntimeException exception, Runnable runnable) {
+    try {
+      new StaleElementResilientRun(getTimeoutInMsecs()).invoke(runnable);
+    }
+    catch (Throwable t) {
+      if (exception != null) {
+        throw exception;
+      }
+      else {
+        throw t;
+      }
+    }
+  }
+
+  @Override
+  public <T> T safeInvoke(RuntimeException exception, Callable<T> callable) {
+    try {
+      return new StaleElementResilientCall<T>(getTimeoutInMsecs()).invoke(callable);
+    }
+    catch (Throwable t) {
+      if (exception != null) {
+        throw exception;
+      }
+      else {
+        throw t;
+      }
+    }
+  }
+
+  @Override
   public void safeInvoke(Runnable runnable) {
-    new StaleElementResilientRun(getTimeoutInMsecs()).invoke(runnable);
+    safeInvoke(null, runnable);
   }
 
   @Override
   public <T> T safeInvoke(Callable<T> callable) {
-    return new StaleElementResilientCall<T>(getTimeoutInMsecs()).invoke(callable);
+    return safeInvoke(null, callable);
   }
 
 }

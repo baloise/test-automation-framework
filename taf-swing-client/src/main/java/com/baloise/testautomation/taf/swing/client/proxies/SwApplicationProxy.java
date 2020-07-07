@@ -409,13 +409,23 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
   }
 
   @Override
-  public void safeInvoke(Runnable runnable) {
+  public void safeInvoke(RuntimeException exception, Runnable runnable) {
     throw new RuntimeException("should NOT come here --> safeInvoke");
   }
 
   @Override
-  public <T> T safeInvoke(Callable<T> callable) {
+  public <T> T safeInvoke(RuntimeException exception, Callable<T> callable) {
     throw new RuntimeException("should NOT come here --> safeInvoke");
+  }
+
+  @Override
+  public void safeInvoke(Runnable runnable) {
+    safeInvoke(null, runnable);
+  }
+
+  @Override
+  public <T> T safeInvoke(Callable<T> callable) {
+    return safeInvoke(null, callable);
   }
 
 }

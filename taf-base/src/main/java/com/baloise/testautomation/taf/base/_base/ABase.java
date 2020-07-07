@@ -357,6 +357,7 @@ public abstract class ABase implements IComponent {
   }
 
   private String getQualifier(String qualifierAndIdAndDetail) {
+    assertNotNull("qualifier/id/detail not set: " + getClass(), qualifierAndIdAndDetail);
     String[] parts = qualifierAndIdAndDetail.split("\\" + separator);
     if (parts.length > 1) {
       return "-" + parts[0];
