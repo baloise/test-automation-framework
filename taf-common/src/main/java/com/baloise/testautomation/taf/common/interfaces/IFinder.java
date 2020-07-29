@@ -15,9 +15,9 @@ public interface IFinder<Element> {
 
   public void setDefaultTimeoutInMsecs();
 
-  void safeInvoke(RuntimeException exception, Runnable runnable);
+  void safeInvoke(Error exception, Runnable runnable);
 
-  <T> T safeInvoke(RuntimeException exception, Callable<T> callable);
+  <T> T safeInvoke(Error exception, Callable<T> callable);
 
   void safeInvoke(Runnable runnable);
 

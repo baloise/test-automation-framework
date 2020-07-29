@@ -18,7 +18,7 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.baloise.testautomation.taf.base._base.TafException;
+import com.baloise.testautomation.taf.base._base.TafError;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
@@ -287,7 +287,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   public void waitUntilLoadingComplete() {}
 
   @Override
-  public void safeInvoke(RuntimeException exception, Runnable runnable) {
+  public void safeInvoke(Error exception, Runnable runnable) {
     try {
       new StaleElementResilientRun(getTimeoutInMsecs()).invoke(runnable);
     }
@@ -302,7 +302,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   }
 
   @Override
-  public <T> T safeInvoke(RuntimeException exception, Callable<T> callable) {
+  public <T> T safeInvoke(Error exception, Callable<T> callable) {
     try {
       return new StaleElementResilientCall<T>(getTimeoutInMsecs()).invoke(callable);
     }

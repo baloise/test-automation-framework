@@ -3,13 +3,13 @@ package com.baloise.testautomation.taf.browser.elements;
 import org.openqa.selenium.WebElement;
 
 import com.baloise.testautomation.taf.base._base.AButton;
-import com.baloise.testautomation.taf.base._base.TafException;
+import com.baloise.testautomation.taf.base._base.TafError;
 
 public class BrButton extends AButton {
 
   @Override
   public void click() {
-    getFinder().safeInvoke(new TafException(getName() + " -> error when clicking"), () -> find().click());
+    getFinder().safeInvoke(new TafError(getName() + " -> error when clicking"), () -> find().click());
   }
 
   @Override

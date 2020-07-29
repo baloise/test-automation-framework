@@ -5,7 +5,7 @@ import java.util.Objects;
 public class TafAssert {
 
     public static void fail(String message) {
-        throw new RuntimeException(message);
+        throw new TafError(message);
     }
 
     public static void assertTrue(String message, boolean bool) {
