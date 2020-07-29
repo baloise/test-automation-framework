@@ -650,12 +650,12 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
   }
 
   @Override
-  public void safeInvoke(RuntimeException exception, Runnable runnable) {
+  public void safeInvoke(Error exception, Runnable runnable) {
     info("should NOT come here --> safeInvoke");
   }
 
   @Override
-  public <T> T safeInvoke(RuntimeException exception, Callable<T> callable) {
+  public <T> T safeInvoke(Error exception, Callable<T> callable) {
     info("should NOT come here --> safeInvoke");
     return null;
   }
