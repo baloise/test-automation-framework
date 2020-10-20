@@ -4,7 +4,7 @@
 
 [![gitpod-IDE](https://img.shields.io/badge/open--IDE-as--gitpod-blue.svg?style=flat&label=openIDE)](https://gitpod.io#https://github.com/baloise/test-automation-framework)
 
-![CI](https://github.com/baloise/test-automation-framework/workflows/CI/badge.svg)
+[![CI](https://github.com/baloise/test-automation-framework/workflows/CI/badge.svg)](https://github.com/baloise/test-automation-framework/actions)
 
 # TAF is a test automation framework based on JUnit and Selenium 
 ```
