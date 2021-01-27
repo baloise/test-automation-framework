@@ -19,21 +19,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Callable;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButton;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -44,6 +30,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
+import com.baloise.testautomation.taf.swing.server.elements.SwProgressBar;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -497,6 +484,9 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
     }
     if (c instanceof JRadioButton) {
       return new SwRadioButton(tid, (JRadioButton)c);
+    }
+    if (c instanceof JProgressBar) {
+      return new SwProgressBar(tid, (JProgressBar) c);
     }
     return new SwUnsupportedElement(tid, c);
   }

@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import com.baloise.testautomation.taf.swing.base._interfaces.ISwProgressBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -323,6 +324,7 @@ public final class SwApplicationProxy implements ISwApplication<ISwElement<Long>
     supportedElements.put(ISwCheckBox.type.toLowerCase(), SwCheckBoxProxy.class);
     supportedElements.put(ISwRadioButton.type.toLowerCase(), SwRadioButtonProxy.class);
     supportedElements.put(ISwInternalFrame.type.toLowerCase(), SwInternalFrameProxy.class);
+    supportedElements.put(ISwProgressBar.type.toLowerCase(), SwProgressBarProxy.class);
     return supportedElements;
   }
 
