@@ -63,6 +63,10 @@ public class ScreenshotRule extends TestWatcher {
     return System.currentTimeMillis() + "_" + methodName + ".png";
   }
 
+  public String getPath() {
+    return path;
+  }
+  
   public void saveScreenShot() {
     saveScreenShot("screenshot_" + System.currentTimeMillis() + ".png");
   }
