@@ -90,5 +90,6 @@
         <module>taf-swing-base</module>
         <module>taf-swing-client</module>
         <module>taf-swing-server</module>
+        <module>taf-base-junit5-extensions</module>
     </modules>
 </project>
