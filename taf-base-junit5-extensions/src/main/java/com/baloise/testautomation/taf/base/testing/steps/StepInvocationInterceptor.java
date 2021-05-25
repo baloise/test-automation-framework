@@ -38,7 +38,10 @@ public class StepInvocationInterceptor implements InvocationInterceptor, BeforeA
     if (step.value() >= stepMin && step.value() <= stepMax) {
       invocation.proceed();
     } else {
-      invocation.skip();
+      Assumptions.assumeFalse(step.value() > stepMax,
+          "Current step index is greater than @StepMax -> skip: " + invocationContext.getExecutable().getName());
+      Assumptions.assumeFalse(step.value() < stepMin,
+          "Current step index is smaller than @StepMin -> skip: " + invocationContext.getExecutable().getName());
     }
   }
 
