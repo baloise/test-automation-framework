@@ -31,6 +31,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -514,8 +515,16 @@ public abstract class ABase implements IComponent {
   }
 
   public Collection<IDataRow> loadExcel(Class<?> klass, String qualifierAndIdAndDetail, String suffix) {
-    String filename = getFilename(klass, qualifierAndIdAndDetail, suffix, ".xls");
-    String idAndDetail = getIdAndDetail(qualifierAndIdAndDetail);
+    String idAndDetail = this.getIdAndDetail(qualifierAndIdAndDetail);
+
+    String filename_XLS = this.getFilename(klass, qualifierAndIdAndDetail, suffix, ".xls");
+    String filename_XLSX = this.getFilename(klass, qualifierAndIdAndDetail, suffix, ".xlsx");
+    String filename  = filename_XLS;
+
+    URL u = klass.getResource(filename_XLSX);
+    if (u != null) {
+      filename = filename_XLSX;
+    }
     try (InputStream is = ResourceHelper.getResource(klass, filename).openStream()) {
       return loadExcelFrom(is, idAndDetail);
     }

@@ -5,25 +5,14 @@ import com.baloise.testautomation.taf.base._base.TafAssert;
 import com.baloise.testautomation.taf.base._interfaces.IDataImporter;
 import com.baloise.testautomation.taf.base._interfaces.IDataRow;
 import com.baloise.testautomation.taf.base._interfaces.IType;
-import com.baloise.testautomation.taf.base.types.TafBoolean;
-import com.baloise.testautomation.taf.base.types.TafDate;
-import com.baloise.testautomation.taf.base.types.TafDouble;
-import com.baloise.testautomation.taf.base.types.TafId;
-import com.baloise.testautomation.taf.base.types.TafInteger;
-import com.baloise.testautomation.taf.base.types.TafString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.baloise.testautomation.taf.base.types.*;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
 import org.apache.poi.ss.formula.functions.EDate;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
 import org.apache.poi.ss.formula.udf.DefaultUDFFinder;
 import org.apache.poi.ss.formula.udf.UDFFinder;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,9 +22,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
-import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
+import static com.baloise.testautomation.taf.base._base.TafAssert.*;
 
 public class ExcelDataImporter implements IDataImporter {
 
@@ -44,8 +31,8 @@ public class ExcelDataImporter implements IDataImporter {
   private static String detailColName = "_detail";
   private static String vpidColName = "_vpid";
 
-  private HSSFWorkbook workBook;
-  private HSSFSheet sheet;
+  private Workbook workBook;
+  private Sheet sheet;
 
   private Hashtable<String, Integer> columns = new Hashtable<String, Integer>();
 
@@ -130,7 +117,7 @@ public class ExcelDataImporter implements IDataImporter {
   public int getNrOfDataRowsWith(TafId id) {
     int nrOfDataRows = 0;
     for (int rowIndex = 1; rowIndex < sheet.getLastRowNum(); rowIndex++) {
-      HSSFRow row = sheet.getRow(rowIndex);
+      Row row = sheet.getRow(rowIndex);
       if (isMatching(id, row)) {
         nrOfDataRows++;
       }
@@ -138,7 +125,7 @@ public class ExcelDataImporter implements IDataImporter {
     return nrOfDataRows;
   }
 
-  private TafId getTafId(HSSFRow row) {
+  private TafId getTafId(Row row) {
     if (row == null) {
       return new TafId("");
     }
@@ -178,7 +165,7 @@ public class ExcelDataImporter implements IDataImporter {
   public Collection<IDataRow> getWith(TafId id) {
     Vector<IDataRow> result = new Vector<>();
     for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-      HSSFRow row = sheet.getRow(rowIndex);
+      Row row = sheet.getRow(rowIndex);
       if (isMatching(id, row)) {
         TafId tafId = getTafId(row);
         DataRow dataRow = new DataRow();
@@ -196,7 +183,7 @@ public class ExcelDataImporter implements IDataImporter {
   }
 
   private void initColumns() {
-    HSSFRow header = sheet.getRow(0);
+    Row header = sheet.getRow(0);
     Iterator<Cell> cells = header.cellIterator();
     while (cells.hasNext()) {
       Cell cell = cells.next();
@@ -211,7 +198,7 @@ public class ExcelDataImporter implements IDataImporter {
 
   private void initSheet(InputStream is) {
     try {
-      workBook = new HSSFWorkbook(is);
+      workBook =  WorkbookFactory.create(is);
       workBook.addToolPack(toolpack);
       if (sheetName != null) {
         sheet = workBook.getSheet(sheetName);
@@ -246,7 +233,7 @@ public class ExcelDataImporter implements IDataImporter {
     initColumns();
   }
 
-  private boolean isMatching(TafId tafId, HSSFRow row) {
+  private boolean isMatching(TafId tafId, Row row) {
     return tafId.equals(getTafId(row));
   }
 
