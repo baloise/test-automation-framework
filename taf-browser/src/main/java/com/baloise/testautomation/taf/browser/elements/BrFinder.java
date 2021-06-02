@@ -30,8 +30,8 @@ import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByIdFinde
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByNameFinder;
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByTextFinder;
 import com.baloise.testautomation.taf.browser.elements.BrElementFinder.ByXpathFinder;
-import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientCall;
-import com.baloise.testautomation.taf.browser.elements.actions.StaleElementResilientRun;
+import com.baloise.testautomation.taf.browser.elements.actions.ResilientCall;
+import com.baloise.testautomation.taf.browser.elements.actions.ResilientRun;
 import com.baloise.testautomation.taf.browser.interfaces.IBrowserFinder;
 
 public class BrFinder implements IBrowserFinder<WebElement> {
@@ -289,7 +289,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   @Override
   public void safeInvoke(Error exception, Runnable runnable) {
     try {
-      new StaleElementResilientRun(getTimeoutInMsecs()).invoke(runnable);
+      new ResilientRun(getTimeoutInMsecs()).invoke(runnable);
     }
     catch (Throwable t) {
       if (exception != null) {
@@ -304,7 +304,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   @Override
   public <T> T safeInvoke(Error exception, Callable<T> callable) {
     try {
-      return new StaleElementResilientCall<T>(getTimeoutInMsecs()).invoke(callable);
+      return new ResilientCall<T>(getTimeoutInMsecs()).invoke(callable);
     }
     catch (Throwable t) {
       if (exception != null) {
