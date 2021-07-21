@@ -51,11 +51,11 @@ public abstract class AElement implements IElement {
     fail("no finder declared on component --> fail");
     return null;
   }
-  
+
   public String getName() {
     return name;
   }
-  
+
   public boolean exists(double secsToWait) {
     Long timeoutInMsecs = getFinder().getTimeoutInMsecs();
     boolean result = false;
@@ -83,7 +83,7 @@ public abstract class AElement implements IElement {
     }
     fail("element after " + seconds + " seconds not found: " + name);
   }
-  
+
   public abstract Object find();
 
   public Object brFind() {
@@ -95,7 +95,7 @@ public abstract class AElement implements IElement {
     if (we == null) {
       we = component.getBrowserFinder().find(by);
     }
-    assertNotNull("webelement NOT found: " + name, we);
+    assertNotNull("webelement NOT found: " + name + TafError.getByInfo(by), we);
     return we;
   }
 
@@ -142,7 +142,7 @@ public abstract class AElement implements IElement {
     if (element == null) {
       element = component.getSwingFinder().find(by);
     }
-    assertNotNull("swing element NOT found: " + name, element);
+    assertNotNull("swing element NOT found: " + name + TafError.getByInfo(by), element);
     try {
       ISwElement<?> swElement = (ISwElement<?>)element;
       assertEquals("wrong type", type.toLowerCase(), swElement.getType().toLowerCase());
