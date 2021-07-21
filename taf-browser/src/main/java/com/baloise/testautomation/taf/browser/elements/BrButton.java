@@ -7,14 +7,14 @@ import com.baloise.testautomation.taf.base._base.TafError;
 
 public class BrButton extends AButton {
 
-  @Override
-  public void click() {
-    getFinder().safeInvoke(new TafError(getName() + " -> error when clicking"), () -> find().click());
-  }
+    @Override
+    public void click() {
+        getFinder().safeInvoke(new TafError(getName() + " -> error when clicking", by), () -> find().click());
+    }
 
-  @Override
-  public WebElement find() {
-    return (WebElement)brFind();
-  }
+    @Override
+    public WebElement find() {
+        return (WebElement) brFind();
+    }
 
 }

@@ -293,6 +293,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
     }
     catch (Throwable t) {
       if (exception != null) {
+        exception.initCause(t);
         throw exception;
       }
       else {
