@@ -25,8 +25,15 @@ public class TafError extends Error {
       }
       return "";
     }
+    public String getByInfo() {
+        return getByInfo(byAnnotation);
+    }
+    @Override
+    public String getMessage() {
+        return super.getMessage()+getByInfo();
+    }
 
-  @Override
+    @Override
   public String toString() {
     return super.toString()+ getByInfo(byAnnotation);
   }
