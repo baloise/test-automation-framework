@@ -22,7 +22,7 @@ public class BrButtonTest extends TafBrowserTest {
     try {
       buttonWrong.click();
     }catch (TafError te){
-      Assert.assertEquals("buttonWrong -> error when clicking is caused byAnnotation:ById -> ButtonWrong",te.getMessage());
+      Assert.assertEquals("buttonWrong -> error when clicking is caused byAnnotation: ById -> ButtonWrong",te.getMessage());
     }
 
   }
