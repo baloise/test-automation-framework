@@ -5,8 +5,10 @@ import java.lang.annotation.Annotation;
 public interface IElement {
 
   public void click();
-
-  // public Object find();
+  
+  default public <T> T find() {
+    return null;
+  }
 
   public void setBy(Annotation by);
 
