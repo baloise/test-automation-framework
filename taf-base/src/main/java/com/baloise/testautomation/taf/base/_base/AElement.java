@@ -84,8 +84,6 @@ public abstract class AElement implements IElement {
     fail("element after " + seconds + " seconds not found: " + name);
   }
 
-  public abstract Object find();
-
   public Object brFind() {
     assertComponentNotNull();
     Object we = null;
