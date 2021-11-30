@@ -209,7 +209,7 @@ public abstract class ABase implements IComponent {
   }
 
   @Override
-  public IFinder<?> getBrowserFinder() {
+  public <T> IFinder<T> getBrowserFinder() {
     fail("method getBrowserFinder must be overridden (if it used)");
     return null;
   }
@@ -367,7 +367,7 @@ public abstract class ABase implements IComponent {
   }
 
   @Override
-  public IFinder<?> getSwingFinder() {
+  public <U> IFinder<U> getSwingFinder() {
     fail("method getSwingFinder must be overridden (if it is used)");
     return null;
   }
