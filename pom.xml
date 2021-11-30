@@ -61,10 +61,10 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.2.0</version>
                  <!--<version>3.2.0</version>-->
-	            <configuration>
+	            <!--configuration>
 	                <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-	                <!--<doclint>none</doclint>-->
-	            </configuration>
+	                <!--<doclint>none</doclint>
+	            </configuration>-->
                 <executions>
                     <execution>
                         <id>attach-javadoc</id>
