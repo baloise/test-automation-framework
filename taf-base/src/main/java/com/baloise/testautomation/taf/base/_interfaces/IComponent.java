@@ -23,7 +23,7 @@ public interface IComponent extends IFill, ICheck, IElement {
 
   public TafString getFill();
 
-  public <T> IFinder<T> getSwingFinder();
+  public <U> IFinder<U> getSwingFinder();
 
   public boolean isCheckCustom();
 
