@@ -17,13 +17,13 @@ public interface IComponent extends IFill, ICheck, IElement {
 
   public IComponent findFirstParent(Class<? extends IComponent> clazz);
 
-  public <T> IFinder<T> getBrowserFinder();
+  public IFinder<?> getBrowserFinder();
 
   public TafString getCheck();
 
   public TafString getFill();
 
-  public <U> IFinder<U> getSwingFinder();
+  public IFinder<?> getSwingFinder();
 
   public boolean isCheckCustom();
 
