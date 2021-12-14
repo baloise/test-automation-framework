@@ -23,14 +23,4 @@ public interface IFinder<Element> {
 
   <T> T safeInvoke(Callable<T> callable);
 
-  /**
-   * This method is used, when the type of Element is not known at compile-time.
-   *
-   * @param parent The parent object, that will be casted to Element.
-   * @param annotation The annotation.
-   * @return An object of type Element.
-   */
-  default public Element findNonGeneric(Object parent, Annotation annotation) {
-    return find((Element) parent, annotation);
-  }
 }
