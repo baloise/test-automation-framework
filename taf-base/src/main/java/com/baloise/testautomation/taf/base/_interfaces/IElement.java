@@ -6,7 +6,9 @@ public interface IElement {
 
   public void click();
   
-  // public Object find();
+  default public Object find() {
+    return null;
+  }
 
   public void setBy(Annotation by);
 

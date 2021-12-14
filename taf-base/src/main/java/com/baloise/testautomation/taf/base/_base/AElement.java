@@ -84,8 +84,6 @@ public abstract class AElement implements IElement {
     fail("element after " + seconds + " seconds not found: " + name);
   }
 
-  public abstract Object find();
-
   public Object brFind() {
     assertComponentNotNull();
     Object we = null;
@@ -93,7 +91,11 @@ public abstract class AElement implements IElement {
       we = brFindByCustom();
     }
     if (we == null) {
-      we = component.getBrowserFinder().find(by);
+      Object parent = null;
+      if (this.component != null) {
+        parent = this.component.find();
+      }
+      we = component.getBrowserFinder().findNonGeneric(parent, by);
     }
     assertNotNull("webelement NOT found: " + name + TafError.getByInfo(by), we);
     return we;
