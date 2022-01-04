@@ -9,7 +9,7 @@ import com.baloise.testautomation.taf.common.utils.TafProperties;
 public class SwCommandProperties extends H2Table {
 
   static void createTable() {
-    String sql = "CREATE TABLE  IF NOT EXISTS COMMAND_PROPERTIES (c_id int, \"key\" varchar(255), \"value\" varchar(2000));";
+    String sql = "CREATE TABLE  IF NOT EXISTS COMMAND_PROPERTIES (c_id int, key varchar(255), value varchar(2000));";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(sql);
@@ -63,7 +63,7 @@ public class SwCommandProperties extends H2Table {
     }
     PreparedStatement ps = null;
     try {
-      ps = conn().prepareStatement("select \"key\", \"value\" from command_properties where c_id = ?");
+      ps = conn().prepareStatement("select key, value from command_properties where c_id = ?");
       ps.setInt(1, id);
       rs = ps.executeQuery();
       if (rs != null) {
@@ -98,7 +98,7 @@ public class SwCommandProperties extends H2Table {
     ResultSet rs = null;
     PreparedStatement ps = null;
     try {
-      ps = conn().prepareStatement("select \"key\", \"value\", c_id from command_properties");
+      ps = conn().prepareStatement("select key, value, c_id from command_properties");
       rs = ps.executeQuery();
       if (rs != null) {
         while (rs.next()) {
@@ -130,7 +130,7 @@ public class SwCommandProperties extends H2Table {
   }
 
   private void insert() {
-    String insertSQL = "INSERT INTO COMMAND_PROPERTIES (c_id, \"key\", \"value\") VALUES (?, ?, ?)";
+    String insertSQL = "INSERT INTO COMMAND_PROPERTIES (c_id, key, value) VALUES (?, ?, ?)";
     PreparedStatement ps = null;
     try {
       ps = conn().prepareStatement(insertSQL);
