@@ -7,7 +7,7 @@
         <version>0.0.9-SNAPSHOT</version>
     </parent>
 
-    <artifactId>taf-swing-server-java8</artifactId>
+    <artifactId>taf-swing-server</artifactId>
 
     <name>Test Automation Framework - Swing Server</name>
 
