@@ -8,6 +8,7 @@ import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.*;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
 import org.apache.poi.ss.formula.functions.EDate;
+import org.apache.poi.ss.formula.functions.EOMonth;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
 import org.apache.poi.ss.formula.udf.DefaultUDFFinder;
@@ -43,8 +44,8 @@ public class ExcelDataImporter implements IDataImporter {
   private static UDFFinder toolpack;
 
   {
-    String[] functionNames = {"EDATUM"};
-    FreeRefFunction[] functionImpls = {EDate.instance};
+    String[] functionNames = {"EDATUM", "MONATSENDE"};
+    FreeRefFunction[] functionImpls = {EDate.instance, EndOfMonth.instance};
     finder = new DefaultUDFFinder(functionNames, functionImpls);
     toolpack = new AggregatingUDFFinder(finder);
   }
@@ -239,8 +240,7 @@ public class ExcelDataImporter implements IDataImporter {
 
   private void registerFunctions() {
     try {
-      FreeRefFunction EOMONTH = new EndOfMonth();
-      AnalysisToolPak.registerFunction("EOMONTH", EOMONTH);
+      AnalysisToolPak.registerFunction("EOMONTH", EOMonth.instance);
     }
     catch (Exception e) {}
   }

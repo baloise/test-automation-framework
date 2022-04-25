@@ -84,7 +84,8 @@ public abstract class ABase implements IComponent {
         }
       }
       catch (InvocationTargetException e1) {
-        fail("error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
+        fail(
+            "error in field-check-method (executed by reflection), " + f.getName() + ": " + e1.getCause().getMessage());
       }
       catch (IllegalArgumentException e) {
         e.printStackTrace();
@@ -398,7 +399,7 @@ public abstract class ABase implements IComponent {
       catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
         e.printStackTrace();
         fail("error initializing 'by' fields (must be declared as public and need an no-arg-constructor): "
-                + f.getName() + " --> " + getClass());
+            + f.getName() + " --> " + getClass());
       }
     }
   }
@@ -414,7 +415,7 @@ public abstract class ABase implements IComponent {
       }
       catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
         fail("error initializing data fields (field must be declared as public, and '" + f.getType()
-                + "' must have a no-argument constructor): " + f.getName());
+            + "' must have a no-argument constructor): " + f.getName());
         e.printStackTrace();
       }
     }
@@ -438,10 +439,11 @@ public abstract class ABase implements IComponent {
           }
           if (o instanceof ABase) {
             if (!f.getName().equalsIgnoreCase("parent")) {
-              ((ABase) o).setComponent(this);
+              ((ABase)o).setComponent(this);
             }
           }
-        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
+        }
+        catch (IllegalArgumentException | IllegalAccessException | InstantiationException e) {
           logger.trace("private fields must be initialized in the constructor: " + f.getName() + " --> " + getClass());
         }
       }
@@ -490,7 +492,7 @@ public abstract class ABase implements IComponent {
             return ((IDataProvider)this).loadCheckData(idAndDetail);
           }
           fail(dataProviderClass.getSimpleName()
-                    + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
+              + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
         default:
           fail("loading check data FAILED, unknown dataprovider.type found : " + dataprovider.value());
       }
@@ -519,7 +521,7 @@ public abstract class ABase implements IComponent {
 
     String filename_XLS = this.getFilename(klass, qualifierAndIdAndDetail, suffix, ".xls");
     String filename_XLSX = this.getFilename(klass, qualifierAndIdAndDetail, suffix, ".xlsx");
-    String filename  = filename_XLS;
+    String filename = filename_XLS;
 
     URL u = klass.getResource(filename_XLSX);
     if (u != null) {
@@ -560,7 +562,7 @@ public abstract class ABase implements IComponent {
             return ((IDataProvider)this).loadFillData(idAndDetail);
           }
           fail(dataProviderClass.getSimpleName()
-                    + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
+              + " is marked as dataprovider with type = self,  but does not implement IDataProvider ");
         default:
           fail("loading fill data FAILED, unknown dataprovider.type found : " + dataprovider.value());
       }
@@ -681,7 +683,7 @@ public abstract class ABase implements IComponent {
       }
       catch (InstantiationException | IllegalAccessException e) {
         fail("setElementFill NOT successful, may the no-argument constructor is missing for datatype of: "
-                + o.getClass());
+            + o.getClass());
       }
       return;
     }
@@ -693,7 +695,7 @@ public abstract class ABase implements IComponent {
       try {
         Object o = f.get(this);
         if (o instanceof IType) {
-          assertNotNull("data not found: " + f.getName(), data.get(f.getName()));
+          assertNotNull("data not found in '" + getClass().getSimpleName() + "': " + f.getName(), data.get(f.getName()));
           if (data.get(f.getName()).isSkip()) {
             ((IType)o).set(TafType.SKIP);
           }
@@ -703,7 +705,7 @@ public abstract class ABase implements IComponent {
         }
         else {
           fail("data annotated with @Data or @CheckData must be an instance of IType: " + f.getName() + " --> "
-                    + getClass());
+              + getClass());
         }
       }
       catch (IllegalArgumentException e) {
@@ -766,8 +768,7 @@ public abstract class ABase implements IComponent {
         }
       }
       catch (IllegalArgumentException | IllegalAccessException e) {
-        fail(
-                "instantiating field has FAILED (must be declared as public): " + f.getName() + " --> " + getClass());
+        fail("instantiating field has FAILED (must be declared as public): " + f.getName() + " --> " + getClass());
       }
     }
   }

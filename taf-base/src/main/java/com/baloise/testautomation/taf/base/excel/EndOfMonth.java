@@ -12,6 +12,8 @@ import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 public class EndOfMonth implements FreeRefFunction {
+  
+  public static final FreeRefFunction instance = new EndOfMonth();
 
   @Override
   public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext context) {
