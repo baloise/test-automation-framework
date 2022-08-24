@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.TestWatcher;
 
 import com.baloise.testautomation.taf.base.testing.steps.Step.StepMax;
 import com.baloise.testautomation.taf.base.testing.steps.Step.StepMin;
+import com.baloise.testautomation.taf.base.testing.steps.Step.SkipAfterFailed;
 
 public class StepInvocationInterceptor implements InvocationInterceptor, BeforeAllCallback, TestWatcher {
 
@@ -19,6 +20,15 @@ public class StepInvocationInterceptor implements InvocationInterceptor, BeforeA
 
   @Override
   public void testFailed(ExtensionContext context, Throwable cause) {
+    Optional<Class<?>> testClass = context.getTestClass();
+    if (testClass.isPresent()) {
+      SkipAfterFailed skipAfterFailedAnnotation = testClass.get().getAnnotation(SkipAfterFailed.class);
+      if (skipAfterFailedAnnotation != null) {
+        if (!skipAfterFailedAnnotation.value()) {
+          return;
+        }
+      }
+    }
     canContinue = false;
   }
 
@@ -33,11 +43,11 @@ public class StepInvocationInterceptor implements InvocationInterceptor, BeforeA
       invocation.proceed();
       return;
     }
-    Assumptions.assumeTrue(canContinue,
-        "Previously failed -> skip: " + invocationContext.getExecutable().getName());
+    Assumptions.assumeTrue(canContinue, "Previously failed -> skip: " + invocationContext.getExecutable().getName());
     if (step.value() >= stepMin && step.value() <= stepMax) {
       invocation.proceed();
-    } else {
+    }
+    else {
       Assumptions.assumeFalse(step.value() > stepMax,
           "Current step index is greater than @StepMax -> skip: " + invocationContext.getExecutable().getName());
       Assumptions.assumeFalse(step.value() < stepMin,

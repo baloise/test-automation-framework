@@ -34,4 +34,13 @@ public @interface Step {
 
   }
 
+  @Target({ElementType.TYPE})
+  @Retention(RetentionPolicy.RUNTIME)
+  @Test
+  public @interface SkipAfterFailed {
+
+    boolean value() default true;
+
+  }
+
 }
