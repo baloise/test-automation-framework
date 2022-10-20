@@ -4,10 +4,14 @@ import com.baloise.testautomation.taf.base._interfaces.ICombobox;
 import com.baloise.testautomation.taf.base._interfaces.IData;
 import com.baloise.testautomation.taf.base._interfaces.IType;
 import com.baloise.testautomation.taf.base.types.TafString;
+
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertEquals;
+
+import java.util.List;
 
 public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> {
 
@@ -56,7 +60,12 @@ public class BrCombobox extends ABrInput implements ICombobox, IData<TafString> 
     return getFinder().safeInvoke(() -> {
       WebElement we = find();
       Select s = new Select(we);
-      return TafString.normalString(s.getFirstSelectedOption().getText());
+      try {
+        return TafString.normalString(s.getFirstSelectedOption().getText());
+      }
+      catch (NoSuchElementException e) {
+        return TafString.emptyString();
+      }
     });
   }
 
