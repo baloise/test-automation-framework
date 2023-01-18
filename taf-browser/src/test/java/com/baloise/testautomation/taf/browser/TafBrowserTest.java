@@ -1,16 +1,17 @@
 package com.baloise.testautomation.taf.browser;
 
-import com.baloise.testautomation.taf.base._base.ABase;
-import com.baloise.testautomation.taf.browser.elements.BrFinder;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Before;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.assertEquals;
+import com.baloise.testautomation.taf.base._base.ABase;
+import com.baloise.testautomation.taf.browser.elements.BrFinder;
 
 public abstract class TafBrowserTest extends ABase {
 
