@@ -53,7 +53,7 @@ public class TafDate extends TafType implements IType {
     if (custom != null) {
       TafDate d = new TafDate();
       d.setIsCustom(true);
-      d.value = date;
+      d.value = custom;
       return d;
     }
     return nullDate();
