@@ -3,6 +3,7 @@ package com.baloise.testautomation.taf.browser.elements;
 import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
 
 import java.lang.annotation.Annotation;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.baloise.testautomation.taf.base._base.TafError;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCssSelector;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ByCustom;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.ById;
@@ -269,7 +269,7 @@ public class BrFinder implements IBrowserFinder<WebElement> {
   public void setTimeoutInMsecs(Long msecs) {
     currentTimeout = msecs;
     if (driver != null) {
-      driver.manage().timeouts().implicitlyWait(new Double(currentTimeout).intValue(), TimeUnit.MILLISECONDS);
+      driver.manage().timeouts().implicitlyWait(Duration.ofMillis(currentTimeout));
     }
   }
 
