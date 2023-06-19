@@ -19,7 +19,7 @@ public abstract class ABrInput extends AInput {
   }
 
   public void fillCustom() {
-    fail("need to subclass and override 'fillCustom':" + getClass());
+    fail("need to subclass and override 'fillCustom':" + getClass() + " -> " + name);
   }
 
   public void check() {

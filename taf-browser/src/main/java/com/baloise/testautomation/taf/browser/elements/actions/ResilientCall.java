@@ -18,8 +18,8 @@ public class ResilientCall<T> {
   }
 
   public T invoke(Callable<T> callable) {
-    Awaitility.await().atMost(timeoutInMsecs, TimeUnit.MILLISECONDS).pollDelay(0L, TimeUnit.MILLISECONDS)
-        .pollInterval(10L, TimeUnit.MILLISECONDS).until(() -> safeCall(callable));
+    Awaitility.await().pollInSameThread().atMost(timeoutInMsecs, TimeUnit.MILLISECONDS)
+        .pollDelay(0L, TimeUnit.MILLISECONDS).pollInterval(10L, TimeUnit.MILLISECONDS).until(() -> safeCall(callable));
     return callResult;
   }
 

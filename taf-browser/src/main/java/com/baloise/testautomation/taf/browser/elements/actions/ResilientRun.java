@@ -16,8 +16,8 @@ public class ResilientRun {
   }
 
   public void invoke(Runnable runnable) {
-    Awaitility.await().atMost(timeoutInMsecs, TimeUnit.MILLISECONDS).pollDelay(0L, TimeUnit.MILLISECONDS)
-        .pollInterval(10L, TimeUnit.MILLISECONDS).until(() -> safeRun(runnable));
+    Awaitility.await().pollInSameThread().atMost(timeoutInMsecs, TimeUnit.MILLISECONDS)
+        .pollDelay(0L, TimeUnit.MILLISECONDS).pollInterval(10L, TimeUnit.MILLISECONDS).until(() -> safeRun(runnable));
   }
 
   private boolean safeRun(Runnable runnable) {
