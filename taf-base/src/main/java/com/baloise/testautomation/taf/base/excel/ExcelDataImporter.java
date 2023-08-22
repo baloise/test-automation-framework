@@ -76,7 +76,7 @@ public class ExcelDataImporter implements IDataImporter {
     if (cell == null) {
       return TafString.nullString();
     }
-    if (cell.getCellTypeEnum() == CellType.FORMULA) {
+    if (cell.getCellType() == CellType.FORMULA) {
       FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
       try {
         evaluator.evaluateInCell(cell);
@@ -85,23 +85,23 @@ public class ExcelDataImporter implements IDataImporter {
         TafAssert.fail("Problems evaluation cell: " + cell.getCellFormula() + " -> " + e.getMessage());
       }
     }
-    if (cell.getCellTypeEnum() == CellType.BLANK) {
+    if (cell.getCellType() == CellType.BLANK) {
       return TafString.emptyString();
     }
-    if (cell.getCellTypeEnum() == CellType.BOOLEAN) {
+    if (cell.getCellType() == CellType.BOOLEAN) {
       return new TafBoolean(cell.getBooleanCellValue());
     }
-    if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+    if (cell.getCellType() == CellType.NUMERIC) {
       if (DateUtil.isCellDateFormatted(cell)) {
         return TafDate.normalDate(cell.getDateCellValue());
       }
       double value = cell.getNumericCellValue();
       if ((value == Math.floor(value)) && !Double.isInfinite(value)) {
-        return new TafInteger(new Double(value).intValue());
+        return new TafInteger(Double.valueOf(value).intValue());
       }
       return new TafDouble(cell.getNumericCellValue());
     }
-    if (cell.getCellTypeEnum() == CellType.STRING) {
+    if (cell.getCellType() == CellType.STRING) {
       String s = cell.getStringCellValue();
       if (TafBoolean.TRUE.equalsIgnoreCase(s)) {
         return TafBoolean.trueBoolean();
