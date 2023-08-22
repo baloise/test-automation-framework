@@ -4,7 +4,7 @@ pipeline {
     }
 
     tools {
-        jdk 'JDK_1_8'
+        jdk 'JDK_11'
     }
 
     options {
