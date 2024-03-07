@@ -1,6 +1,29 @@
 package com.baloise.testautomation.taf.base._base;
 
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertFalse;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
+import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
+import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
+
+import java.io.File;
+import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Vector;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations;
+import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Action;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Check;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.CheckData;
 import com.baloise.testautomation.taf.base._interfaces.IAnnotations.Data;
@@ -22,40 +45,24 @@ import com.baloise.testautomation.taf.base.types.TafId;
 import com.baloise.testautomation.taf.base.types.TafString;
 import com.baloise.testautomation.taf.base.types.TafType;
 import com.baloise.testautomation.taf.common.interfaces.IFinder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
-
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertFalse;
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertNotNull;
-import static com.baloise.testautomation.taf.base._base.TafAssert.assertTrue;
-import static com.baloise.testautomation.taf.base._base.TafAssert.fail;
 
 public abstract class ABase implements IComponent {
+
+  public class MethodData {
+    Method method;
+    String data;
+  }
 
   public static Logger logger = LoggerFactory.getLogger("TAF");
 
   private static final String separator = "|";
 
   protected TafString fillId = TafString.emptyString();
-
   protected TafString checkId = TafString.emptyString();
-  public IComponent parent = null;
 
+  public IComponent parent = null;
   public String name = "";
+
   public Annotation by = null;
 
   public Annotation check = null;
@@ -165,6 +172,34 @@ public abstract class ABase implements IComponent {
   @Override
   public void click() {}
 
+  protected void executeAction(TafString action) {
+    if (action.isSkip()) {
+      return;
+    }
+    MethodData methodData = getMethodData(action.asString());
+    TafAssert.assertNotNull("Action not found: " + action.asString(), methodData.method);
+    try {
+      if (methodData.data.isEmpty()) {
+        methodData.method.invoke(this);
+      }
+      else {
+        methodData.method.invoke(this, methodData.data);
+      }
+    }
+    catch (IllegalAccessException e) {
+      e.printStackTrace();
+      TafAssert.fail("Execution error: " + action.asString());
+    }
+    catch (IllegalArgumentException e) {
+      e.printStackTrace();
+      TafAssert.fail("Execution error: " + action.asString());
+    }
+    catch (InvocationTargetException e) {
+      e.printStackTrace();
+      TafAssert.fail("Execution error: " + action.asString() + " -> " + e.getTargetException().getMessage());
+    }
+  }
+
   @Override
   public void fill() {
     if (!canFill()) {
@@ -207,6 +242,19 @@ public abstract class ABase implements IComponent {
       currentClass = currentClass.getSuperclass();
     }
     return allFields;
+  }
+
+  private List<Method> getAllMethods() {
+    List<Method> allMethods = new ArrayList<>();
+    Class<?> currentClass = getClass();
+    while (currentClass != null) {
+      Method[] declaredMethods = currentClass.getDeclaredMethods();
+      for (Method method : declaredMethods) {
+        allMethods.add(method);
+      }
+      currentClass = currentClass.getSuperclass();
+    }
+    return allMethods;
   }
 
   @Override
@@ -358,6 +406,22 @@ public abstract class ABase implements IComponent {
     return null;
   }
 
+  private MethodData getMethodData(String action) {
+    List<Method> methods = getAllMethods();
+    for (Method method : methods) {
+      if (method.isAnnotationPresent(Action.class)) {
+        String value = method.getAnnotation(Action.class).value();
+        if (action.toLowerCase().startsWith(value.toLowerCase())) {
+          MethodData md = new MethodData();
+          md.method = method;
+          md.data = action.substring(value.length(), action.length());
+          return md;
+        }
+      }
+    }
+    return null;
+  }
+
   private String getQualifier(String qualifierAndIdAndDetail) {
     assertNotNull("qualifier/id/detail not set: " + getClass(), qualifierAndIdAndDetail);
     String[] parts = qualifierAndIdAndDetail.split("\\" + separator);
@@ -450,6 +514,14 @@ public abstract class ABase implements IComponent {
     }
   }
 
+  @Override
+  public boolean isCheckCustom() {
+    if (checkId == null) {
+      return false;
+    }
+    return checkId.isCustom();
+  }
+
   private boolean isFieldRuleAnnotated(Field f) {
     for (Annotation annotation : f.getAnnotations()) {
       if (annotation.annotationType().getName().equals("org.junit.Rule")) {
@@ -457,14 +529,6 @@ public abstract class ABase implements IComponent {
       }
     }
     return false;
-  }
-
-  @Override
-  public boolean isCheckCustom() {
-    if (checkId == null) {
-      return false;
-    }
-    return checkId.isCustom();
   }
 
   @Override
@@ -695,7 +759,8 @@ public abstract class ABase implements IComponent {
       try {
         Object o = f.get(this);
         if (o instanceof IType) {
-          assertNotNull("data not found in '" + getClass().getSimpleName() + "': " + f.getName(), data.get(f.getName()));
+          assertNotNull("data not found in '" + getClass().getSimpleName() + "': " + f.getName(),
+              data.get(f.getName()));
           if (data.get(f.getName()).isSkip()) {
             ((IType)o).set(TafType.SKIP);
           }

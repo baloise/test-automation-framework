@@ -9,11 +9,13 @@ public interface IAnnotations {
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
-  public @interface InitByTaf {}
+  public @interface InitByTaf {
+  }
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
-  public @interface By {}
+  public @interface By {
+  }
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.FIELD})
@@ -127,6 +129,12 @@ public interface IAnnotations {
   @Target(ElementType.FIELD)
   public @interface Fill {
     public int value() default 0;
+  }
+
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target(ElementType.METHOD)
+  public @interface Action {
+    public String value() default "";
   }
 
 }
