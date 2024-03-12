@@ -177,7 +177,7 @@ public abstract class ABase implements IComponent {
       return;
     }
     MethodData methodData = getMethodData(action.asString());
-    TafAssert.assertNotNull("Action not found: " + action.asString(), methodData.method);
+    TafAssert.assertNotNull("Action not found: " + action.asString(), methodData);
     try {
       if (methodData.data.isEmpty()) {
         methodData.method.invoke(this);
