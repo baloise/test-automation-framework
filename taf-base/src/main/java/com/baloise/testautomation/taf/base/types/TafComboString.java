@@ -38,6 +38,11 @@ public class TafComboString extends TafString {
     return cs;
   }
 
+  public TafComboString() {
+    super();
+    this.value = null;
+  }
+
   public TafComboString(String s) {
     super(s);
   }
