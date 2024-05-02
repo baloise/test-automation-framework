@@ -33,7 +33,7 @@ pipeline {
             steps {
                	container('maven') {
 	                script {
-			            mavenBuild args: "dependency:copy-dependencies"
+			            mavenDeploy args: "clean install"
         	        }
         	    }
             }
