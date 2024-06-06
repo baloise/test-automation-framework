@@ -9,10 +9,11 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.jupiter.api.extension.InvocationInterceptor.Invocation;
 
+import com.baloise.testautomation.taf.base.testing.steps.Step.SkipAfterFailed;
 import com.baloise.testautomation.taf.base.testing.steps.Step.StepMax;
 import com.baloise.testautomation.taf.base.testing.steps.Step.StepMin;
-import com.baloise.testautomation.taf.base.testing.steps.Step.SkipAfterFailed;
 
 public class StepInvocationInterceptor implements InvocationInterceptor, BeforeAllCallback, TestWatcher {
 
@@ -36,23 +37,29 @@ public class StepInvocationInterceptor implements InvocationInterceptor, BeforeA
   private int stepMax = Integer.MAX_VALUE;
 
   @Override
+  public <T> T interceptTestFactoryMethod(Invocation<T> invocation,
+      ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
+    return proceedIfNeeded(invocation, invocationContext);
+  }
+
+  @Override
   public void interceptTestMethod(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
       ExtensionContext extensionContext) throws Throwable {
+    proceedIfNeeded(invocation, invocationContext);
+  }
+
+  private <T> T proceedIfNeeded(Invocation<T> invocation, ReflectiveInvocationContext<Method> invocationContext)
+      throws Throwable {
     Step step = invocationContext.getExecutable().getAnnotation(Step.class);
     if (step == null) {
-      invocation.proceed();
-      return;
+      return invocation.proceed();
     }
     Assumptions.assumeTrue(canContinue, "Previously failed -> skip: " + invocationContext.getExecutable().getName());
-    if (step.value() >= stepMin && step.value() <= stepMax) {
-      invocation.proceed();
-    }
-    else {
-      Assumptions.assumeFalse(step.value() > stepMax,
-          "Current step index is greater than @StepMax -> skip: " + invocationContext.getExecutable().getName());
-      Assumptions.assumeFalse(step.value() < stepMin,
-          "Current step index is smaller than @StepMin -> skip: " + invocationContext.getExecutable().getName());
-    }
+    Assumptions.assumeFalse(step.value() > stepMax,
+        "Current step index is greater than @StepMax -> skip: " + invocationContext.getExecutable().getName());
+    Assumptions.assumeFalse(step.value() < stepMin,
+        "Current step index is smaller than @StepMin -> skip: " + invocationContext.getExecutable().getName());
+    return invocation.proceed();
   }
 
   @Override
