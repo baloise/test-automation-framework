@@ -20,14 +20,70 @@ public abstract class AElement implements IElement {
   protected IComponent component = null;
   protected String name = "";
 
-  private void assertComponentNotNull() {
-    assertNotNull(
-        "component may not be null --> check, if the used annotion is supported (ABase --> getSupportedBys() --> "
-            + name,
-        component);
+  public Object brFind() {
+    assertComponentNotNull();
+    Object we = null;
+    if (by instanceof ByCustom) {
+      we = brFindByCustom();
+    }
+    if (we == null) {
+      we = component.getBrowserFinder().find(by);
+    }
+    assertNotNull("webelement NOT found: " + name + TafError.getByInfo(by), we);
+    return we;
   }
 
-  protected IFinder<?> getFinder() {
+  public Object brFindByCustom() {
+    return null;
+  }
+
+  public boolean exists() {
+    return exists(0.01);
+  }
+
+  public boolean exists(double secsToWait) {
+    Long timeoutInMsecs = getFinder().getTimeoutInMsecs();
+    boolean result = false;
+    try {
+      getFinder().setTimeoutInMsecs(new Double(secsToWait * 1000).longValue());
+      result = find() != null;
+    }
+    catch (Throwable t) {}
+    finally {
+      getFinder().setTimeoutInMsecs(timeoutInMsecs);
+    }
+    return result;
+  }
+
+  public abstract Object find();
+
+  @Override
+  public Annotation getBy() {
+    return this.by;
+  }
+
+  public ByXpath getByXpath(final String xpath) {
+    ByXpath byXpath = new ByXpath() {
+
+      @Override
+      public Class<? extends Annotation> annotationType() {
+        return ByXpath.class;
+      }
+
+      @Override
+      public int index() {
+        return 0;
+      }
+
+      @Override
+      public String value() {
+        return xpath;
+      }
+    };
+    return byXpath;
+  }
+
+  public IFinder<?> getFinder() {
     assertComponentNotNull();
     IFinder<?> brFinder = null;
     IFinder<?> swFinder = null;
@@ -56,72 +112,20 @@ public abstract class AElement implements IElement {
     return name;
   }
 
-  public boolean exists(double secsToWait) {
-    Long timeoutInMsecs = getFinder().getTimeoutInMsecs();
-    boolean result = false;
-    try {
-      getFinder().setTimeoutInMsecs(new Double(secsToWait * 1000).longValue());
-      result = find() != null;
-    }
-    catch (Throwable t) {}
-    finally {
-      getFinder().setTimeoutInMsecs(timeoutInMsecs);
-    }
-    return result;
-  }
-
-  public boolean exists() {
-    return exists(0.01);
-  }
-
-  public void waitForExistence(double seconds) {
-    long time = System.currentTimeMillis();
-    while (System.currentTimeMillis() <= time + new Double(seconds * 1000).longValue()) {
-      if (exists()) {
-        return;
-      }
-    }
-    fail("element after " + seconds + " seconds not found: " + name);
-  }
-
-  public abstract Object find();
-
-  public Object brFind() {
-    assertComponentNotNull();
-    Object we = null;
-    if (by instanceof ByCustom) {
-      we = brFindByCustom();
-    }
-    if (we == null) {
-      we = component.getBrowserFinder().find(by);
-    }
-    assertNotNull("webelement NOT found: " + name + TafError.getByInfo(by), we);
-    return we;
-  }
-
-  public Object brFindByCustom() {
-    return null;
-  }
-
   @Override
   public void setBy(Annotation by) {
     this.by = by;
   }
 
   @Override
-  public Annotation getBy() {
-    return this.by;
+  public void setCheck(Annotation check) {
+    this.check = check;
   }
 
   // public Region roFind() {
   // // TODO
   // return null;
   // }
-
-  @Override
-  public void setCheck(Annotation check) {
-    this.check = check;
-  }
 
   @Override
   public void setComponent(IComponent component) {
@@ -158,25 +162,14 @@ public abstract class AElement implements IElement {
     return null;
   }
 
-  public ByXpath getByXpath(final String xpath) {
-    ByXpath byXpath = new ByXpath() {
-
-      @Override
-      public Class<? extends Annotation> annotationType() {
-        return ByXpath.class;
+  public void waitForExistence(double seconds) {
+    long time = System.currentTimeMillis();
+    while (System.currentTimeMillis() <= time + new Double(seconds * 1000).longValue()) {
+      if (exists()) {
+        return;
       }
-
-      @Override
-      public int index() {
-        return 0;
-      }
-
-      @Override
-      public String value() {
-        return xpath;
-      }
-    };
-    return byXpath;
+    }
+    fail("element after " + seconds + " seconds not found: " + name);
   }
 
   public void withXPath(IComponent parent, String name, final String xpath) {
@@ -184,6 +177,13 @@ public abstract class AElement implements IElement {
     setBy(byXpath);
     setName(name);
     setComponent(parent);
+  }
+
+  private void assertComponentNotNull() {
+    assertNotNull(
+        "component may not be null --> check, if the used annotion is supported (ABase --> getSupportedBys() --> "
+            + name,
+        component);
   }
 
 }
