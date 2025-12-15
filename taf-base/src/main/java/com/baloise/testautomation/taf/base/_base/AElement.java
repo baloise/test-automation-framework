@@ -83,31 +83,6 @@ public abstract class AElement implements IElement {
     return byXpath;
   }
 
-  public IFinder<?> getFinder() {
-    assertComponentNotNull();
-    IFinder<?> brFinder = null;
-    IFinder<?> swFinder = null;
-    try {
-      brFinder = component.getBrowserFinder();
-    }
-    catch (Throwable t) {}
-    try {
-      swFinder = component.getSwingFinder();
-    }
-    catch (Throwable t) {}
-    if (brFinder != null && swFinder != null) {
-      fail("more than one finder declared on component --> cannot decide which one to use --> fail");
-    }
-    if (brFinder != null) {
-      return brFinder;
-    }
-    if (swFinder != null) {
-      return swFinder;
-    }
-    fail("no finder declared on component --> fail");
-    return null;
-  }
-
   public String getName() {
     return name;
   }
@@ -122,15 +97,15 @@ public abstract class AElement implements IElement {
     this.check = check;
   }
 
-  // public Region roFind() {
-  // // TODO
-  // return null;
-  // }
-
   @Override
   public void setComponent(IComponent component) {
     this.component = component;
   }
+
+  // public Region roFind() {
+  // // TODO
+  // return null;
+  // }
 
   @Override
   public void setName(String name) {
@@ -177,6 +152,31 @@ public abstract class AElement implements IElement {
     setBy(byXpath);
     setName(name);
     setComponent(parent);
+  }
+
+  protected IFinder<?> getFinder() {
+    assertComponentNotNull();
+    IFinder<?> brFinder = null;
+    IFinder<?> swFinder = null;
+    try {
+      brFinder = component.getBrowserFinder();
+    }
+    catch (Throwable t) {}
+    try {
+      swFinder = component.getSwingFinder();
+    }
+    catch (Throwable t) {}
+    if (brFinder != null && swFinder != null) {
+      fail("more than one finder declared on component --> cannot decide which one to use --> fail");
+    }
+    if (brFinder != null) {
+      return brFinder;
+    }
+    if (swFinder != null) {
+      return swFinder;
+    }
+    fail("no finder declared on component --> fail");
+    return null;
   }
 
   private void assertComponentNotNull() {

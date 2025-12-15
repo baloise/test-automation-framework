@@ -17,9 +17,11 @@ public abstract class ASwElement implements ISwElement<Component> {
 
   public static String paramCommand = "command";
 
-  public Component component;
+  public static long TIMEOUT_FOR_EXECUTION_IN_SECONDS = 10;
 
+  public Component component;
   public TafProperties properties;
+
   // public String tagName;
   public long tid;
 
@@ -39,35 +41,54 @@ public abstract class ASwElement implements ISwElement<Component> {
     fillProperties();
   }
 
-  protected void addProperty(String key, int value) {
-    addProperty(key, new Integer(value).toString());
-  }
-
-  protected void addProperty(String key, long value) {
-    addProperty(key, new Long(value).toString());
-  }
-
-  protected void addProperty(String key, String value) {
-    if ((key != null) && (value != null)) {
-      properties.putObject(key, value);
-    }
-  }
-
-  protected String asEscaped(String s) {
-    if (s == null) {
-      return s;
-    }
-    return asEscapedString(s);
-  }
-
-  protected String asEscapedXml(String s) {
-    if (s == null) {
-      return s;
-    }
-    return asEscapedXmlString(s);
-  }
-
   public abstract TafProperties basicExecCommand(TafProperties props);
+
+  public TafProperties execCommand(TafProperties props) {
+    boolean timedOut = false;
+    long time = System.currentTimeMillis();
+    String errorMessage = "no error";
+    while (!timedOut) {
+      TafProperties incomingProps = new TafProperties(props);
+      System.out.println("ASwElement --> execCommand");
+      try {
+        if (!getType().equalsIgnoreCase(incomingProps.getString("type"))) {
+          return getErrorProperties(
+              "wrong type (expected = " + getType() + ", actual = " + incomingProps.getString("type"));
+        }
+        incomingProps = basicExecCommand(incomingProps);
+        System.out.println("ASwElement --> execCommand successfully completed");
+        return getDoneProperties(incomingProps);
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("ASwElement --> execCommand --> exception caught: " + e);
+        errorMessage = e.toString();
+        try {
+          Thread.sleep(200);
+        }
+        catch (Exception e2) {}
+      }
+      if (System.currentTimeMillis() > time + (TIMEOUT_FOR_EXECUTION_IN_SECONDS * 1000)) {
+        System.out.println("ASwElement --> execCommand --> TIMED OUT");
+        timedOut = true;
+      }
+    }
+    return getErrorProperties(errorMessage);
+  }
+
+  public abstract void fillProperties();
+
+  public <T extends Enum<T>> T getCommand(Class<T> c, String command) {
+    if (c != null && command != null) {
+      try {
+        return Enum.valueOf(c, command.trim().toLowerCase());
+      }
+      catch (IllegalArgumentException e) {}
+    }
+    return null;
+  }
+
+  public abstract Component getComponent();
 
   // protected void click(Component c, int mask) {
   // if (c != null) {
@@ -98,78 +119,6 @@ public abstract class ASwElement implements ISwElement<Component> {
   // }
   // }
 
-  public static long TIMEOUT_FOR_EXECUTION_IN_SECONDS = 10;
-  
-  public TafProperties execCommand(TafProperties props) {
-    boolean timedOut = false;
-    long time = System.currentTimeMillis();
-    String errorMessage = "no error";
-    while (!timedOut) {
-      TafProperties incomingProps = new TafProperties(props);
-      System.out.println("ASwElement --> execCommand");
-      try {
-        if (!getType().equalsIgnoreCase(incomingProps.getString("type"))) {
-          return getErrorProperties("wrong type (expected = " + getType() + ", actual = "
-              + incomingProps.getString("type"));
-        }
-        incomingProps = basicExecCommand(incomingProps);
-        System.out.println("ASwElement --> execCommand successfully completed");
-        return getDoneProperties(incomingProps);
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("ASwElement --> execCommand --> exception caught: " + e);
-        errorMessage = e.toString();
-        try {
-          Thread.sleep(200);
-        }
-        catch (Exception e2) {
-        }
-      }
-      if (System.currentTimeMillis() > time + (TIMEOUT_FOR_EXECUTION_IN_SECONDS * 1000)) {
-        System.out.println("ASwElement --> execCommand --> TIMED OUT");
-        timedOut = true;
-      }
-    }
-    return getErrorProperties(errorMessage);
-  }
-
-  public abstract void fillProperties();
-
-  // public String getTagName() {
-  // if (tagName == null) {
-  // return "null-tag";
-  // }
-  // if (tagName.isEmpty()) {
-  // return "empty-tag-" + component.getClass().getSimpleName();
-  // }
-  // return tagName;
-  // }
-
-  public <T extends Enum<T>> T getCommand(Class<T> c, String command) {
-    if (c != null && command != null) {
-      try {
-        return Enum.valueOf(c, command.trim().toLowerCase());
-      }
-      catch (IllegalArgumentException e) {}
-    }
-    return null;
-  }
-
-  public abstract Component getComponent();
-
-  private TafProperties getDoneProperties(TafProperties props) {
-    props.putObject("status", "done");
-    return props;
-  }
-
-  private TafProperties getErrorProperties(String message) {
-    TafProperties result = new TafProperties();
-    result.putObject("status", "error");
-    result.putObject("message", message);
-    return result;
-  }
-
   public abstract AbstractComponentFixture getFixture();
 
   @Override
@@ -185,6 +134,16 @@ public abstract class ASwElement implements ISwElement<Component> {
     }
     return attributes;
   }
+
+  // public String getTagName() {
+  // if (tagName == null) {
+  // return "null-tag";
+  // }
+  // if (tagName.isEmpty()) {
+  // return "empty-tag-" + component.getClass().getSimpleName();
+  // }
+  // return tagName;
+  // }
 
   @Override
   public Component getReference() {
@@ -219,6 +178,46 @@ public abstract class ASwElement implements ISwElement<Component> {
   @Override
   public String toString() {
     return "tagName=" + getType() + " " + component.toString();
+  }
+
+  protected void addProperty(String key, int value) {
+    addProperty(key, Integer.valueOf(value).toString());
+  }
+
+  protected void addProperty(String key, long value) {
+    addProperty(key, Long.valueOf(value).toString());
+  }
+
+  protected void addProperty(String key, String value) {
+    if ((key != null) && (value != null)) {
+      properties.putObject(key, value);
+    }
+  }
+
+  protected String asEscaped(String s) {
+    if (s == null) {
+      return s;
+    }
+    return asEscapedString(s);
+  }
+
+  protected String asEscapedXml(String s) {
+    if (s == null) {
+      return s;
+    }
+    return asEscapedXmlString(s);
+  }
+
+  private TafProperties getDoneProperties(TafProperties props) {
+    props.putObject("status", "done");
+    return props;
+  }
+
+  private TafProperties getErrorProperties(String message) {
+    TafProperties result = new TafProperties();
+    result.putObject("status", "error");
+    result.putObject("message", message);
+    return result;
   }
 
   // public void waitUntilReady() {
