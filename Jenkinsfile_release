@@ -1,0 +1,43 @@
+@Library('jenkins-shared-library@master') _
+
+pipeline {
+  agent {
+    kubernetes(agents()
+        .maven().version('3.9.4-jdk8').profile('medium').withJFrog()
+        .startContainers())
+  	}
+  	
+    options {
+        skipStagesAfterUnstable()
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '28'))
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+    stages {
+        stage("SCM Checkout") {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+
+        stage("Maven Release") {
+            steps {
+               	container('maven') {
+					mavenRelease()
+        	    }
+            }
+        }
+        
+        stage("Nexus Lifecycle") {
+            steps {
+               	container('maven') {
+	                nexusPolicyEvaluation iqApplication: 'com.baloise.testing.framework.taf', 
+                                  iqScanPatterns: [[scanPattern: '**/target/dependency/*.jar']], 
+                                  iqStage: 'build'
+                }
+            }
+        }
+    }
+}
