@@ -25,7 +25,7 @@ pipeline {
         stage("Maven Release") {
             steps {
                	container('maven') {
-					mavenRelease()
+					mavenBuild()
         	    }
             }
         }
