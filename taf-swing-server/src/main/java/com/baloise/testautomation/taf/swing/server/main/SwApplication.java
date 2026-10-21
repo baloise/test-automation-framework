@@ -93,7 +93,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
           cellText = table.getValueAt(r, c).toString();
         }
         catch (Exception e) {
-          info("cellText is null: row = " + r + ", column = " + c);
+          debug("cellText is null: row = " + r + ", column = " + c);
         }
         xml.append("<cell tid = \"" + counter + "\" row = \"" + r + "\" col = \"" + c + "\" value = \""
             + asEscapedXml(cellText) + "\"></cell>");
@@ -493,6 +493,23 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
 
   private void info(String message) {
     System.out.println(message);
+  }
+
+  /**
+   * System property that enables the debug output of the server, e.g. -Dtaf.swing.server.debug=true.
+   */
+  public static final String DEBUG_PROPERTY = "taf.swing.server.debug";
+
+  /**
+   * Output that is only needed to analyse the server itself. Every lookup converts the whole component tree to XML,
+   * so a line per empty table cell adds up to hundreds of lines per lookup. The AppStarter shows the output in its
+   * console window and keeps every line in memory: in long test cases the console used up the AppStarter heap
+   * (about 90% of the lines were "cellText is null").
+   */
+  private void debug(String message) {
+    if (Boolean.getBoolean(DEBUG_PROPERTY)) {
+      System.out.println(message);
+    }
   }
 
   private ISwElement<Component> putComponent(Component c) {
