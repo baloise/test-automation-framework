@@ -184,7 +184,7 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       String s = "";
       try {
         String text = list.getModel().getElementAt(i).toString();
-        s = "<!-- " + text + " -->";
+        s = "<!-- " + asXmlCommentText(text) + " -->";
         s = s + System.getProperty("line.separator");
         s = s + "<listitem index=\"" + i + "\">" + asEscapedXml(text) + "</listitem>";
       }
@@ -193,6 +193,14 @@ public class SwApplication implements ISwApplication<ISwElement<Component>> {
       }
       xml.append(s);
     }
+  }
+
+  /**
+   * The string "--" is not allowed inside XML comments (e.g. a name like "Muster--Meier" in a list item). Otherwise the
+   * whole hierarchy XML is invalid and no XPath can be evaluated any more.
+   */
+  static String asXmlCommentText(String s) {
+    return s.replaceAll("-(?=-)", "- ");
   }
 
   public void allTabsToXML(StringBuilder xml, JTabbedPane tabbedPane) {
